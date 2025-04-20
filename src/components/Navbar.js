@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import SocialIcons from './SocialIcons';
 
 const Nav = styled.nav`
   display: flex;
@@ -17,14 +18,14 @@ const Nav = styled.nav`
 
   @media (max-width: 768px) {
     padding: 0.8rem;
-    width: calc(100% - 2rem);
-    margin: 0 1rem;
+    width: 90%;
+    max-width: 400px;
   }
 `;
 
 const NavContainer = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   gap: 4rem;
   width: fit-content;
@@ -34,7 +35,7 @@ const NavContainer = styled.div`
     justify-content: space-between;
     width: 100%;
     padding: 0 0.5rem;
-    gap: 1rem;
+    gap: 0.5rem;
   }
 `;
 
@@ -50,12 +51,14 @@ const Logo = styled.div`
   }
 
   @media (max-width: 768px) {
-    font-size: 1.2rem;
-    letter-spacing: 1px;
+    font-size: 1.1rem;
+    letter-spacing: 0.5px;
+    flex: 1;
+    margin: 0 0.5rem;
   }
 
   @media (max-width: 480px) {
-    font-size: 1rem;
+    font-size: 0.9rem;
   }
 `;
 
@@ -77,12 +80,14 @@ const MobileMenuButton = styled.button`
   font-size: 1.5rem;
   cursor: pointer;
   padding: 0.5rem;
-  margin-left: 0.5rem;
+  min-width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   @media (max-width: 768px) {
     display: flex;
-    align-items: center;
-    justify-content: center;
   }
 `;
 
@@ -157,6 +162,7 @@ const Navbar = () => {
           <NavLinks>
             <NavLink href="#projects">PROJECTS</NavLink>
             <NavLink href="#contact">CONTACT</NavLink>
+            <SocialIcons />
           </NavLinks>
           <MobileMenuButton onClick={toggleMobileMenu}>
             ☰

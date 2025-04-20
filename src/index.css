@@ -28,8 +28,9 @@ body {
     color: #fff;
     line-height: 1.6;
     position: relative;
-    overflow: hidden;
-    height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    min-height: 200vh;
 }
 
 body::before {

@@ -45,7 +45,7 @@ const LedGrid = () => {
         updatePixels();
 
         // Update pixels every 600ms for a slower effect
-        const interval = setInterval(updatePixels, 600);
+        const interval = setInterval(updatePixels, 50);
 
         // Add scroll listener
         window.addEventListener('scroll', handleScroll);

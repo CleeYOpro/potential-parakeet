@@ -13,11 +13,26 @@ const AppContainer = styled.div`
   background: #000000;
 `;
 
+const TopSection = styled.div`
+  height: 100vh;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+`;
+
+const BottomSection = styled.div`
+  position: relative;
+  margin-top: 100vh;
+  z-index: 3;
+  padding: 0 2rem;
+  pointer-events: ${props => props.allowScroll ? 'auto' : 'none'};
+`;
+
 const ContentContainer = styled.div`
   position: relative;
   z-index: 2;
-  padding: 0 2rem;
-  min-height: 200vh;
   transition: transform 0.6s ease;
   transform: translateY(${props => props.scrollPosition}px);
 `;
@@ -70,38 +85,60 @@ function App() {
   const [scrollPosition, setScrollPosition] = useState(0);
   const contentRef = useRef(null);
 
+  useEffect(() => {
+    const preventScroll = (e) => {
+      if (!isScrolled) {
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+      }
+    };
+
+    window.addEventListener('wheel', preventScroll, { passive: false });
+    window.addEventListener('touchmove', preventScroll, { passive: false });
+
+    return () => {
+      window.removeEventListener('wheel', preventScroll);
+      window.removeEventListener('touchmove', preventScroll);
+    };
+  }, [isScrolled]);
+
   const handleScrollClick = (direction) => {
     if (direction === 'up') {
       setScrollPosition(0);
       setIsScrolled(false);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
       const newPosition = -window.innerHeight * 0.9;
       setScrollPosition(newPosition);
       setIsScrolled(true);
+      window.scrollTo({ top: window.innerHeight, behavior: 'smooth' });
     }
   };
 
   return (
     <AppContainer>
-      <div className="content-wrapper">
+      <TopSection>
         <LedGrid />
         <ContentContainer ref={contentRef} scrollPosition={scrollPosition}>
           <Navbar />
           <Hero />
-          <Section>
-            <TechStack />
-          </Section>
-          <Section>
-            <AboutMe />
-          </Section>
         </ContentContainer>
-      </div>
+      </TopSection>
+      <BottomSection allowScroll={isScrolled}>
+        <Section>
+          <TechStack />
+        </Section>
+        <Section>
+          <AboutMe />
+        </Section>
+      </BottomSection>
       {isScrolled && (
         <ScrollButton
           onClick={() => handleScrollClick('up')}
           position="top"
         >
-          Back to Top
+          Back to Main
         </ScrollButton>
       )}
       {!isScrolled && (
