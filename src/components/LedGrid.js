@@ -22,8 +22,8 @@ const LedGrid = () => {
     }, []);
 
     useEffect(() => {
-        // Create initial grid (40x40)
-        const totalPixels = 1600;
+        // Create initial grid (60x60) - increased from 40x40
+        const totalPixels = 3600; // 60x60
         const initialPixels = Array(totalPixels).fill(false);
         setPixels(initialPixels);
 
@@ -44,7 +44,7 @@ const LedGrid = () => {
         // Initial update
         updatePixels();
 
-        // Update pixels every 600ms for a slower effect
+        // Update pixels every 50ms for a slower effect
         const interval = setInterval(updatePixels, 50);
 
         // Add scroll listener

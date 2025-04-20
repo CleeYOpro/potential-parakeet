@@ -1,6 +1,17 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
-import SocialIcons from './SocialIcons';
+import styled, { keyframes } from 'styled-components';
+
+const gradientAnimation = keyframes`
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+`;
 
 const Nav = styled.nav`
   display: flex;
@@ -40,25 +51,38 @@ const NavContainer = styled.div`
 `;
 
 const Logo = styled.div`
-  font-size: 1.8rem;
+  font-size: 1.5rem;
   font-weight: bold;
   color: #fff;
   letter-spacing: 2px;
   text-align: center;
+  background: linear-gradient(
+    45deg,
+rgb(132, 175, 224),
+rgb(205, 78, 78),
+rgb(69, 71, 209),
+rgb(0, 81, 255),
+rgb(72, 76, 116)
+  );
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: ${gradientAnimation} 8s ease infinite;
 
   @media (max-width: 1024px) {
     font-size: 1.6rem;
   }
 
   @media (max-width: 768px) {
-    font-size: 1.1rem;
-    letter-spacing: 0.5px;
+    font-size: 1.4rem;
+    letter-spacing: 1px;
     flex: 1;
     margin: 0 0.5rem;
   }
 
   @media (max-width: 480px) {
-    font-size: 0.9rem;
+    font-size: 1.2rem;
   }
 `;
 
@@ -82,7 +106,6 @@ const MobileMenuButton = styled.button`
   padding: 0.5rem;
   min-width: 44px;
   height: 44px;
-  display: flex;
   align-items: center;
   justify-content: center;
 
@@ -143,6 +166,16 @@ const NavLink = styled.a`
   }
 `;
 
+const TeslaLink = styled.a`
+  color: #0055ff;
+  text-decoration: none;
+  transition: color 0.3s ease;
+
+  &:hover {
+    color: #fff;
+  }
+`;
+
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -162,7 +195,6 @@ const Navbar = () => {
           <NavLinks>
             <NavLink href="#projects">PROJECTS</NavLink>
             <NavLink href="#contact">CONTACT</NavLink>
-            <SocialIcons />
           </NavLinks>
           <MobileMenuButton onClick={toggleMobileMenu}>
             ☰

@@ -23,16 +23,16 @@ const SocialLink = styled.a`
 const SocialIcons = () => {
     return (
         <SocialContainer>
-            <SocialLink href="https://github.com/yourusername" target="_blank" rel="noopener noreferrer">
+            <SocialLink href="https://github.com/CleeYOpro" target="_blank" rel="noopener noreferrer">
                 <FaGithub />
             </SocialLink>
-            <SocialLink href="https://linkedin.com/in/yourusername" target="_blank" rel="noopener noreferrer">
+            <SocialLink href="https://linkedin.com/in/cleofus123" target="_blank" rel="noopener noreferrer">
                 <FaLinkedin />
             </SocialLink>
-            <SocialLink href="https://medium.com/@yourusername" target="_blank" rel="noopener noreferrer">
+            <SocialLink href="https://medium.com/@cleeo001" target="_blank" rel="noopener noreferrer">
                 <FaMedium />
             </SocialLink>
-            <SocialLink href="https://instagram.com/yourusername" target="_blank" rel="noopener noreferrer">
+            <SocialLink href="https://instagram.com/cleobalaranjith" target="_blank" rel="noopener noreferrer">
                 <FaInstagram />
             </SocialLink>
         </SocialContainer>

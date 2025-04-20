@@ -65,12 +65,12 @@ body::before {
     width: 100vw;
     height: 100vh;
     display: grid;
-    grid-template-columns: repeat(40, 1fr);
-    grid-template-rows: repeat(40, 1fr);
+    grid-template-columns: repeat(60, 1fr);
+    grid-template-rows: repeat(60, 1fr);
     z-index: 1;
     pointer-events: none;
-    gap: 12px;
-    padding: 12px;
+    gap: 8px;
+    padding: 8px;
     background: transparent;
     transition: opacity 0.3s ease;
 }

@@ -1,5 +1,15 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
+import SocialIcons from './SocialIcons';
+
+const shine = keyframes`
+  0% {
+    background-position: -100% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+`;
 
 const HeroContainer = styled.div`
   min-height: 100vh;
@@ -11,6 +21,23 @@ const HeroContainer = styled.div`
   text-align: left;
   background: transparent;
   overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.8) 0%,
+      rgba(0, 0, 0, 0.4) 50%,
+      transparent 100%
+    );
+    pointer-events: none;
+    z-index: 0;
+  }
 `;
 
 const HeroContent = styled.div`
@@ -28,12 +55,45 @@ const Title = styled.h1`
 const Description = styled.p`
   font-size: 1.5rem;
   line-height: 1.6;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   color: #fff;
 
   span {
     color: #0055ff;
+    transition: all 0.3s ease;
+    
+    &:hover {
+      background: linear-gradient(
+        120deg,
+        #0055ff 0%,
+        #0055ff 45%,
+        #fff 50%,
+        #0055ff 55%,
+        #0055ff 100%
+      );
+      background-size: 200% auto;
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      animation: ${shine} 1s linear infinite;
+    }
   }
+`;
+
+const TeslaLink = styled.a`
+  color: #0055ff;
+  text-decoration: none;
+  transition: color 0.3s ease;
+
+  &:hover {
+    color: #fff;
+  }
+`;
+
+const IconsContainer = styled.div`
+  display: flex;
+  justify-content: left;
+  margin-top: 1rem;
 `;
 
 const ScrollPrompt = styled.div`
@@ -62,8 +122,11 @@ const Hero = () => {
       <HeroContent>
         <Title>I'M CLEO!</Title>
         <Description>
-          Sophomore @ Tesla STEM. First Place WTSA. Web Development. AI. GeoTech. Engineering. <span>Building What's Next</span>.
+          Sophomore @ <TeslaLink href="https://www.usnews.com/education/best-high-schools/washington/districts/lake-washington-school-district/tesla-stem-high-school-146690" target="_blank" rel="noopener noreferrer">Tesla STEM</TeslaLink>. First Place WTSA. Web Development. AI. GeoTech. Engineering. <span>Building What's Next</span>.
         </Description>
+        <IconsContainer>
+          <SocialIcons />
+        </IconsContainer>
       </HeroContent>
     </HeroContainer>
   );

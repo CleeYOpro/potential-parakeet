@@ -1,51 +1,29 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Icons } from './icons';
 
 const TechStackContainer = styled.section`
-  padding: 4rem 2rem;
+  padding: 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-
-  @media (max-width: 768px) {
-    padding: 3rem 1.5rem;
-  }
-
-  @media (max-width: 480px) {
-    padding: 2rem 1rem;
-  }
+  max-width: 800px;
+  margin: 0 auto;
 `;
 
 const Title = styled.h2`
-  font-size: 2rem;
-  margin-bottom: 2rem;
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
   color: #fff;
-
-  @media (max-width: 768px) {
-    font-size: 1.8rem;
-    margin-bottom: 1.5rem;
-  }
-
-  @media (max-width: 480px) {
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
-  }
+  text-align: center;
 `;
 
 const IconsContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 2rem;
-  max-width: 800px;
-
-  @media (max-width: 768px) {
-    gap: 1.5rem;
-  }
-
-  @media (max-width: 480px) {
-    gap: 1rem;
-  }
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  gap: 1.5rem;
+  width: 100%;
+  justify-items: center;
 `;
 
 const Icon = styled.div`
@@ -53,25 +31,25 @@ const Icon = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 0.5rem;
-  transition: transform 0.3s ease;
-
-  @media (max-width: 768px) {
-    width: 80px;
-  }
-
-  @media (max-width: 480px) {
-    width: 70px;
-  }
-
-  &:hover {
-    transform: translateY(-5px);
-  }
 `;
 
-const IconImage = styled.img`
+const IconWrapper = styled.div`
   width: 50px;
   height: 50px;
-  object-fit: contain;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: scale(1.2);
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
 
   @media (max-width: 768px) {
     width: 40px;
@@ -79,34 +57,31 @@ const IconImage = styled.img`
   }
 
   @media (max-width: 480px) {
-    width: 35px;
-    height: 35px;
+    width: 32px;
+    height: 32px;
   }
 `;
 
 const IconName = styled.span`
   color: #666;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   text-align: center;
-
-  @media (max-width: 768px) {
-    font-size: 0.8rem;
-  }
-
-  @media (max-width: 480px) {
-    font-size: 0.7rem;
-  }
 `;
 
 const techStack = [
-  { name: 'VSCode', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg' },
-  { name: 'GitHub', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg' },
-  { name: 'JavaScript', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg' },
-  { name: 'React', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg' },
-  { name: 'Node.js', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg' },
-  { name: 'HTML5', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg' },
-  { name: 'CSS3', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg' },
-  { name: 'Python', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg' },
+  { name: 'GitHub', icon: Icons.gitIcon },
+  { name: 'ArcGIS', icon: Icons.arcIcon },
+  { name: 'OpenStreetMap', icon: Icons.mapIcon },
+  { name: 'VS Code', icon: Icons.VSCode },
+  { name: 'Figma', icon: Icons.Figma },
+  { name: 'Framer', icon: Icons.Framer },
+  { name: 'Hugging Face', icon: Icons.hugIcon },
+  { name: 'JavaScript', icon: Icons.JS },
+  { name: 'React', icon: Icons.ReactLogo },
+  { name: 'HTML', icon: Icons.HTML },
+  { name: 'CSS', icon: Icons.CSS },
+  { name: 'Java', icon: Icons.Java },
+  { name: 'Python', icon: Icons.Python }
 ];
 
 const TechStack = () => {
@@ -116,7 +91,9 @@ const TechStack = () => {
       <IconsContainer>
         {techStack.map((tech, index) => (
           <Icon key={index}>
-            <IconImage src={tech.icon} alt={tech.name} />
+            <IconWrapper>
+              <img src={tech.icon} alt={tech.name} />
+            </IconWrapper>
             <IconName>{tech.name}</IconName>
           </Icon>
         ))}
@@ -125,4 +102,4 @@ const TechStack = () => {
   );
 };
 
-export default TechStack; 
+export default TechStack;
