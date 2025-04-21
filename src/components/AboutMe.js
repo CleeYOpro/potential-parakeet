@@ -159,7 +159,7 @@ const AboutMe = () => {
       <Content>
         <Title>About Me</Title>
         <Description>
-          I'm passionate about learning through doing. Like working on projects where I can code, build, and lead—especially when there's a chance to collaborate with others. Whether it's a team challenge, a coding project, or something completely new, I'm all about figuring things out and making ideas come to life.<br />I am involved in a variety of organizations that fuel my passions:
+          I'm passionate about learning through doing. Like working on projects where I can code, build, and lead—especially when there's a chance to collaborate with others. Whether it's a team based task, a coding project, or something completely new, I'm all about figuring things out and making ideas come to life.<br />I am involved in a variety of organizations that fuel my passions:
         </Description>
         <Organizations>
           <OrgLink href="https://www.cmch-vellore.edu/" target="_blank" rel="noopener noreferrer">

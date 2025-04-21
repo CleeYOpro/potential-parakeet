@@ -22,7 +22,8 @@ const Nav = styled.nav`
   transform: translateX(-50%);
   top: 1rem;
   z-index: 1000;
-  background: rgba(32, 32, 32, 0.7);
+  background: rgba(61, 61, 61, 0.7);
+  opacity: 0.7;
   backdrop-filter: blur(8px);
   border-radius: 8px;
   padding: 1rem;
@@ -58,11 +59,11 @@ const Logo = styled.div`
   text-align: center;
   background: linear-gradient(
     45deg,
-rgb(132, 175, 224),
-rgb(205, 78, 78),
-rgb(69, 71, 209),
-rgb(0, 81, 255),
-rgb(72, 76, 116)
+    rgb(132, 175, 224),
+    rgb(205, 78, 78),
+    rgb(69, 71, 209),
+    rgb(0, 81, 255),
+    rgb(72, 76, 116)
   );
   background-size: 300% 300%;
   -webkit-background-clip: text;
@@ -121,7 +122,7 @@ const MobileMenu = styled.div`
   left: 0;
   width: 100%;
   height: 100vh;
-  background: rgba(32, 32, 32, 0.95);
+  background: rgba(61, 61, 61, 0.7);
   backdrop-filter: blur(8px);
   padding: 2rem;
   flex-direction: column;
@@ -131,7 +132,7 @@ const MobileMenu = styled.div`
   z-index: 999;
 
   @media (max-width: 768px) {
-    display: ${props => props.isOpen ? 'flex' : 'none'};
+    display: ${props => (props.isOpen ? 'flex' : 'none')};
   }
 `;
 
@@ -141,40 +142,24 @@ const NavLink = styled.a`
   font-size: 1rem;
   transition: color 0.3s ease;
   position: relative;
+  outline: none;
+  -webkit-tap-highlight-color: none;
 
   @media (max-width: 768px) {
     font-size: 1.2rem;
   }
 
   &:hover {
-    color: #0055ff;
+    color: rgb(205, 78, 78);
+    text-decoration: underline;
   }
 
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: -5px;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background: #0055ff;
-    transition: width 0.3s ease;
-  }
 
   &:hover::after {
     width: 100%;
   }
 `;
 
-const TeslaLink = styled.a`
-  color: #0055ff;
-  text-decoration: none;
-  transition: color 0.3s ease;
-
-  &:hover {
-    color: #fff;
-  }
-`;
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -196,19 +181,25 @@ const Navbar = () => {
             <NavLink href="#projects">PROJECTS</NavLink>
             <NavLink href="#contact">CONTACT</NavLink>
           </NavLinks>
-          <MobileMenuButton onClick={toggleMobileMenu}>
-            ☰
-          </MobileMenuButton>
+          <MobileMenuButton onClick={toggleMobileMenu}>☰</MobileMenuButton>
         </NavContainer>
       </Nav>
       <MobileMenu isOpen={isMobileMenuOpen}>
-        <NavLink href="#home" onClick={toggleMobileMenu}>HOME</NavLink>
-        <NavLink href="#about" onClick={toggleMobileMenu}>ABOUT</NavLink>
-        <NavLink href="#projects" onClick={toggleMobileMenu}>PROJECTS</NavLink>
-        <NavLink href="#contact" onClick={toggleMobileMenu}>CONTACT</NavLink>
+        <NavLink href="#home" onClick={toggleMobileMenu}>
+          HOME
+        </NavLink>
+        <NavLink href="#about" onClick={toggleMobileMenu}>
+          ABOUT
+        </NavLink>
+        <NavLink href="#projects" onClick={toggleMobileMenu}>
+          PROJECTS
+        </NavLink>
+        <NavLink href="#contact" onClick={toggleMobileMenu}>
+          CONTACT
+        </NavLink>
       </MobileMenu>
     </>
   );
 };
 
-export default Navbar; 
+export default Navbar;
