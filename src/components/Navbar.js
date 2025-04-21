@@ -27,6 +27,8 @@ const Nav = styled.nav`
   backdrop-filter: blur(8px);
   border-radius: 8px;
   padding: 1rem;
+  width: 100%;
+  max-width: 900px;
 
   @media (max-width: 768px) {
     padding: 0.8rem;
@@ -37,26 +39,30 @@ const Nav = styled.nav`
 
 const NavContainer = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  gap: 4rem;
-  width: fit-content;
-  padding: 0.5rem 2rem;
+  width: 100%;
 
   @media (max-width: 768px) {
-    justify-content: space-between;
-    width: 100%;
     padding: 0 0.5rem;
-    gap: 0.5rem;
+  }
+`;
+
+const NavGroup = styled.div`
+  display: flex;
+  gap: 2rem;
+  flex: 1;
+  justify-content: center;
+
+  @media (max-width: 768px) {
+    display: none;
   }
 `;
 
 const Logo = styled.div`
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #fff;
-  letter-spacing: 2px;
+  flex: 2;
   text-align: center;
+  font-size: 1.6rem;
+  font-weight: bold;
   background: linear-gradient(
     45deg,
     rgb(132, 175, 224),
@@ -71,13 +77,8 @@ const Logo = styled.div`
   color: transparent;
   animation: ${gradientAnimation} 8s ease infinite;
 
-  @media (max-width: 1024px) {
-    font-size: 1.6rem;
-  }
-
   @media (max-width: 768px) {
     font-size: 1.4rem;
-    letter-spacing: 1px;
     flex: 1;
     margin: 0 0.5rem;
   }
@@ -87,13 +88,26 @@ const Logo = styled.div`
   }
 `;
 
-const NavLinks = styled.div`
-  display: flex;
-  gap: 2rem;
-  align-items: center;
+const NavLink = styled.a`
+  color: #fff;
+  text-decoration: none;
+  font-size: 1rem;
+  transition: color 0.3s ease;
+  position: relative;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
 
   @media (max-width: 768px) {
-    display: none;
+    font-size: 1.2rem;
+  }
+
+  &:hover {
+    color: rgb(205, 78, 78);
+    text-decoration: underline;
+  }
+
+  &:hover::after {
+    width: 100%;
   }
 `;
 
@@ -136,31 +150,6 @@ const MobileMenu = styled.div`
   }
 `;
 
-const NavLink = styled.a`
-  color: #fff;
-  text-decoration: none;
-  font-size: 1rem;
-  transition: color 0.3s ease;
-  position: relative;
-  outline: none;
-  -webkit-tap-highlight-color: none;
-
-  @media (max-width: 768px) {
-    font-size: 1.2rem;
-  }
-
-  &:hover {
-    color: rgb(205, 78, 78);
-    text-decoration: underline;
-  }
-
-
-  &:hover::after {
-    width: 100%;
-  }
-`;
-
-
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -172,16 +161,19 @@ const Navbar = () => {
     <>
       <Nav>
         <NavContainer>
-          <NavLinks>
+          <NavGroup>
             <NavLink href="#home">HOME</NavLink>
             <NavLink href="#about">ABOUT</NavLink>
-          </NavLinks>
+          </NavGroup>
           <Logo>CLEO BALARANJITH</Logo>
-          <NavLinks>
+          <NavGroup>
             <NavLink href="#projects">PROJECTS</NavLink>
             <NavLink href="#contact">CONTACT</NavLink>
-          </NavLinks>
-          <MobileMenuButton onClick={toggleMobileMenu}>☰</MobileMenuButton>
+          </NavGroup>
+          <MobileMenuButton onClick={toggleMobileMenu}>
+            {isMobileMenuOpen ? '✕' : '☰'}
+          </MobileMenuButton>
+
         </NavContainer>
       </Nav>
       <MobileMenu isOpen={isMobileMenuOpen}>

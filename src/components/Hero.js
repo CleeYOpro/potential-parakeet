@@ -96,25 +96,9 @@ const IconsContainer = styled.div`
   margin-top: 1rem;
 `;
 
-const ScrollPrompt = styled.div`
-  position: absolute;
-  bottom: 2rem;
-  left: 4rem;
-  color: #666;
-  font-size: 0.9rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-`;
 
-const Arrow = styled.span`
-  display: inline-block;
-  transform: rotate(45deg);
-  border: solid #666;
-  border-width: 0 2px 2px 0;
-  padding: 4px;
-  margin-top: -4px;
-`;
+
+
 
 const Hero = () => {
   return (
