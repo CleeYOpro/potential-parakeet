@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled, { keyframes } from 'styled-components';
+import UnderConstructionModal from './UnderConstructionModal';
 
 const gradientAnimation = keyframes`
   0% {
@@ -152,9 +153,23 @@ const MobileMenu = styled.div`
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  const handleNavClick = (e) => {
+    e.preventDefault();
+    const href = e.currentTarget.getAttribute('href');
+    if (href === '#home') {
+      window.location.hash = 'home';
+    } else {
+      setIsModalOpen(true);
+    }
+    if (isMobileMenuOpen) {
+      setIsMobileMenuOpen(false);
+    }
   };
 
   return (
@@ -162,34 +177,37 @@ const Navbar = () => {
       <Nav>
         <NavContainer>
           <NavGroup>
-            <NavLink href="#home">HOME</NavLink>
-            <NavLink href="#about">ABOUT</NavLink>
+            <NavLink href="#home" onClick={handleNavClick}>HOME</NavLink>
+            <NavLink href="#about" onClick={handleNavClick}>ABOUT</NavLink>
           </NavGroup>
           <Logo>CLEO BALARANJITH</Logo>
           <NavGroup>
-            <NavLink href="#projects">PROJECTS</NavLink>
-            <NavLink href="#contact">CONTACT</NavLink>
+            <NavLink href="#projects" onClick={handleNavClick}>PROJECTS</NavLink>
+            <NavLink href="#contact" onClick={handleNavClick}>CONTACT</NavLink>
           </NavGroup>
           <MobileMenuButton onClick={toggleMobileMenu}>
             {isMobileMenuOpen ? '✕' : '☰'}
           </MobileMenuButton>
-
         </NavContainer>
       </Nav>
       <MobileMenu isOpen={isMobileMenuOpen}>
-        <NavLink href="#home" onClick={toggleMobileMenu}>
+        <NavLink href="#home" onClick={handleNavClick}>
           HOME
         </NavLink>
-        <NavLink href="#about" onClick={toggleMobileMenu}>
+        <NavLink href="#about" onClick={handleNavClick}>
           ABOUT
         </NavLink>
-        <NavLink href="#projects" onClick={toggleMobileMenu}>
+        <NavLink href="#projects" onClick={handleNavClick}>
           PROJECTS
         </NavLink>
-        <NavLink href="#contact" onClick={toggleMobileMenu}>
+        <NavLink href="#contact" onClick={handleNavClick}>
           CONTACT
         </NavLink>
       </MobileMenu>
+      <UnderConstructionModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+      />
     </>
   );
 };
