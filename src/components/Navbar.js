@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import UnderConstructionModal from './UnderConstructionModal';
+import SettingsModal from './SettingsModal';
 
 const gradientAnimation = keyframes`
   0% {
@@ -60,8 +61,7 @@ const NavGroup = styled.div`
 `;
 
 const Logo = styled.div`
-  flex: 2;
-  text-align: center;
+  text-align: left;
   font-size: 1.6rem;
   font-weight: bold;
   background: linear-gradient(
@@ -77,6 +77,7 @@ const Logo = styled.div`
   background-clip: text;
   color: transparent;
   animation: ${gradientAnimation} 8s ease infinite;
+  margin-right: auto;
 
   @media (max-width: 768px) {
     font-size: 1.4rem;
@@ -112,8 +113,8 @@ const NavLink = styled.a`
   }
 `;
 
-const MobileMenuButton = styled.button`
-  display: none;
+const IconButton = styled.button`
+  display: flex;
   background: none;
   border: none;
   color: #fff;
@@ -124,10 +125,21 @@ const MobileMenuButton = styled.button`
   height: 44px;
   align-items: center;
   justify-content: center;
-
-  @media (max-width: 768px) {
-    display: flex;
+  transition: color 0.3s ease;
+  
+  &:hover {
+    color: rgb(205, 78, 78);
   }
+`;
+
+const MobileMenuButton = styled(IconButton)`
+  @media (min-width: 769px) {
+    display: none;
+  }
+`;
+
+const SettingsButton = styled(IconButton)`
+  margin-left: 1rem;
 `;
 
 const MobileMenu = styled.div`
@@ -154,6 +166,7 @@ const MobileMenu = styled.div`
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -164,6 +177,8 @@ const Navbar = () => {
     const href = e.currentTarget.getAttribute('href');
     if (href === '#home') {
       window.location.hash = 'home';
+    } else if (href === '#about') {
+      window.location.hash = 'about';
     } else {
       setIsModalOpen(true);
     }
@@ -172,19 +187,24 @@ const Navbar = () => {
     }
   };
 
+  const handleSettingsClick = () => {
+    setIsSettingsOpen(true);
+  };
+
   return (
     <>
       <Nav>
         <NavContainer>
+          <Logo>CLEO BALARANJITH</Logo>
           <NavGroup>
             <NavLink href="#home" onClick={handleNavClick}>HOME</NavLink>
             <NavLink href="#about" onClick={handleNavClick}>ABOUT</NavLink>
-          </NavGroup>
-          <Logo>CLEO BALARANJITH</Logo>
-          <NavGroup>
             <NavLink href="#projects" onClick={handleNavClick}>PROJECTS</NavLink>
             <NavLink href="#contact" onClick={handleNavClick}>CONTACT</NavLink>
           </NavGroup>
+          <SettingsButton onClick={handleSettingsClick} aria-label="Settings">
+            ⚙️
+          </SettingsButton>
           <MobileMenuButton onClick={toggleMobileMenu}>
             {isMobileMenuOpen ? '✕' : '☰'}
           </MobileMenuButton>
@@ -207,6 +227,10 @@ const Navbar = () => {
       <UnderConstructionModal 
         isOpen={isModalOpen} 
         onClose={() => setIsModalOpen(false)} 
+      />
+      <SettingsModal
+        isOpen={isSettingsOpen}
+        onClose={() => setIsSettingsOpen(false)}
       />
     </>
   );

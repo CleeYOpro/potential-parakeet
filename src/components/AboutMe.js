@@ -1,25 +1,35 @@
 import React from 'react';
 import styled from 'styled-components';
+import TechStack from './TechStack';
 
 import cmcLogo from './imgs/cmc.png';
 import rockLogo from './imgs/rock.png';
 import tsaLogo from './imgs/tsa.png';
 
 const AboutContainer = styled.section`
-  padding: 4rem 2rem;
+  padding: 2rem;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   max-width: 1200px;
   margin: 0 auto;
   gap: 2rem;
 
   @media (max-width: 768px) {
-    padding: 3rem 1.5rem;
-    flex-direction: column;
+    padding: 1.5rem;
   }
 
   @media (max-width: 480px) {
-    padding: 2rem 1rem;
+    padding: 1rem;
+  }
+`;
+
+const AboutSection = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  
+  @media (max-width: 768px) {
+    flex-direction: column;
   }
 `;
 
@@ -132,52 +142,41 @@ const PictureBox = styled.div`
   }
 `;
 
-const MoreButton = styled.button`
-  background: #ff4d4d;
-  color: white;
-  border: none;
-  padding: 0.8rem 2rem;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: background 0.3s ease;
-  margin-top: 2rem;
-
-  @media (max-width: 480px) {
-    padding: 0.7rem 1.5rem;
-    font-size: 0.9rem;
-  }
-
-  &:hover {
-    background: #ff3333;
-  }
+const TechStackSection = styled.div`
+  margin-top: 1rem;
+  width: 100%;
 `;
 
 const AboutMe = () => {
   return (
     <AboutContainer>
-      <Content>
-        <Title>About Me</Title>
-        <Description>
-          I'm passionate about learning through doing. Like working on projects where I can code, build, and lead—especially when there's a chance to collaborate with others. Whether it's a team based task, a coding project, or something completely new, I'm all about figuring things out and making ideas come to life.<br />I am involved in a variety of organizations that fuel my passions:
-        </Description>
-        <Organizations>
-          <OrgLink href="https://www.cmch-vellore.edu/" target="_blank" rel="noopener noreferrer">
-            <OrgLogo src={cmcLogo} alt="Christian Medical College Vellore" />
-          </OrgLink>
-          <OrgLink href="https://rocketcontest.org/" target="_blank" rel="noopener noreferrer">
-            <OrgLogo src={rockLogo} alt="American Rocketry Challenge" />
-          </OrgLink>
-          <OrgLink href="https://tsaweb.org/" target="_blank" rel="noopener noreferrer">
-            <OrgLogo src={tsaLogo} alt="Technology Student Association" />
-          </OrgLink>
-        </Organizations>
-        <MoreButton>More About Me</MoreButton>
-      </Content>
-      <PictureBoxes>
-        <PictureBox />
-        <PictureBox />
-      </PictureBoxes>
+      <AboutSection>
+        <Content>
+          <Title>About Me</Title>
+          <Description>
+            I'm passionate about learning through doing. Like working on projects where I can code, build, and lead—especially when there's a chance to collaborate with others. Whether it's a team based task, a coding project, or something completely new, I'm all about figuring things out and making ideas come to life.<br />I am involved in a variety of organizations that fuel my passions:
+          </Description>
+          <Organizations>
+            <OrgLink href="https://www.cmch-vellore.edu/" target="_blank" rel="noopener noreferrer">
+              <OrgLogo src={cmcLogo} alt="Christian Medical College Vellore" />
+            </OrgLink>
+            <OrgLink href="https://rocketcontest.org/" target="_blank" rel="noopener noreferrer">
+              <OrgLogo src={rockLogo} alt="American Rocketry Challenge" />
+            </OrgLink>
+            <OrgLink href="https://tsaweb.org/" target="_blank" rel="noopener noreferrer">
+              <OrgLogo src={tsaLogo} alt="Technology Student Association" />
+            </OrgLink>
+          </Organizations>
+        </Content>
+        <PictureBoxes>
+          <PictureBox />
+          <PictureBox />
+        </PictureBoxes>
+      </AboutSection>
+      
+      <TechStackSection>
+        <TechStack />
+      </TechStackSection>
     </AboutContainer>
   );
 };
