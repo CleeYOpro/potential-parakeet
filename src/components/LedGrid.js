@@ -66,16 +66,17 @@ const LedGrid = () => {
     // Function for wave pattern
     const updateWavePattern = useCallback(() => {
         const time = Date.now() / 1000;
-        
+        const cols = 60;
+        const rows = 60;
+    
         setPixels(prev => {
             const newPixels = [...prev];
-            for (let row = 0; row < gridSize; row++) {
-                for (let col = 0; col < gridSize; col++) {
-                    const index = row * gridSize + col;
-                    // Create a wave pattern based on position and time
+            for (let row = 0; row < rows; row++) {
+                for (let col = 0; col < cols; col++) {
+                    const index = row * cols + col;
                     const distFromCenter = Math.sqrt(
-                        Math.pow((row - gridSize/2) / gridSize, 2) + 
-                        Math.pow((col - gridSize/2) / gridSize, 2)
+                        Math.pow((row - rows / 2) / rows, 2) + 
+                        Math.pow((col - cols / 2) / cols, 2)
                     );
                     const wave = Math.sin(distFromCenter * 10 - time * 2);
                     newPixels[index] = wave > 0.7;
@@ -83,7 +84,7 @@ const LedGrid = () => {
             }
             return newPixels;
         });
-    }, [gridSize]);
+    }, []);
 
     // Function for sparkle pattern
     const updateSparklePattern = useCallback(() => {

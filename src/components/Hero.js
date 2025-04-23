@@ -1,7 +1,6 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import styled, { keyframes } from 'styled-components';
 import SocialIcons from './SocialIcons';
-import { ThemeContext } from '../contexts/ThemeContext';
 
 const shine = keyframes`
   0% {
@@ -98,9 +97,7 @@ const IconsContainer = styled.div`
   margin-top: 1rem;
 `;
 
-const Hero = () => {
-  const { ledColor } = useContext(ThemeContext);
-  
+const Hero = () => {  
   return (
     <HeroContainer>
       <HeroContent>
