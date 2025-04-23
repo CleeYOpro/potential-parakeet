@@ -1,7 +1,6 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { FaGithub, FaLinkedin, FaMedium, FaInstagram } from 'react-icons/fa';
-import { ThemeContext } from '../contexts/ThemeContext';
 
 const SocialContainer = styled.div`
   display: flex;
@@ -22,8 +21,6 @@ const SocialLink = styled.a`
 `;
 
 const SocialIcons = () => {
-    const { ledColor } = useContext(ThemeContext);
-    
     return (
         <SocialContainer>
             <SocialLink href="https://github.com/CleeYOpro" target="_blank" rel="noopener noreferrer">

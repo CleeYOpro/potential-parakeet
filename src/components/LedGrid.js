@@ -1,13 +1,24 @@
-import React, { useEffect, useState, useCallback, useContext } from 'react';
+import React, { useEffect, useState, useCallback, useContext, useMemo } from 'react';
 import { ThemeContext } from '../contexts/ThemeContext';
 
 const LedGrid = () => {
     const [pixels, setPixels] = useState([]);
     const [opacity, setOpacity] = useState(1);
     const { ledColor, ledPattern } = useContext(ThemeContext);
+    
+    // Reduce grid size for better performance
+    const gridSize = 50; // Reduced from 60
+    const totalPixels = useMemo(() => gridSize * gridSize, [gridSize]);
 
-    // Handle scroll
+    // Handle scroll with throttling
     const handleScroll = useCallback(() => {
+        // Skip calculations if we've scrolled in the last 20ms (throttling)
+        if (handleScroll.timeout) return;
+        
+        handleScroll.timeout = setTimeout(() => {
+            handleScroll.timeout = null;
+        }, 20);
+        
         const scrollPosition = window.scrollY;
         const windowHeight = window.innerHeight;
         const documentHeight = document.documentElement.scrollHeight;
@@ -23,111 +34,114 @@ const LedGrid = () => {
         }
     }, []);
 
+    // Function to randomly turn pixels on/off
+    const updateRandomPattern = useCallback(() => {
+        setPixels(prev => {
+            const newPixels = [...prev];
+            // Randomly update about 0.5% of pixels
+            for (let i = 0; i < totalPixels * 0.005; i++) {
+                const randomIndex = Math.floor(Math.random() * totalPixels);
+                // Lower chance of turning on (15% on, 85% off) for more sparse effect
+                newPixels[randomIndex] = Math.random() < 0.15;
+            }
+            return newPixels;
+        });
+    }, [totalPixels]);
+
+    // Function for pulse pattern
+    const updatePulsePattern = useCallback(() => {
+        const pulseRate = Date.now() / 1000; // Time-based pulse
+        const pulseIntensity = (Math.sin(pulseRate) + 1) / 2; // Value between 0 and 1
+        
+        setPixels(prev => {
+            const newPixels = [...prev];
+            for (let i = 0; i < totalPixels; i++) {
+                // More pixels light up during pulse peak
+                newPixels[i] = Math.random() < (0.05 + pulseIntensity * 0.2);
+            }
+            return newPixels;
+        });
+    }, [totalPixels]);
+
+    // Function for wave pattern
+    const updateWavePattern = useCallback(() => {
+        const time = Date.now() / 1000;
+        
+        setPixels(prev => {
+            const newPixels = [...prev];
+            for (let row = 0; row < gridSize; row++) {
+                for (let col = 0; col < gridSize; col++) {
+                    const index = row * gridSize + col;
+                    // Create a wave pattern based on position and time
+                    const distFromCenter = Math.sqrt(
+                        Math.pow((row - gridSize/2) / gridSize, 2) + 
+                        Math.pow((col - gridSize/2) / gridSize, 2)
+                    );
+                    const wave = Math.sin(distFromCenter * 10 - time * 2);
+                    newPixels[index] = wave > 0.7;
+                }
+            }
+            return newPixels;
+        });
+    }, [gridSize]);
+
+    // Function for sparkle pattern
+    const updateSparklePattern = useCallback(() => {
+    const newPixels = Array(totalPixels).fill(false);
+    for (let i = 0; i < totalPixels * 0.01; i++) {
+        const randomIndex = Math.floor(Math.random() * totalPixels);
+        newPixels[randomIndex] = true;
+    }
+    setPixels(newPixels);
+}, [totalPixels]);
+
+
+    // Select update function based on pattern
+    const getUpdateFunction = useCallback(() => {
+        switch (ledPattern) {
+            case 'pulse':
+                return updatePulsePattern;
+            case 'wave':
+                return updateWavePattern;
+            case 'sparkle':
+                return updateSparklePattern;
+            case 'random':
+            default:
+                return updateRandomPattern;
+        }
+    }, [ledPattern, updatePulsePattern, updateRandomPattern, updateSparklePattern, updateWavePattern]);
+
     useEffect(() => {
-        // Create initial grid (60x60) - increased from 40x40
-        const totalPixels = 3600; // 60x60
+        // Create initial grid
         const initialPixels = Array(totalPixels).fill(false);
         setPixels(initialPixels);
-
-        // Function to randomly turn pixels on/off
-        const updateRandomPattern = () => {
-            setPixels(prev => {
-                const newPixels = [...prev];
-                // Randomly update about 0.5% of pixels
-                for (let i = 0; i < totalPixels * 0.005; i++) {
-                    const randomIndex = Math.floor(Math.random() * totalPixels);
-                    // Lower chance of turning on (15% on, 85% off) for more sparse effect
-                    newPixels[randomIndex] = Math.random() < 0.15;
-                }
-                return newPixels;
-            });
-        };
-
-        // Function for pulse pattern
-        const updatePulsePattern = () => {
-            const pulseRate = Date.now() / 1000; // Time-based pulse
-            const pulseIntensity = (Math.sin(pulseRate) + 1) / 2; // Value between 0 and 1
-            
-            setPixels(prev => {
-                const newPixels = [...prev];
-                for (let i = 0; i < totalPixels; i++) {
-                    // More pixels light up during pulse peak
-                    newPixels[i] = Math.random() < (0.05 + pulseIntensity * 0.2);
-                }
-                return newPixels;
-            });
-        };
-
-        // Function for wave pattern
-        const updateWavePattern = () => {
-            const time = Date.now() / 1000;
-            const cols = 60; // Grid width
-            const rows = 60; // Grid height
-            
-            setPixels(prev => {
-                const newPixels = [...prev];
-                for (let row = 0; row < rows; row++) {
-                    for (let col = 0; col < cols; col++) {
-                        const index = row * cols + col;
-                        // Create a wave pattern based on position and time
-                        const distFromCenter = Math.sqrt(
-                            Math.pow((row - rows/2) / rows, 2) + 
-                            Math.pow((col - cols/2) / cols, 2)
-                        );
-                        const wave = Math.sin(distFromCenter * 10 - time * 2);
-                        newPixels[index] = wave > 0.7;
-                    }
-                }
-                return newPixels;
-            });
-        };
-
-        // Function for sparkle pattern
-        const updateSparklePattern = () => {
-            setPixels(prev => {
-                const newPixels = [...prev];
-                // Turn off all pixels first
-                newPixels.fill(false);
-                
-                // Turn on a few random pixels for sparkle effect
-                for (let i = 0; i < totalPixels * 0.01; i++) {
-                    const randomIndex = Math.floor(Math.random() * totalPixels);
-                    newPixels[randomIndex] = true;
-                }
-                return newPixels;
-            });
-        };
-
-        // Select update function based on pattern
-        const getUpdateFunction = () => {
-            switch (ledPattern) {
-                case 'pulse':
-                    return updatePulsePattern;
-                case 'wave':
-                    return updateWavePattern;
-                case 'sparkle':
-                    return updateSparklePattern;
-                case 'random':
-                default:
-                    return updateRandomPattern;
-            }
-        };
 
         // Initial update
         const updateFunction = getUpdateFunction();
         updateFunction();
 
-        // Update pixels every 50ms for a slower effect
-        const interval = setInterval(() => getUpdateFunction()(), 50);
+        // Update pixels every 100ms instead of 50ms for better performance
+        const interval = setInterval(() => getUpdateFunction()(), 100);
 
-        // Add scroll listener
-        window.addEventListener('scroll', handleScroll);
+        // Add scroll listener with passive option for better performance
+        window.addEventListener('scroll', handleScroll, { passive: true });
 
         return () => {
             clearInterval(interval);
             window.removeEventListener('scroll', handleScroll);
         };
-    }, [handleScroll, ledPattern]);
+    }, [handleScroll, getUpdateFunction, totalPixels]);
+
+    // Memoize the pixel elements to prevent unnecessary re-renders
+    const pixelElements = useMemo(() => {
+        return pixels.map((isOn, index) => (
+            <div
+                key={index}
+                className={`led-pixel ${isOn ? 'on' : ''}`}
+                style={isOn ? { backgroundColor: ledColor } : {}}
+            />
+        ));
+    }, [pixels, ledColor]);
 
     return (
         <div
@@ -142,13 +156,7 @@ const LedGrid = () => {
                 bottom: 0
             }}
         >
-            {pixels.map((isOn, index) => (
-                <div
-                    key={index}
-                    className={`led-pixel ${isOn ? 'on' : ''}`}
-                    style={isOn ? { backgroundColor: ledColor } : {}}
-                />
-            ))}
+            {pixelElements}
         </div>
     );
 };

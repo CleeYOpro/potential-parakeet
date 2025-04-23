@@ -29,7 +29,7 @@ const ModalContent = styled.div`
 
 const Title = styled.h2`
   margin-bottom: 1rem;
-  color: #0066ff;
+  color: var(--primary-color);
   font-family: 'Pixelify Sans', system-ui;
 `;
 
@@ -39,7 +39,7 @@ const Message = styled.p`
 `;
 
 const CloseButton = styled.button`
-  background: #0066ff;
+  background: var(--primary-color);
   color: white;
   border: none;
   padding: 0.5rem 1.5rem;
@@ -49,11 +49,12 @@ const CloseButton = styled.button`
   transition: background 0.3s ease;
 
   &:hover {
-    background: #0052cc;
+    background: var(--primary-color-dark);
   }
 `;
 
-const UnderConstructionModal = ({ isOpen, onClose }) => {
+// Using React.memo to prevent unnecessary re-renders
+const UnderConstructionModal = React.memo(({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   return (
@@ -67,6 +68,6 @@ const UnderConstructionModal = ({ isOpen, onClose }) => {
       </ModalContent>
     </ModalOverlay>
   );
-};
+});
 
 export default UnderConstructionModal;

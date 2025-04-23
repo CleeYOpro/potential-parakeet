@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { ThemeContext } from '../contexts/ThemeContext';
-import SocialIcons from './SocialIcons';
 import { FaGithub, FaLinkedin, FaInstagram, FaDiscord } from 'react-icons/fa';
 
 const ContactContainer = styled.div`
