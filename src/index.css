@@ -1,5 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;500;600;700&display=swap');
 
+:root {
+    --primary-color: #0055ff;
+    --primary-color-dark: #0044cc;
+    --primary-color-light: #3377ff;
+    --text-color-dark: #ffffff;
+    --text-color-light: #333333;
+    --bg-color-dark: #000000;
+    --bg-color-light: #f5f5f5;
+    --card-bg-dark: rgba(32, 32, 32, 0.7);
+    --card-bg-light: rgba(255, 255, 255, 0.7);
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -24,8 +36,8 @@ body {
     font-family: 'Pixelify Sans', system-ui;
     -webkit-font-smoothing: none;
     -moz-osx-font-smoothing: unset;
-    background-color: #000000;
-    color: #fff;
+    background-color: var(--bg-color-dark);
+    color: var(--text-color-dark);
     line-height: 1.6;
     position: relative;
     overflow-y: auto;
@@ -36,14 +48,14 @@ body {
 
 /* Dark mode (default) */
 body.dark-mode {
-    background-color: #000000;
-    color: #fff;
+    background-color: var(--bg-color-dark);
+    color: var(--text-color-dark);
 }
 
 /* Light mode */
 body.light-mode {
-    background-color: #f5f5f5;
-    color: #333;
+    background-color: var(--bg-color-light);
+    color: var(--text-color-light);
 }
 
 body.light-mode h1,
@@ -52,26 +64,37 @@ body.light-mode h3,
 body.light-mode h4,
 body.light-mode h5,
 body.light-mode h6 {
-    color: #0044aa;
-    text-shadow: 0 0 5px rgba(0, 68, 170, 0.5);
+    color: var(--primary-color-light);
+    text-shadow: 0 0 5px rgba(0, 68, 170, 0.3);
 }
 
 body.light-mode a {
-    color: #0044aa;
+    color: var(--primary-color-light);
 }
 
 body.light-mode a:hover {
-    color: #00aa44;
-    text-shadow: 0 0 5px rgba(0, 170, 68, 0.5);
+    color: var(--primary-color-dark);
+    text-shadow: 0 0 5px rgba(0, 170, 68, 0.3);
 }
 
 body.light-mode button {
-    border-color: #0044aa;
-    color: #0044aa;
+    border-color: var(--primary-color-light);
+    color: var(--primary-color-light);
 }
 
 body.light-mode button:hover {
-    background-color: #0044aa;
+    background-color: var(--primary-color-light);
+}
+
+/* Improve text readability in light mode */
+body.light-mode p,
+body.light-mode span,
+body.light-mode div {
+    color: var(--text-color-light);
+}
+
+body.light-mode .description {
+    color: #555 !important;
 }
 
 /* Remove the grid pattern */
@@ -100,7 +123,6 @@ body::before {
     width: 100%;
     height: 100%;
     aspect-ratio: 1;
-    background-color: #1a1a1a;
     transition: background-color 0.3s ease;
 }
 
@@ -139,10 +161,14 @@ body.light-mode .led-pixel {
     font-size: 3rem;
     margin-bottom: 1rem;
     line-height: 1.2;
-    color: #fff;
+    color: var(--text-color-dark);
     text-shadow: none;
     position: relative;
     z-index: 2;
+}
+
+body.light-mode .hero-title {
+    color: var(--text-color-light);
 }
 
 code {
@@ -154,21 +180,30 @@ code {
     letter-spacing: 1px;
 }
 
+body.light-mode code {
+    color: #00aa44;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
 ::-webkit-scrollbar {
     width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-    background: #000;
+    background: var(--bg-color-dark);
+}
+
+body.light-mode ::-webkit-scrollbar-track {
+    background: var(--bg-color-light);
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #0066ff;
+    background: var(--primary-color);
     border-radius: 0;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #0044aa;
+    background: var(--primary-color-dark);
 }
 
 @media (max-width: 768px) {
@@ -184,30 +219,30 @@ h3,
 h4,
 h5,
 h6 {
-    color: #0066ff;
-    text-shadow: 0 0 5px #0066ff;
+    color: var(--primary-color);
+    text-shadow: 0 0 5px var(--primary-color);
     font-family: 'Pixelify Sans', system-ui;
     letter-spacing: 2px;
     margin-bottom: 1rem;
 }
 
 a {
-    color: #0066ff;
+    color: var(--primary-color);
     text-decoration: none;
     transition: all 0.3s ease;
     font-family: 'Pixelify Sans', system-ui;
 }
 
 a:hover {
-    color: #00ff66;
-    text-shadow: 0 0 5px #00ff66;
+    color: var(--primary-color-light);
+    text-shadow: 0 0 5px var(--primary-color-light);
 }
 
 button {
     font-family: 'Pixelify Sans', system-ui;
     background-color: transparent;
-    border: 2px solid #0066ff;
-    color: #0066ff;
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
     padding: 8px 16px;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -216,9 +251,13 @@ button {
 }
 
 button:hover {
-    background-color: #0066ff;
-    color: #000000;
-    box-shadow: 0 0 10px #0066ff;
+    background-color: var(--primary-color);
+    color: var(--bg-color-dark);
+    box-shadow: 0 0 10px var(--primary-color);
+}
+
+body.light-mode button:hover {
+    color: var(--bg-color-light);
 }
 
 /* Container styles */

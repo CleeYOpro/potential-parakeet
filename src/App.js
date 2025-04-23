@@ -4,6 +4,7 @@ import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import LedGrid from './components/LedGrid';
 import About from './about';
+import Contact from './contact';
 import { ThemeProvider } from './contexts/ThemeContext';
 
 const AppContainer = styled.div`
@@ -96,6 +97,9 @@ const AppWrapper = ({ currentPage }) => {
       )}
       {currentPage === 'about' && (
         <About />
+      )}
+      {currentPage === 'contact' && (
+        <Contact />
       )}
     </AppContainer>
   );

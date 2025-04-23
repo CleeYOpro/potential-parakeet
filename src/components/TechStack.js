@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { Icons } from './icons';
+import { ThemeContext } from '../contexts/ThemeContext';
 
 const TechStackContainer = styled.section`
   padding: 2rem;
@@ -14,7 +15,7 @@ const TechStackContainer = styled.section`
 const Title = styled.h2`
   font-size: 1.5rem;
   margin-bottom: 1.5rem;
-  color: #fff;
+  color: ${props => props.isDarkMode ? 'var(--primary-color)' : 'var(--primary-color-light)'};
   text-align: center;
 `;
 
@@ -63,7 +64,7 @@ const IconWrapper = styled.div`
 `;
 
 const IconName = styled.span`
-  color: #666;
+  color: ${props => props.isDarkMode ? '#666' : '#555'};
   font-size: 0.8rem;
   text-align: center;
 `;
@@ -85,16 +86,18 @@ const techStack = [
 ];
 
 const TechStack = () => {
+  const { isDarkMode } = useContext(ThemeContext);
+  
   return (
     <TechStackContainer>
-      <Title>Tech Stack</Title>
+      <Title isDarkMode={isDarkMode}>Tech Stack</Title>
       <IconsContainer>
         {techStack.map((tech, index) => (
           <Icon key={index}>
             <IconWrapper>
               <img src={tech.icon} alt={tech.name} />
             </IconWrapper>
-            <IconName>{tech.name}</IconName>
+            <IconName isDarkMode={isDarkMode}>{tech.name}</IconName>
           </Icon>
         ))}
       </IconsContainer>

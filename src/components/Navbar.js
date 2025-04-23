@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import styled, { keyframes } from 'styled-components';
 import UnderConstructionModal from './UnderConstructionModal';
 import SettingsModal from './SettingsModal';
+import { ThemeContext } from '../contexts/ThemeContext';
 
 const gradientAnimation = keyframes`
   0% {
@@ -64,14 +65,14 @@ const Logo = styled.div`
   text-align: left;
   font-size: 1.6rem;
   font-weight: bold;
-  background: linear-gradient(
+  background: ${props => props.customGradient || `linear-gradient(
     45deg,
-    rgb(132, 175, 224),
-    rgb(205, 78, 78),
-    rgb(69, 71, 209),
-    rgb(0, 81, 255),
-    rgb(72, 76, 116)
-  );
+    var(--primary-color),
+    #ff3333,
+    #ffcc00,
+    #00ff66,
+    #00ffff
+  )`};
   background-size: 300% 300%;
   -webkit-background-clip: text;
   background-clip: text;
@@ -104,7 +105,7 @@ const NavLink = styled.a`
   }
 
   &:hover {
-    color: rgb(205, 78, 78);
+    color: var(--primary-color);
     text-decoration: underline;
   }
 
@@ -128,7 +129,7 @@ const IconButton = styled.button`
   transition: color 0.3s ease;
   
   &:hover {
-    color: rgb(205, 78, 78);
+    color: var(--primary-color);
   }
 `;
 
@@ -167,6 +168,33 @@ const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const { ledColor } = useContext(ThemeContext);
+
+  // Create a gradient using the colors from the settings
+  const createGradient = () => {
+    // Get all the color options
+    const colorOptions = [
+      '#0055ff', // Blue
+      '#ff3333', // Red
+      '#ffcc00', // Yellow
+      '#00ff66', // Green
+      '#00ffff', // Cyan
+      '#ff66ff'  // Pink
+    ];
+    
+    // Make sure the current ledColor is first in the gradient
+    const sortedColors = [ledColor, ...colorOptions.filter(color => color !== ledColor)];
+    
+    // Create the gradient string with the first 5 colors
+    return `linear-gradient(
+      45deg,
+      ${sortedColors[0]},
+      ${sortedColors[1]},
+      ${sortedColors[2]},
+      ${sortedColors[3]},
+      ${sortedColors[4]}
+    )`;
+  };
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -179,6 +207,8 @@ const Navbar = () => {
       window.location.hash = 'home';
     } else if (href === '#about') {
       window.location.hash = 'about';
+    } else if (href === '#contact') {
+      window.location.hash = 'contact';
     } else {
       setIsModalOpen(true);
     }
@@ -195,7 +225,7 @@ const Navbar = () => {
     <>
       <Nav>
         <NavContainer>
-          <Logo>CLEO BALARANJITH</Logo>
+          <Logo customGradient={createGradient()}>CLEO BALARANJITH</Logo>
           <NavGroup>
             <NavLink href="#home" onClick={handleNavClick}>HOME</NavLink>
             <NavLink href="#about" onClick={handleNavClick}>ABOUT</NavLink>

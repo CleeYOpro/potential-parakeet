@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import TechStack from './TechStack';
+import { ThemeContext } from '../contexts/ThemeContext';
 
 import cmcLogo from './imgs/cmc.png';
 import rockLogo from './imgs/rock.png';
@@ -27,9 +28,18 @@ const AboutSection = styled.div`
   display: flex;
   justify-content: center;
   gap: 2rem;
+  background: rgba(20, 20, 20, 0.8);
+  backdrop-filter: blur(2px);
+  border-radius: 8px;
+  padding: 2rem;
   
   @media (max-width: 768px) {
     flex-direction: column;
+    padding: 1.5rem;
+  }
+  
+  @media (max-width: 480px) {
+    padding: 1rem;
   }
 `;
 
@@ -41,7 +51,7 @@ const Content = styled.div`
 const Title = styled.h2`
   font-size: 2rem;
   margin-bottom: 1.5rem;
-  color: #fff;
+  color: ${props => props.isDarkMode ? 'var(--primary-color)' : 'var(--primary-color-light)'};
 
   @media (max-width: 768px) {
     font-size: 1.8rem;
@@ -54,11 +64,11 @@ const Title = styled.h2`
 `;
 
 const Description = styled.p`
-  color: #666;
+  color: ${props => props.isDarkMode ? '#666' : '#555'};
   line-height: 1.6;
   margin-bottom: 2rem;
   text-align: left;
-
+  
   @media (max-width: 768px) {
     font-size: 0.95rem;
   }
@@ -128,7 +138,7 @@ const PictureBoxes = styled.div`
 const PictureBox = styled.div`
   width: 100%;
   height: 200px;
-  background: rgba(32, 32, 32, 0.7);
+  background: ${props => props.isDarkMode ? 'var(--card-bg-dark)' : 'var(--card-bg-light)'};
   border-radius: 8px;
   overflow: hidden;
   transition: transform 0.3s ease;
@@ -145,15 +155,29 @@ const PictureBox = styled.div`
 const TechStackSection = styled.div`
   margin-top: 1rem;
   width: 100%;
+  background: rgba(20, 20, 20, 0.8);
+  backdrop-filter: blur(2px);
+  border-radius: 8px;
+  padding: 2rem;
+  
+  @media (max-width: 768px) {
+    padding: 1.5rem;
+  }
+  
+  @media (max-width: 480px) {
+    padding: 1rem;
+  }
 `;
 
 const AboutMe = () => {
+  const { isDarkMode } = useContext(ThemeContext);
+  
   return (
     <AboutContainer>
       <AboutSection>
         <Content>
-          <Title>About Me</Title>
-          <Description>
+          <Title isDarkMode={isDarkMode}>About Me</Title>
+          <Description isDarkMode={isDarkMode}>
             I'm passionate about learning through doing. Like working on projects where I can code, build, and lead—especially when there's a chance to collaborate with others. Whether it's a team based task, a coding project, or something completely new, I'm all about figuring things out and making ideas come to life.<br />I am involved in a variety of organizations that fuel my passions:
           </Description>
           <Organizations>
@@ -169,8 +193,8 @@ const AboutMe = () => {
           </Organizations>
         </Content>
         <PictureBoxes>
-          <PictureBox />
-          <PictureBox />
+          <PictureBox isDarkMode={isDarkMode} />
+          <PictureBox isDarkMode={isDarkMode} />
         </PictureBoxes>
       </AboutSection>
       

@@ -17,20 +17,20 @@ const ModalOverlay = styled.div`
 `;
 
 const ModalContent = styled.div`
-  background: ${props => props.isDarkMode ? 'rgba(32, 32, 32, 0.9)' : 'rgba(240, 240, 240, 0.9)'};
+  background: rgba(32, 32, 32, 0.9);
   padding: 2rem;
   border-radius: 8px;
   text-align: center;
-  color: ${props => props.isDarkMode ? '#fff' : '#333'};
+  color: #fff;
   max-width: 400px;
   width: 90%;
   position: relative;
-  border: 1px solid ${props => props.isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'};
+  border: 1px solid rgba(255, 255, 255, 0.1);
 `;
 
 const Title = styled.h2`
   margin-bottom: 1.5rem;
-  color: ${props => props.isDarkMode ? '#0066ff' : '#0044aa'};
+  color: var(--primary-color);
   font-family: 'Pixelify Sans', system-ui;
 `;
 
@@ -42,7 +42,7 @@ const SettingsGroup = styled.div`
 const SettingLabel = styled.h3`
   font-size: 1.1rem;
   margin-bottom: 0.5rem;
-  color: ${props => props.isDarkMode ? '#fff' : '#333'};
+  color: #fff;
 `;
 
 const ColorOptions = styled.div`
@@ -59,7 +59,7 @@ const ColorOption = styled.button`
   border: 2px solid ${props => props.isSelected ? '#fff' : 'transparent'};
   background-color: ${props => props.color};
   cursor: pointer;
-  box-shadow: ${props => props.isSelected ? '0 0 0 2px #0066ff' : 'none'};
+  box-shadow: ${props => props.isSelected ? '0 0 0 2px var(--primary-color)' : 'none'};
   transition: all 0.2s ease;
   
   &:hover {
@@ -79,67 +79,15 @@ const PatternOption = styled.button`
   border-radius: 4px;
   border: none;
   background-color: ${props => props.isSelected 
-    ? (props.isDarkMode ? '#0066ff' : '#0044aa') 
-    : (props.isDarkMode ? 'rgba(0, 0, 0, 0.3)' : 'rgba(0, 0, 0, 0.1)')};
-  color: ${props => props.isSelected ? '#fff' : (props.isDarkMode ? '#ddd' : '#333')};
+    ? 'var(--primary-color)' 
+    : 'rgba(0, 0, 0, 0.3)'};
+  color: ${props => props.isSelected ? '#fff' : '#ddd'};
   cursor: pointer;
   transition: all 0.2s ease;
   
   &:hover {
-    background-color: ${props => props.isDarkMode ? '#0055dd' : '#0033aa'};
+    background-color: var(--primary-color-dark);
     color: #fff;
-  }
-`;
-
-const ThemeToggle = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 1rem;
-`;
-
-const ToggleSwitch = styled.label`
-  position: relative;
-  display: inline-block;
-  width: 60px;
-  height: 34px;
-`;
-
-const ToggleInput = styled.input`
-  opacity: 0;
-  width: 0;
-  height: 0;
-  
-  &:checked + span {
-    background-color: #0066ff;
-  }
-  
-  &:checked + span:before {
-    transform: translateX(26px);
-  }
-`;
-
-const ToggleSlider = styled.span`
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ccc;
-  transition: 0.4s;
-  border-radius: 34px;
-  
-  &:before {
-    position: absolute;
-    content: "";
-    height: 26px;
-    width: 26px;
-    left: 4px;
-    bottom: 4px;
-    background-color: white;
-    transition: 0.4s;
-    border-radius: 50%;
   }
 `;
 
@@ -152,14 +100,14 @@ const ButtonGroup = styled.div`
 
 const Button = styled.button`
   background: ${props => props.primary 
-    ? (props.isDarkMode ? '#0066ff' : '#0044aa') 
+    ? 'var(--primary-color)' 
     : 'transparent'};
   color: ${props => props.primary 
     ? '#fff' 
-    : (props.isDarkMode ? '#0066ff' : '#0044aa')};
+    : 'var(--primary-color)'};
   border: ${props => props.primary 
     ? 'none' 
-    : (props.isDarkMode ? '1px solid #0066ff' : '1px solid #0044aa')};
+    : '1px solid var(--primary-color)'};
   padding: 0.5rem 1.5rem;
   border-radius: 4px;
   cursor: pointer;
@@ -168,16 +116,14 @@ const Button = styled.button`
 
   &:hover {
     background: ${props => props.primary 
-      ? (props.isDarkMode ? '#0052cc' : '#003399') 
-      : (props.isDarkMode ? 'rgba(0, 102, 255, 0.1)' : 'rgba(0, 68, 170, 0.1)')};
+      ? 'var(--primary-color-dark)' 
+      : 'rgba(0, 102, 255, 0.1)'};
   }
 `;
 
 const SettingsModal = ({ isOpen, onClose }) => {
   // Get theme context
   const { 
-    isDarkMode, 
-    toggleDarkMode, 
     ledColor, 
     setLedColor, 
     ledPattern, 
@@ -185,7 +131,6 @@ const SettingsModal = ({ isOpen, onClose }) => {
   } = useContext(ThemeContext);
   
   // Local state for settings (will be applied on save)
-  const [localDarkMode, setLocalDarkMode] = useState(isDarkMode);
   const [localLedColor, setLocalLedColor] = useState(ledColor);
   const [localLedPattern, setLocalLedPattern] = useState(ledPattern);
   
@@ -194,7 +139,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
     { name: 'Blue', value: '#0055ff' },
     { name: 'Green', value: '#00ff66' },
     { name: 'Red', value: '#ff3333' },
-    { name: 'Purple', value: '#9900ff' },
+    { name: 'Yellow', value: '#ffcc00' },
     { name: 'Cyan', value: '#00ffff' },
     { name: 'Pink', value: '#ff66ff' }
   ];
@@ -209,7 +154,6 @@ const SettingsModal = ({ isOpen, onClose }) => {
   
   // Handle save
   const handleSave = () => {
-    toggleDarkMode(localDarkMode);
     setLedColor(localLedColor);
     setLedPattern(localLedPattern);
     onClose();
@@ -218,7 +162,6 @@ const SettingsModal = ({ isOpen, onClose }) => {
   // Handle cancel
   const handleCancel = () => {
     // Reset local state to current settings
-    setLocalDarkMode(isDarkMode);
     setLocalLedColor(ledColor);
     setLocalLedPattern(ledPattern);
     onClose();
@@ -228,28 +171,11 @@ const SettingsModal = ({ isOpen, onClose }) => {
 
   return (
     <ModalOverlay onClick={handleCancel}>
-      <ModalContent 
-        onClick={e => e.stopPropagation()}
-        isDarkMode={localDarkMode}
-      >
-        <Title isDarkMode={localDarkMode}>⚙️ Settings</Title>
+      <ModalContent onClick={e => e.stopPropagation()}>
+        <Title>⚙️ Settings</Title>
         
         <SettingsGroup>
-          <ThemeToggle>
-            <SettingLabel isDarkMode={localDarkMode}>Dark Mode</SettingLabel>
-            <ToggleSwitch>
-              <ToggleInput 
-                type="checkbox" 
-                checked={localDarkMode}
-                onChange={() => setLocalDarkMode(!localDarkMode)}
-              />
-              <ToggleSlider />
-            </ToggleSwitch>
-          </ThemeToggle>
-        </SettingsGroup>
-        
-        <SettingsGroup>
-          <SettingLabel isDarkMode={localDarkMode}>LED Color</SettingLabel>
+          <SettingLabel>LED Color</SettingLabel>
           <ColorOptions>
             {colorOptions.map(color => (
               <ColorOption 
@@ -264,13 +190,12 @@ const SettingsModal = ({ isOpen, onClose }) => {
         </SettingsGroup>
         
         <SettingsGroup>
-          <SettingLabel isDarkMode={localDarkMode}>LED Pattern</SettingLabel>
+          <SettingLabel>LED Pattern</SettingLabel>
           <PatternOptions>
             {patternOptions.map(pattern => (
               <PatternOption 
                 key={pattern.value}
                 isSelected={localLedPattern === pattern.value}
-                isDarkMode={localDarkMode}
                 onClick={() => setLocalLedPattern(pattern.value)}
               >
                 {pattern.name}
@@ -280,17 +205,10 @@ const SettingsModal = ({ isOpen, onClose }) => {
         </SettingsGroup>
         
         <ButtonGroup>
-          <Button 
-            onClick={handleCancel}
-            isDarkMode={localDarkMode}
-          >
+          <Button onClick={handleCancel}>
             Cancel
           </Button>
-          <Button 
-            primary 
-            onClick={handleSave}
-            isDarkMode={localDarkMode}
-          >
+          <Button primary onClick={handleSave}>
             Save
           </Button>
         </ButtonGroup>

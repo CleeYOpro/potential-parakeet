@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled, { keyframes } from 'styled-components';
 import SocialIcons from './SocialIcons';
+import { ThemeContext } from '../contexts/ThemeContext';
 
 const shine = keyframes`
   0% {
@@ -57,33 +58,34 @@ const Description = styled.p`
   line-height: 1.6;
   margin-bottom: 1rem;
   color: #fff;
+`;
 
-  span {
-    color: #0055ff;
-    transition: all 0.3s ease;
-    
-    &:hover {
-      background: linear-gradient(
-        120deg,
-        #0055ff 0%,
-        #0055ff 45%,
-        #fff 50%,
-        #0055ff 55%,
-        #0055ff 100%
-      );
-      background-size: 200% auto;
-      background-clip: text;
-      -webkit-background-clip: text;
-      color: transparent;
-      animation: ${shine} 1s linear infinite;
-    }
+const HighlightedText = styled.span`
+  color: var(--primary-color);
+  transition: all 0.3s ease;
+  
+  &:hover {
+    background: linear-gradient(
+      120deg,
+      var(--primary-color) 0%,
+      var(--primary-color) 45%,
+      #fff 50%,
+      var(--primary-color) 55%,
+      var(--primary-color) 100%
+    );
+    background-size: 200% auto;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    animation: ${shine} 1s linear infinite;
   }
 `;
 
 const TeslaLink = styled.a`
-  color: #0055ff;
+  color: var(--primary-color);
   text-decoration: none;
   transition: color 0.3s ease;
+  font-weight: bold;
 
   &:hover {
     color: #fff;
@@ -96,17 +98,15 @@ const IconsContainer = styled.div`
   margin-top: 1rem;
 `;
 
-
-
-
-
 const Hero = () => {
+  const { ledColor } = useContext(ThemeContext);
+  
   return (
     <HeroContainer>
       <HeroContent>
         <Title>I'M CLEO!</Title>
         <Description>
-          Sophomore @ <TeslaLink href="https://www.usnews.com/education/best-high-schools/washington/districts/lake-washington-school-district/tesla-stem-high-school-146690" target="_blank" rel="noopener noreferrer">Tesla STEM</TeslaLink>. First Place WTSA. Web Development. AI. GeoTech. Engineering. <span>Building What's Next</span>.
+          Sophomore @ <TeslaLink href="https://www.usnews.com/education/best-high-schools/washington/districts/lake-washington-school-district/tesla-stem-high-school-146690" target="_blank" rel="noopener noreferrer">Tesla STEM</TeslaLink>. First Place WTSA. Web Development. AI. GeoTech. Engineering. <HighlightedText>Building What's Next</HighlightedText>.
         </Description>
         <IconsContainer>
           <SocialIcons />
@@ -116,4 +116,4 @@ const Hero = () => {
   );
 };
 
-export default Hero; 
+export default Hero;

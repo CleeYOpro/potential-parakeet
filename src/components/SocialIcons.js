@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { FaGithub, FaLinkedin, FaMedium, FaInstagram } from 'react-icons/fa';
+import { ThemeContext } from '../contexts/ThemeContext';
 
 const SocialContainer = styled.div`
   display: flex;
@@ -15,12 +16,14 @@ const SocialLink = styled.a`
   transition: all 0.3s ease;
   
   &:hover {
-    color: #0055ff;
+    color: var(--primary-color);
     transform: translateY(-3px);
   }
 `;
 
 const SocialIcons = () => {
+    const { ledColor } = useContext(ThemeContext);
+    
     return (
         <SocialContainer>
             <SocialLink href="https://github.com/CleeYOpro" target="_blank" rel="noopener noreferrer">
@@ -39,4 +42,4 @@ const SocialIcons = () => {
     );
 };
 
-export default SocialIcons; 
+export default SocialIcons;
