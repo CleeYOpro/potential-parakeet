@@ -1,5 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;500;600;700&display=swap');
 
+@font-face {
+  font-family: 'Karnivore Digit';
+  src: url('../karnivore.digit.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 :root {
     --primary-color: #0055ff;
     --primary-color-dark: #0044cc;
@@ -10,6 +17,7 @@
     --bg-color-light: #f5f5f5;
     --card-bg-dark: rgba(32, 32, 32, 0.7);
     --card-bg-light: rgba(255, 255, 255, 0.7);
+    --font-family: 'Consolas', monospace;
 }
 
 * {
@@ -20,6 +28,7 @@
     /* Firefox */
     -ms-overflow-style: none;
     /* IE and Edge */
+    font-family: var(--font-family);
 }
 
 *::-webkit-scrollbar {
@@ -33,9 +42,9 @@ html {
 
 body {
     margin: 0;
-    font-family: 'Pixelify Sans', system-ui;
-    -webkit-font-smoothing: none;
-    -moz-osx-font-smoothing: unset;
+    font-family: var(--font-family);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     background-color: var(--bg-color-dark);
     color: var(--text-color-dark);
     line-height: 1.6;
@@ -172,7 +181,7 @@ body.light-mode .hero-title {
 }
 
 code {
-    font-family: 'Pixelify Sans', monospace;
+    font-family: var(--font-family);
     color: #00ff66;
     background-color: rgba(0, 0, 0, 0.7);
     padding: 2px 4px;
@@ -221,7 +230,7 @@ h5,
 h6 {
     color: var(--primary-color);
     text-shadow: 0 0 5px var(--primary-color);
-    font-family: 'Pixelify Sans', system-ui;
+    font-family: var(--font-family);
     letter-spacing: 2px;
     margin-bottom: 1rem;
 }
@@ -230,7 +239,7 @@ a {
     color: var(--primary-color);
     text-decoration: none;
     transition: all 0.3s ease;
-    font-family: 'Pixelify Sans', system-ui;
+    font-family: var(--font-family);
 }
 
 a:hover {
@@ -239,7 +248,7 @@ a:hover {
 }
 
 button {
-    font-family: 'Pixelify Sans', system-ui;
+    font-family: var(--font-family);
     background-color: transparent;
     border: 2px solid var(--primary-color);
     color: var(--primary-color);
@@ -248,12 +257,6 @@ button {
     transition: all 0.3s ease;
     text-transform: uppercase;
     letter-spacing: 2px;
-}
-
-button:hover {
-    background-color: var(--primary-color);
-    color: var(--bg-color-dark);
-    box-shadow: 0 0 10px var(--primary-color);
 }
 
 body.light-mode button:hover {

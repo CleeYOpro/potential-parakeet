@@ -1,20 +1,9 @@
-import React, { useState, useContext } from 'react';
-import styled, { keyframes } from 'styled-components';
+  import React, { useState, useContext } from 'react';
+import styled from 'styled-components';
 import UnderConstructionModal from './UnderConstructionModal';
 import SettingsModal from './SettingsModal';
 import { ThemeContext } from '../contexts/ThemeContext';
 
-const gradientAnimation = keyframes`
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-`;
 
 const Nav = styled.nav`
   display: flex;
@@ -61,24 +50,20 @@ const NavGroup = styled.div`
   }
 `;
 
-const Logo = styled.div`
+const Logo = styled.a`
   text-align: left;
   font-size: 1.6rem;
   font-weight: bold;
-  background: ${props => props.customGradient || `linear-gradient(
-    45deg,
-    var(--primary-color),
-    #ff3333,
-    #ffcc00,
-    #00ff66,
-    #00ffff
-  )`};
-  background-size: 300% 300%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  animation: ${gradientAnimation} 8s ease infinite;
+  font-family: 'Pixelify Sans', sans-serif;
+  color: white;
   margin-right: auto;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.3s ease;
+
+  &:hover {
+    color: ${props => props.hoverColor || '#00aaff'}; /* Use the chosen color or default to light blue */
+  }
 
   @media (max-width: 768px) {
     font-size: 1.4rem;
@@ -170,32 +155,6 @@ const Navbar = () => {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const { ledColor } = useContext(ThemeContext);
 
-  // Create a gradient using the colors from the settings
-  const createGradient = () => {
-    // Get all the color options
-    const colorOptions = [
-      '#0055ff', // Blue
-      '#ff3333', // Red
-      '#ffcc00', // Yellow
-      '#00ff66', // Green
-      '#00ffff', // Cyan
-      '#ff66ff'  // Pink
-    ];
-    
-    // Make sure the current ledColor is first in the gradient
-    const sortedColors = [ledColor, ...colorOptions.filter(color => color !== ledColor)];
-    
-    // Create the gradient string with the first 5 colors
-    return `linear-gradient(
-      45deg,
-      ${sortedColors[0]},
-      ${sortedColors[1]},
-      ${sortedColors[2]},
-      ${sortedColors[3]},
-      ${sortedColors[4]}
-    )`;
-  };
-
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
@@ -225,7 +184,7 @@ const Navbar = () => {
     <>
       <Nav>
         <NavContainer>
-          <Logo customGradient={createGradient()}>CLEO BALARANJITH</Logo>
+          <Logo href="#home" onClick={handleNavClick} hoverColor={ledColor}>CLEO BALARANJITH</Logo>
           <NavGroup>
             <NavLink href="#home" onClick={handleNavClick}>HOME</NavLink>
             <NavLink href="#about" onClick={handleNavClick}>ABOUT</NavLink>

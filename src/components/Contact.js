@@ -106,23 +106,29 @@ const SocialIcon = styled.span`
 
 const SocialLink = styled.a`
   color: #fff;
-  text-decoration: none;
-  transition: color 0.3s ease;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: rgba(255, 255, 255, 0.5);
+  transition: all 0.3s ease;
   display: flex;
   align-items: center;
   
   &:hover {
     color: var(--primary-color);
+    text-decoration-color: var(--primary-color);
   }
 `;
 
 const EmailLink = styled.a`
   color: #fff;
-  text-decoration: none;
-  transition: color 0.3s ease;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: rgba(255, 255, 255, 0.5);
+  transition: all 0.3s ease;
   
   &:hover {
     color: var(--primary-color);
+    text-decoration-color: var(--primary-color);
   }
 `;
 
@@ -133,7 +139,7 @@ const Contact = () => {
     <ContactContainer>
       <Title isDarkMode={isDarkMode}>Contact Me</Title>
       <Description isDarkMode={isDarkMode}>
-        Feel free to reach out to me anytime via WhatsApp, social media, or email.
+      You're always welcome to reach out to me on email or social media first — I'm happy to share my phone number if needed after that!
       </Description>
       
       <TableContainer>
@@ -141,7 +147,7 @@ const Contact = () => {
           <tbody>
             <TableRow>
               <TableHeader>Location</TableHeader>
-              <TableData>Redmond, Washington</TableData>
+              <TableData>Sammamish, WA</TableData>
             </TableRow>
             <TableRow>
               <TableHeader>Timezone</TableHeader>
@@ -166,10 +172,6 @@ const Contact = () => {
           </tbody>
         </Table>
       </TableContainer>
-      
-      <Description isDarkMode={isDarkMode}>
-        You're always welcome to reach out to me on email or social media first — I'm happy to share my phone number if needed after that!
-      </Description>
       
       <TableContainer>
         <SocialTable>
