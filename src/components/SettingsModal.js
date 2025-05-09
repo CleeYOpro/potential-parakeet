@@ -67,6 +67,8 @@ const ColorOption = styled.button`
   }
 `;
 
+
+
 const PatternOptions = styled.div`
   display: flex;
   gap: 0.5rem;
@@ -146,10 +148,9 @@ const SettingsModal = ({ isOpen, onClose }) => {
   
   // Pattern options
   const patternOptions = [
-    { name: 'Random', value: 'random' },
-    { name: 'Pulse', value: 'pulse' },
     { name: 'Wave', value: 'wave' },
-    { name: 'Sparkle', value: 'sparkle' }
+    { name: 'Matrix', value: 'matrix' },
+    { name: 'India', value: 'india' }
   ];
   
   // Handle save

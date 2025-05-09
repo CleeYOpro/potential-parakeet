@@ -12,7 +12,7 @@ export const ThemeProvider = ({ children }) => {
   const [ledColor, setLedColor] = useState('#0055ff'); // Default blue
   
   // State for LED pattern
-  const [ledPattern, setLedPattern] = useState('random'); // Default random
+  const [ledPattern, setLedPattern] = useState('wave'); // Default wave
   
   // Toggle dark mode
   const toggleDarkMode = (value) => {

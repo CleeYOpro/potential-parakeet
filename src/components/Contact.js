@@ -3,28 +3,61 @@ import styled from 'styled-components';
 import { ThemeContext } from '../contexts/ThemeContext';
 import { FaGithub, FaLinkedin, FaInstagram, FaDiscord } from 'react-icons/fa';
 
+const BIGCHUNGUS = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  
+  z-index: 0; /* Behind content but above LED grid */
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.8) 0%,
+    rgba(0, 0, 0, 0.4) 50%,
+    transparent 100%
+  );
+  pointer-events: none; /* Allow clicks to pass through */
+`;
+
 const ContactContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
   max-width: 900px;
-  margin: 0 auto;
   padding: 2rem;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1; /* Above the BIGCHUNGUS overlay */
+  min-height: 100vh; /* Ensure container takes at least full viewport height */
   
   @media (max-width: 768px) {
-    padding: 1.5rem;
+    padding: 1rem;
   }
 `;
 
+
 const Title = styled.h2`
   font-size: 2.5rem;
+  margin-top: 10rem; /* Add space at the top to position below navbar for desktop only */
   margin-bottom: 1.5rem;
   color: ${props => props.isDarkMode ? '#fff' : '#333'};
   text-align: center;
+  font-family: 'Pixelify Sans', sans-serif;
   
+  @media (max-width: 1024px) {
+    font-size: 2rem;
+    margin-top: 6rem; /* Reduced top margin for mobile screens */
+  }
   @media (max-width: 768px) {
     font-size: 2rem;
+    margin-top: 8rem; /* Reduced top margin for mobile screens */
   }
 `;
 
@@ -136,6 +169,7 @@ const Contact = () => {
   const { isDarkMode } = useContext(ThemeContext);
   
   return (
+    <BIGCHUNGUS>
     <ContactContainer>
       <Title isDarkMode={isDarkMode}>Contact Me</Title>
       <Description isDarkMode={isDarkMode}>
@@ -220,6 +254,7 @@ const Contact = () => {
         </SocialTable>
       </TableContainer>
     </ContactContainer>
+    </BIGCHUNGUS>
   );
 };
 
