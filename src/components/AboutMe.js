@@ -6,22 +6,6 @@ import { ThemeContext } from '../contexts/ThemeContext';
 import cmcLogo from './imgs/cmc.png';
 import rockLogo from './imgs/rock.png';
 import tsaLogo from './imgs/tsa.png';
-const BIGCHUNGUS = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  width: 100%;
-  z-index: 0; /* Behind content but above LED grid */
-  background: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0.8) 0%,
-    rgba(0, 0, 0, 0.4) 50%,
-    transparent 100%
-  );
-  pointer-events: none; /* Allow clicks to pass through */
-`;
 const AboutContainer = styled.section`
   padding: 2rem;
   display: flex;
@@ -187,9 +171,8 @@ const TechStackSection = styled.div`
 
 const AboutMe = () => {
   const { isDarkMode } = useContext(ThemeContext);
-  
+
   return (
-    <BIGCHUNGUS>
     <AboutContainer>
       <AboutSection>
         <Content>
@@ -214,12 +197,11 @@ const AboutMe = () => {
           <PictureBox isDarkMode={isDarkMode} />
         </PictureBoxes>
       </AboutSection>
-      
+
       <TechStackSection>
         <TechStack />
       </TechStackSection>
     </AboutContainer>
-    </BIGCHUNGUS>
   );
 };
 

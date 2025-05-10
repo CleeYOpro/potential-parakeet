@@ -3,28 +3,6 @@ import styled from 'styled-components';
 import { ThemeContext } from '../contexts/ThemeContext';
 import { FaGithub, FaLinkedin, FaInstagram, FaDiscord } from 'react-icons/fa';
 
-const BIGCHUNGUS = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  
-  z-index: 0; /* Behind content but above LED grid */
-  background: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0.8) 0%,
-    rgba(0, 0, 0, 0.4) 50%,
-    transparent 100%
-  );
-  pointer-events: none; /* Allow clicks to pass through */
-`;
-
 const ContactContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -34,7 +12,7 @@ const ContactContainer = styled.div`
   padding: 2rem;
   margin: 0 auto;
   position: relative;
-  z-index: 1; /* Above the BIGCHUNGUS overlay */
+  z-index: 1;
   min-height: 100vh; /* Ensure container takes at least full viewport height */
   
   @media (max-width: 768px) {
@@ -45,7 +23,7 @@ const ContactContainer = styled.div`
 
 const Title = styled.h2`
   font-size: 2.5rem;
-  margin-top: 10rem; /* Add space at the top to position below navbar for desktop only */
+  margin-top: 2rem; /* Add space at the top to position below navbar for desktop only */
   margin-bottom: 1.5rem;
   color: ${props => props.isDarkMode ? '#fff' : '#333'};
   text-align: center;
@@ -53,11 +31,6 @@ const Title = styled.h2`
   
   @media (max-width: 1024px) {
     font-size: 2rem;
-    margin-top: 6rem; /* Reduced top margin for mobile screens */
-  }
-  @media (max-width: 768px) {
-    font-size: 2rem;
-    margin-top: 8rem; /* Reduced top margin for mobile screens */
   }
 `;
 
@@ -167,15 +140,14 @@ const EmailLink = styled.a`
 
 const Contact = () => {
   const { isDarkMode } = useContext(ThemeContext);
-  
+
   return (
-    <BIGCHUNGUS>
     <ContactContainer>
       <Title isDarkMode={isDarkMode}>Contact Me</Title>
       <Description isDarkMode={isDarkMode}>
-      You're always welcome to reach out to me on email or social media first — I'm happy to share my phone number if needed after that!
+        You're always welcome to reach out to me on email or social media first — I'm happy to share my phone number if needed after that!
       </Description>
-      
+
       <TableContainer>
         <Table>
           <tbody>
@@ -206,7 +178,7 @@ const Contact = () => {
           </tbody>
         </Table>
       </TableContainer>
-      
+
       <TableContainer>
         <SocialTable>
           <tbody>
@@ -245,8 +217,8 @@ const Contact = () => {
                 <SocialIcon><FaDiscord /></SocialIcon>Discord
               </TableHeader>
               <TableData>
-                <SocialLink href="#" onClick={(e) => e.preventDefault()}>
-                  cleofus
+                <SocialLink href="https://discord.com" target="_blank" rel="noopener noreferrer">
+                  mecahedron
                 </SocialLink>
               </TableData>
             </TableRow>
@@ -254,7 +226,6 @@ const Contact = () => {
         </SocialTable>
       </TableContainer>
     </ContactContainer>
-    </BIGCHUNGUS>
   );
 };
 

@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import LedGrid from './components/LedGrid';
+import GradientOverlay from './components/GradientOverlay';
 import About from './about';
 import Contact from './contact';
 import { ThemeProvider } from './contexts/ThemeContext';
@@ -48,9 +49,9 @@ function App() {
   useEffect(() => {
     const bodyElement = document.body;
     const originalBodyStyle = bodyElement.getAttribute('style') || '';
-    
+
     bodyElement.setAttribute('style', `${originalBodyStyle}; min-height: ${currentPage === 'home' ? '100vh' : 'auto'}`);
-    
+
     return () => {
       bodyElement.setAttribute('style', originalBodyStyle);
     };
@@ -66,30 +67,31 @@ function App() {
 // Separate component to access ThemeContext
 const AppWrapper = ({ currentPage }) => {
   const [isDarkMode, setIsDarkMode] = useState(true);
-  
+
   // Listen for theme changes
   useEffect(() => {
     const handleThemeChange = () => {
       const isDark = document.body.classList.contains('dark-mode');
       setIsDarkMode(isDark);
     };
-    
+
     // Create a MutationObserver to watch for class changes on the body
     const observer = new MutationObserver(handleThemeChange);
-    observer.observe(document.body, { 
-      attributes: true, 
-      attributeFilter: ['class'] 
+    observer.observe(document.body, {
+      attributes: true,
+      attributeFilter: ['class']
     });
-    
+
     return () => observer.disconnect();
   }, []);
-  
+
   return (
     <AppContainer currentPage={currentPage} theme={isDarkMode ? 'dark' : 'light'}>
       <Navbar />
       {currentPage === 'home' && (
         <TopSection>
           <LedGrid />
+          <GradientOverlay />
           <ContentContainer>
             <Hero />
           </ContentContainer>

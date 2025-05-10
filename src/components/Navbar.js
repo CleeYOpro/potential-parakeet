@@ -1,4 +1,4 @@
-  import React, { useState, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 import UnderConstructionModal from './UnderConstructionModal';
 import SettingsModal from './SettingsModal';
@@ -14,8 +14,8 @@ const Nav = styled.nav`
   transform: translateX(-50%);
   top: 1rem;
   z-index: 1000;
-  background: rgba(61, 61, 61, 0.7);
-  opacity: 0.7;
+  background: rgba(50, 49, 49, 0.7);
+  opacity: 0.85;
   backdrop-filter: blur(8px);
   border-radius: 8px;
   padding: 1rem;
@@ -213,9 +213,9 @@ const Navbar = () => {
           CONTACT
         </NavLink>
       </MobileMenu>
-      <UnderConstructionModal 
-        isOpen={isModalOpen} 
-        onClose={() => setIsModalOpen(false)} 
+      <UnderConstructionModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
       />
       <SettingsModal
         isOpen={isSettingsOpen}

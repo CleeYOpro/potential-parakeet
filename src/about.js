@@ -2,13 +2,14 @@ import React from 'react';
 import styled from 'styled-components';
 import AboutMe from './components/AboutMe';
 import LedGrid from './components/LedGrid';
+import GradientOverlay from './components/GradientOverlay';
 
 const AboutPageContainer = styled.div`
   min-height: 100vh;
   background: #000000;
   padding-top: 80px; /* To account for the fixed navbar */
   position: relative;
-  overflow: hidden;
+  overflow: auto; /* Changed from hidden to auto to enable scrolling */
 `;
 
 const ContentContainer = styled.div`
@@ -23,6 +24,7 @@ const About = () => {
   return (
     <AboutPageContainer>
       <LedGrid />
+      <GradientOverlay />
       <ContentContainer>
         <AboutMe />
       </ContentContainer>
