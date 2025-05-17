@@ -67,8 +67,6 @@ const ColorOption = styled.button`
   }
 `;
 
-
-
 const PatternOptions = styled.div`
   display: flex;
   gap: 0.5rem;
@@ -80,8 +78,8 @@ const PatternOption = styled.button`
   padding: 0.5rem 1rem;
   border-radius: 4px;
   border: none;
-  background-color: ${props => props.isSelected 
-    ? 'var(--primary-color)' 
+  background-color: ${props => props.isSelected
+    ? 'var(--primary-color)'
     : 'rgba(0, 0, 0, 0.3)'};
   color: ${props => props.isSelected ? '#fff' : '#ddd'};
   cursor: pointer;
@@ -101,14 +99,14 @@ const ButtonGroup = styled.div`
 `;
 
 const Button = styled.button`
-  background: ${props => props.primary 
-    ? 'var(--primary-color)' 
+  background: ${props => props.primary
+    ? 'var(--primary-color)'
     : 'transparent'};
-  color: ${props => props.primary 
-    ? '#fff' 
+  color: ${props => props.primary
+    ? '#fff'
     : 'var(--primary-color)'};
-  border: ${props => props.primary 
-    ? 'none' 
+  border: ${props => props.primary
+    ? 'none'
     : '1px solid var(--primary-color)'};
   padding: 0.5rem 1.5rem;
   border-radius: 4px;
@@ -117,25 +115,25 @@ const Button = styled.button`
   transition: all 0.3s ease;
 
   &:hover {
-    background: ${props => props.primary 
-      ? 'var(--primary-color-dark)' 
-      : 'rgba(0, 102, 255, 0.1)'};
+    background: ${props => props.primary
+    ? 'var(--primary-color-dark)'
+    : 'rgba(0, 102, 255, 0.1)'};
   }
 `;
 
 const SettingsModal = ({ isOpen, onClose }) => {
   // Get theme context
-  const { 
-    ledColor, 
-    setLedColor, 
-    ledPattern, 
-    setLedPattern 
+  const {
+    ledColor,
+    setLedColor,
+    ledPattern,
+    setLedPattern
   } = useContext(ThemeContext);
-  
+
   // Local state for settings (will be applied on save)
   const [localLedColor, setLocalLedColor] = useState(ledColor);
   const [localLedPattern, setLocalLedPattern] = useState(ledPattern);
-  
+
   // Color options
   const colorOptions = [
     { name: 'Blue', value: '#0055ff' },
@@ -145,21 +143,21 @@ const SettingsModal = ({ isOpen, onClose }) => {
     { name: 'Cyan', value: '#00ffff' },
     { name: 'Pink', value: '#ff66ff' }
   ];
-  
+
   // Pattern options
   const patternOptions = [
     { name: 'Wave', value: 'wave' },
     { name: 'Matrix', value: 'matrix' },
-    { name: 'India', value: 'india' }
+    { name: 'Random', value: 'random' }
   ];
-  
+
   // Handle save
   const handleSave = () => {
     setLedColor(localLedColor);
     setLedPattern(localLedPattern);
     onClose();
   };
-  
+
   // Handle cancel
   const handleCancel = () => {
     // Reset local state to current settings
@@ -167,19 +165,19 @@ const SettingsModal = ({ isOpen, onClose }) => {
     setLocalLedPattern(ledPattern);
     onClose();
   };
-  
+
   if (!isOpen) return null;
 
   return (
     <ModalOverlay onClick={handleCancel}>
       <ModalContent onClick={e => e.stopPropagation()}>
         <Title>⚙️ Settings</Title>
-        
+
         <SettingsGroup>
           <SettingLabel>LED Color</SettingLabel>
           <ColorOptions>
             {colorOptions.map(color => (
-              <ColorOption 
+              <ColorOption
                 key={color.value}
                 color={color.value}
                 isSelected={localLedColor === color.value}
@@ -189,12 +187,12 @@ const SettingsModal = ({ isOpen, onClose }) => {
             ))}
           </ColorOptions>
         </SettingsGroup>
-        
+
         <SettingsGroup>
           <SettingLabel>LED Pattern</SettingLabel>
           <PatternOptions>
             {patternOptions.map(pattern => (
-              <PatternOption 
+              <PatternOption
                 key={pattern.value}
                 isSelected={localLedPattern === pattern.value}
                 onClick={() => setLocalLedPattern(pattern.value)}
@@ -204,7 +202,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
             ))}
           </PatternOptions>
         </SettingsGroup>
-        
+
         <ButtonGroup>
           <Button onClick={handleCancel}>
             Cancel
