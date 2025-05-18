@@ -61,14 +61,12 @@ const LedGrid = () => {
   }, [gridSize]);
 
   const updateMatrixPattern = useCallback(() => {
-    const columns = gridSize;
-    const rows = gridSize;
     const matrix = matrixRef.current;
 
     // drop if not exist
-    if (!matrix.drops || matrix.drops.length !== columns) {
+    if (!matrix.drops || matrix.drops.length !== gridSize) {
       matrix.drops = [];
-      for (let col = 0; col < columns; col++) {
+      for (let col = 0; col < gridSize; col++) {
         matrix.drops.push({
           col,
           headY: 0,
@@ -86,13 +84,13 @@ const LedGrid = () => {
       const headRow = Math.floor(stream.headY);
       for (let j = 0; j < stream.length; j++) {
         const row = headRow - j;
-        if (row >= 0 && row < rows) {
-          const index = row * columns + stream.col;
+        if (row >= 0 && row < gridSize) {
+          const index = row * gridSize + stream.col;
           newPixels[index] = true;
         }
       }
 
-      if (stream.headY - stream.length > rows) {
+      if (stream.headY - stream.length > gridSize) {
         stream.headY = 0;
         stream.length = Math.floor(Math.random() * 20) + 9;
         stream.speed = 0.5 + Math.random() * 0.5;
@@ -103,8 +101,7 @@ const LedGrid = () => {
   }, [gridSize, totalPixels]);
 
   const updateRandomPattern = useCallback(() => {
-    const columns = gridSize;
-    const rows = gridSize;
+
     const random = randomRef.current;
 
     // Initialize timers if they don't exist
@@ -141,7 +138,7 @@ const LedGrid = () => {
     });
 
     setPixels(newPixels);
-  }, [gridSize, totalPixels]);
+  }, [totalPixels]);
 
   const getUpdateFunction = useCallback(() => {
     switch (ledPattern) {

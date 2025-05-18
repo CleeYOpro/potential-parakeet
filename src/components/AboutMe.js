@@ -6,6 +6,11 @@ import { ThemeContext } from '../contexts/ThemeContext';
 import cmcLogo from './imgs/cmc.png';
 import rockLogo from './imgs/rock.png';
 import tsaLogo from './imgs/tsa.png';
+import image12 from './imgs/image12.png';
+import image from './imgs/image.png';
+import screenshot from './imgs/Screenshot 2025-05-17 225201.png';
+import award from './imgs/WhatsApp Image 2025-05-17 at 22.55.10_fbedebc8.jpg';
+
 const AboutContainer = styled.section`
   padding: 2rem;
   display: flex;
@@ -98,19 +103,17 @@ const OrgLink = styled.a`
 `;
 
 const OrgLogo = styled.img`
-  width: 80px;
   height: 80px;
+  width: auto;
   object-fit: contain;
   filter: grayscale(100%);
   transition: filter 0.3s ease;
 
   @media (max-width: 768px) {
-    width: 60px;
     height: 60px;
   }
 
   @media (max-width: 480px) {
-    width: 50px;
     height: 50px;
   }
 
@@ -178,7 +181,7 @@ const AboutMe = () => {
         <Content>
           <Title isDarkMode={isDarkMode}>About Me</Title>
           <Description isDarkMode={isDarkMode}>
-            I'm passionate about learning through doing. Like working on projects where I can code, build, and lead—especially when there's a chance to collaborate with others. Whether it's a team based task, a coding project, or something completely new, I'm all about figuring things out and making ideas come to life.<br />I am involved in a variety of organizations that fuel my passions:
+            I'm passionate about learning through doing. Like working on projects where I can code, build, and lead—especially when there's a chance to collaborate with others. Whether it's a team based task, a coding project, or something completely new, I'm all about figuring things out and making ideas come to life.
           </Description>
           <Organizations>
             <OrgLink href="https://www.cmch-vellore.edu/" target="_blank" rel="noopener noreferrer">
@@ -190,11 +193,21 @@ const AboutMe = () => {
             <OrgLink href="https://tsaweb.org/" target="_blank" rel="noopener noreferrer">
               <OrgLogo src={tsaLogo} alt="Technology Student Association" />
             </OrgLink>
+            <OrgLink href="https://tesla.lwsd.org/" target="_blank" rel="noopener noreferrer">
+              <OrgLogo src={image12} alt="Organization 1" />
+            </OrgLink>
+            <OrgLink href="https://engineeryourworld.utexas.edu/" target="_blank" rel="noopener noreferrer">
+              <OrgLogo src={image} alt="Organization 2" />
+            </OrgLink>
           </Organizations>
         </Content>
         <PictureBoxes>
-          <PictureBox isDarkMode={isDarkMode} />
-          <PictureBox isDarkMode={isDarkMode} />
+          <PictureBox isDarkMode={isDarkMode}>
+            <img src={screenshot} alt="About me" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '8px' }} />
+          </PictureBox>
+          <PictureBox isDarkMode={isDarkMode}>
+            <img src={award} alt="Award" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '8px' }} />
+          </PictureBox>
         </PictureBoxes>
       </AboutSection>
 
