@@ -220,6 +220,8 @@ const Navbar = () => {
       window.location.hash = 'about';
     } else if (href === '#contact') {
       window.location.hash = 'contact';
+    } else if (href === '#projects') {
+      window.location.hash = 'projects';
     } else {
       setIsModalOpen(true);
     }
@@ -232,51 +234,47 @@ const Navbar = () => {
     setIsSettingsOpen(true);
   };
 
+  // Inside the Navbar component's return statement
   return (
     <>
       <Nav>
         <NavContainer>
-          <Logo href="#home" onClick={handleNavClick} hoverColor={ledColor}>CLEO BALARANJITH</Logo>
+          <Logo href="#home" hoverColor={ledColor}>CLEO BALARANJITH</Logo>
           <NavGroup>
-            <NavLink href="#home" onClick={handleNavClick}>HOME</NavLink>
-            <NavLink href="#about" onClick={handleNavClick}>ABOUT</NavLink>
-            <NavLink href="#projects" onClick={handleNavClick}>PROJECTS</NavLink>
-            <NavLink href="#contact" onClick={handleNavClick}>CONTACT</NavLink>
+            <NavLink href="#home">Home</NavLink>
+            <NavLink href="#about">About</NavLink>
+            <NavLink href="#projects">Projects</NavLink>
+            <NavLink href="#contact">Contact</NavLink>
           </NavGroup>
+
+          {/* User count display */}
           <UserCount>
             <UserIcon>👥</UserIcon>
-            {userCount}<OnlineText> online</OnlineText>
+            <span>{userCount}</span>
+            <OnlineText>online</OnlineText>
           </UserCount>
-          <SettingsButton onClick={handleSettingsClick} aria-label="Settings">
+
+          <SettingsButton onClick={() => setIsSettingsOpen(true)}>
             ⚙️
           </SettingsButton>
-          <MobileMenuButton onClick={toggleMobileMenu}>
-            {isMobileMenuOpen ? '✕' : '☰'}
+
+          <MobileMenuButton onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+            ☰
           </MobileMenuButton>
         </NavContainer>
       </Nav>
-      <MobileMenu isOpen={isMobileMenuOpen}>
-        <NavLink href="#home" onClick={handleNavClick}>
-          HOME
-        </NavLink>
-        <NavLink href="#about" onClick={handleNavClick}>
-          ABOUT
-        </NavLink>
-        <NavLink href="#projects" onClick={handleNavClick}>
-          PROJECTS
-        </NavLink>
-        <NavLink href="#contact" onClick={handleNavClick}>
-          CONTACT
-        </NavLink>
+
+      {/* Mobile menu */}
+      <MobileMenu isOpen={isMobileMenuOpen} onClick={() => setIsMobileMenuOpen(false)}>
+        <NavLink href="#home">Home</NavLink>
+        <NavLink href="#about">About</NavLink>
+        <NavLink href="#projects">Projects</NavLink>
+        <NavLink href="#contact">Contact</NavLink>
       </MobileMenu>
-      <UnderConstructionModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-      />
-      <SettingsModal
-        isOpen={isSettingsOpen}
-        onClose={() => setIsSettingsOpen(false)}
-      />
+
+      {/* Modals */}
+      <UnderConstructionModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      <SettingsModal isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
     </>
   );
 };

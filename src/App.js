@@ -7,6 +7,7 @@ import GradientOverlay from './components/GradientOverlay';
 import About from './about';
 import Contact from './contact';
 import { ThemeProvider } from './contexts/ThemeContext';
+import Projects from './projects';
 
 const AppContainer = styled.div`
   min-height: 100vh;
@@ -85,6 +86,7 @@ const AppWrapper = ({ currentPage }) => {
     return () => observer.disconnect();
   }, []);
 
+  // Inside the AppWrapper component's return statement:
   return (
     <AppContainer currentPage={currentPage} theme={isDarkMode ? 'dark' : 'light'}>
       <Navbar />
@@ -99,6 +101,9 @@ const AppWrapper = ({ currentPage }) => {
       )}
       {currentPage === 'about' && (
         <About />
+      )}
+      {currentPage === 'projects' && (
+        <Projects />
       )}
       {currentPage === 'contact' && (
         <Contact />

@@ -97,13 +97,22 @@ const IconsContainer = styled.div`
   margin-top: 1rem;
 `;
 
-const Hero = () => {  
+const WtsaLogo = styled.img`
+  height: 20px;
+  width: auto;
+  object-fit: contain;
+  margin-left: 5px;
+  margin-right: 5px;
+  vertical-align: middle;
+`;
+
+const Hero = () => {
   return (
     <HeroContainer>
       <HeroContent>
         <Title>I'M CLEO!</Title>
         <Description>
-          Sophomore @ <TeslaLink href="https://www.usnews.com/education/best-high-schools/washington/districts/lake-washington-school-district/tesla-stem-high-school-146690" target="_blank" rel="noopener noreferrer">Tesla STEM</TeslaLink>. First Place WTSA. Web Development. AI. GeoTech. Engineering. <HighlightedText>Building What's Next</HighlightedText>.
+          Sophomore @ <TeslaLink href="https://www.usnews.com/education/best-high-schools/washington/districts/lake-washington-school-district/tesla-stem-high-school-146690" target="_blank" rel="noopener noreferrer">Tesla STEM</TeslaLink>. First Place <WtsaLogo src="src/components/wtsa.png" alt="WTSA Logo" /> Web Development. AI. GeoTech. Engineering. <HighlightedText>Building What's Next</HighlightedText>.
         </Description>
         <IconsContainer>
           <SocialIcons />
