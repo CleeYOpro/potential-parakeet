@@ -239,12 +239,12 @@ const Navbar = () => {
     <>
       <Nav>
         <NavContainer>
-          <Logo href="#home" hoverColor={ledColor}>CLEO BALARANJITH</Logo>
+          <Logo href="#home" hoverColor={ledColor} onClick={handleNavClick}>CLEO BALARANJITH</Logo>
           <NavGroup>
-            <NavLink href="#home">Home</NavLink>
-            <NavLink href="#about">About</NavLink>
-            <NavLink href="#projects">Projects</NavLink>
-            <NavLink href="#contact">Contact</NavLink>
+            <NavLink href="#home" onClick={handleNavClick}>Home</NavLink>
+            <NavLink href="#about" onClick={handleNavClick}>About</NavLink>
+            <NavLink href="#projects" onClick={handleNavClick}>Projects</NavLink>
+            <NavLink href="#contact" onClick={handleNavClick}>Contact</NavLink>
           </NavGroup>
 
           {/* User count display */}
@@ -254,11 +254,11 @@ const Navbar = () => {
             <OnlineText>online</OnlineText>
           </UserCount>
 
-          <SettingsButton onClick={() => setIsSettingsOpen(true)}>
+          <SettingsButton onClick={handleSettingsClick}>
             ⚙️
           </SettingsButton>
 
-          <MobileMenuButton onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+          <MobileMenuButton onClick={toggleMobileMenu}>
             ☰
           </MobileMenuButton>
         </NavContainer>
@@ -266,10 +266,10 @@ const Navbar = () => {
 
       {/* Mobile menu */}
       <MobileMenu isOpen={isMobileMenuOpen} onClick={() => setIsMobileMenuOpen(false)}>
-        <NavLink href="#home">Home</NavLink>
-        <NavLink href="#about">About</NavLink>
-        <NavLink href="#projects">Projects</NavLink>
-        <NavLink href="#contact">Contact</NavLink>
+        <NavLink href="#home" onClick={handleNavClick}>Home</NavLink>
+        <NavLink href="#about" onClick={handleNavClick}>About</NavLink>
+        <NavLink href="#projects" onClick={handleNavClick}>Projects</NavLink>
+        <NavLink href="#contact" onClick={handleNavClick}>Contact</NavLink>
       </MobileMenu>
 
       {/* Modals */}
