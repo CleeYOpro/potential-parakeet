@@ -105,40 +105,40 @@ const ProjectTitle = styled.h3`
 
 const ProjectDate = styled.div`
   position: absolute;
+  top: 15px;
   background-color: rgba(20, 20, 20, 0.9);
   color: #fff;
   padding: 10px 15px;
   border-radius: 4px;
   font-size: 1rem;
   font-weight: bold;
-  top: 15px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   border: 1px solid var(--primary-color);
+  z-index: 2;
   
+  /* Position for odd items (left side) */
   ${TimelineItem}:nth-child(odd) & {
-    right: -150px;
-    
-    @media (max-width: 768px) {
-      position: relative;
-      right: auto;
-      top: -10px;
-      display: inline-block;
-      margin-bottom: 10px;
-    }
+    right: -55px;
+    transform: translateX(100%);
   }
   
+  /* Position for even items (right side) */
   ${TimelineItem}:nth-child(even) & {
-    left: -150px;
-    
-    @media (max-width: 768px) {
-      position: relative;
-      left: auto;
-      top: -10px;
-      display: inline-block;
-      margin-bottom: 10px;
-    }
+    left: -55px;
+    transform: translateX(-100%);
+  }
+
+  @media (max-width: 768px) {
+    position: relative;
+    left: auto;
+    right: auto;
+    transform: none;
+    top: -10px;
+    display: inline-block;
+    margin-bottom: 10px;
   }
 `;
+
 
 const ProjectDescription = styled.p`
   margin: 0;
@@ -177,78 +177,82 @@ const WtsaLogo = styled.img`
 `;
 
 const ProjectTimeline = () => {
-    const projects = [
-        {
-            id: 8,
-            title: "Project AzotoColumn: A Smart Eco-Engineered Solution for Agricultural Nitrogen Runoff Management",
-            date: "July 2025",
-            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc sit amet ultricies lacinia, nisl nisl aliquam nisl, eget aliquam nisl nisl sit amet nisl.",
-            award: "Washington TSA 4th place"
-        },
-        {
-            id: 7,
-            title: "Fault Lines and Front Lines: A Comprehensive Geospatial Analysis of Earthquake Hazards in Seattle's Urban Environment",
-            date: "June 2025",
-            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc sit amet ultricies lacinia, nisl nisl aliquam nisl, eget aliquam nisl nisl sit amet nisl.",
-            award: "Washington TSA 1st place"
-        },
-        {
-            id: 6,
-            title: "Cleof.us",
-            date: "May 2025",
-            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc sit amet ultricies lacinia, nisl nisl aliquam nisl, eget aliquam nisl nisl sit amet nisl."
-        },
-        {
-            id: 5,
-            title: "Department of Palliative Medicine CMC Vellore Website",
-            date: "March 2025",
-            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc sit amet ultricies lacinia, nisl nisl aliquam nisl, eget aliquam nisl nisl sit amet nisl."
-        },
-        {
-            id: 4,
-            title: "Grow Smart: A Research Project",
-            date: "June 2024",
-            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc sit amet ultricies lacinia, nisl nisl aliquam nisl, eget aliquam nisl nisl sit amet nisl."
-        },
-        {
-            id: 3,
-            title: "Wordle Whiz",
-            date: "May 2024",
-            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc sit amet ultricies lacinia, nisl nisl aliquam nisl, eget aliquam nisl nisl sit amet nisl."
-        },
-        {
-            id: 2,
-            title: "Model Rocket for TARC",
-            date: "April 2024",
-            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc sit amet ultricies lacinia, nisl nisl aliquam nisl, eget aliquam nisl nisl sit amet nisl."
-        },
-        {
-            id: 1,
-            title: "The EYW Pinhole Camera",
-            date: "November 2023",
-            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc sit amet ultricies lacinia, nisl nisl aliquam nisl, eget aliquam nisl nisl sit amet nisl."
-        }
-    ];
+  const projects = [
 
-    return (
-        <TimelineContainer>
-            {projects.map(project => (
-                <TimelineItem key={project.id}>
-                    <TimelineContent>
-                        {project.award && (
-                            <AwardBanner>
-                                <WtsaLogo src="src/components/wtsa.png" alt="WTSA Logo" />
-                                {project.award}
-                            </AwardBanner>
-                        )}
-                        <ProjectTitle>{project.title}</ProjectTitle>
-                        <ProjectDate>{project.date}</ProjectDate>
-                        <ProjectDescription>{project.description}</ProjectDescription>
-                    </TimelineContent>
-                </TimelineItem>
-            ))}
-        </TimelineContainer>
-    );
+    {
+      id: 8,
+      title: "Project AzotoColumn: A Smart Eco-Engineered Solution for Agricultural Nitrogen Runoff Management",
+      date: "July 2025",
+      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc sit amet ultricies lacinia, nisl nisl aliquam nisl, eget aliquam nisl nisl sit amet nisl.",
+      award: "4th place",
+      level: "Washington"
+    },
+    {
+      id: 7,
+      title: "Fault Lines and Front Lines: A Comprehensive Geospatial Analysis of Earthquake Hazards in Seattle's Urban Environment",
+      date: "June 2025",
+      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc sit amet ultricies lacinia, nisl nisl aliquam nisl, eget aliquam nisl nisl sit amet nisl.",
+      award: "1st place",
+      level: "Washington"
+    },
+    {
+      id: 6,
+      title: "Cleof.us",
+      date: "May 2025",
+      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc sit amet ultricies lacinia, nisl nisl aliquam nisl, eget aliquam nisl nisl sit amet nisl."
+    },
+    {
+      id: 5,
+      title: "Department of Palliative Medicine CMC Vellore Website",
+      date: "March 2025",
+      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc sit amet ultricies lacinia, nisl nisl aliquam nisl, eget aliquam nisl nisl sit amet nisl."
+    },
+    {
+      id: 4,
+      title: "Grow Smart: A Research Project",
+      date: "June 2024",
+      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc sit amet ultricies lacinia, nisl nisl aliquam nisl, eget aliquam nisl nisl sit amet nisl."
+    },
+    {
+      id: 3,
+      title: "Wordle Whiz",
+      date: "May 2024",
+      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc sit amet ultricies lacinia, nisl nisl aliquam nisl, eget aliquam nisl nisl sit amet nisl."
+    },
+    {
+      id: 2,
+      title: "Model Rocket for TARC",
+      date: "April 2024",
+      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc sit amet ultricies lacinia, nisl nisl aliquam nisl, eget aliquam nisl nisl sit amet nisl."
+    },
+    {
+      id: 1,
+      title: "The EYW Pinhole Camera",
+      date: "November 2023",
+      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc sit amet ultricies lacinia, nisl nisl aliquam nisl, eget aliquam nisl nisl sit amet nisl."
+    }
+  ];
+
+  return (
+    <TimelineContainer>
+      {projects.map(project => (
+        <TimelineItem key={project.id}>
+          <TimelineContent>
+            {project.award && (
+              <AwardBanner>
+                {project.level}
+                <WtsaLogo src="/wtsa.png" alt="WTSA Logo" />
+                {project.award}
+              </AwardBanner>
+            )}
+            <ProjectTitle>{project.title}</ProjectTitle>
+            <ProjectDate>{project.date}</ProjectDate>
+            <ProjectDescription>{project.description}</ProjectDescription>
+          </TimelineContent>
+        </TimelineItem>
+      ))}
+    </TimelineContainer>
+  );
 };
 
 export default ProjectTimeline;
