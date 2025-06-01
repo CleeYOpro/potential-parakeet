@@ -4,24 +4,30 @@ import styled from 'styled-components';
 const TimelineContainer = styled.div`
   max-width: 1000px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 1rem;
   position: relative;
   
   &::before {
     content: '';
     position: absolute;
-    width: 6px;
+    width: 4px;
     background-color: var(--primary-color);
     top: 0;
     bottom: 0;
     left: 50%;
-    margin-left: -3px;
-    border-radius: 3px;
+    margin-left: -2px;
+    border-radius: 2px;
     box-shadow: 0 0 15px var(--primary-color);
     
     @media (max-width: 768px) {
-      left: 31px;
+      left: 20px;
+      width: 3px;
+      margin-left: -1.5px;
     }
+  }
+
+  @media (min-width: 768px) {
+    padding: 2rem;
   }
 `;
 
@@ -34,54 +40,62 @@ const TimelineItem = styled.div`
   
   &:nth-child(odd) {
     left: 0;
-    
     @media (max-width: 768px) {
       left: 0;
-      width: calc(100% - 60px);
-      margin-left: 60px;
+      width: calc(100% - 40px);
+      margin-left: 40px;
+      padding: 10px 20px 10px 40px;
     }
   }
   
   &:nth-child(even) {
     left: 50%;
-    
     @media (max-width: 768px) {
       left: 0;
-      width: calc(100% - 60px);
-      margin-left: 60px;
+      width: calc(100% - 40px);
+      margin-left: 40px;
+      padding: 10px 20px 10px 40px;
     }
   }
   
   &::after {
     content: '';
     position: absolute;
-    width: 20px;
-    height: 20px;
-    right: -10px;
+    width: 14px;
+    height: 14px;
     background-color: var(--primary-color);
-    border: 4px solid var(--primary-color);
-    top: 15px;
+    border: 2px solid var(--primary-color);
+    top: 50%;
     border-radius: 50%;
     z-index: 1;
     box-shadow: 0 0 10px var(--primary-color);
+    transform: translateY(-50%);
     
     @media (max-width: 768px) {
-      left: -44px;
+      left: calc(20px - 7px);
       right: auto;
+    }
+    @media (min-width: 769px) {
+      right: -8px;
+      left: auto;
+      width: 16px;
+      height: 16px;
+      border-width: 3px;
     }
   }
   
   &:nth-child(even)::after {
-    left: -10px;
-    
     @media (max-width: 768px) {
-      left: -44px;
+      left: calc(20px - 7px);
+    }
+    @media (min-width: 769px) {
+      left: -8px;
     }
   }
 `;
 
 const TimelineContent = styled.div`
-  padding: 20px 25px;
+  padding: 15px 20px;
   background-color: rgba(30, 30, 30, 0.8);
   position: relative;
   border-radius: 6px;
@@ -94,86 +108,107 @@ const TimelineContent = styled.div`
     transform: translateY(-5px);
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
   }
+
+  @media (max-width: 768px) {
+    padding: 12px 15px;
+  }
 `;
 
 const ProjectTitle = styled.h3`
   margin: 0 0 10px 0;
   color: var(--primary-color);
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   font-weight: bold;
+  line-height: 1.4;
+
+  @media (min-width: 768px) {
+    font-size: 1.5rem;
+  }
 `;
 
 const ProjectDate = styled.div`
-  position: absolute;
-  top: 15px;
   background-color: rgba(20, 20, 20, 0.9);
   color: #fff;
-  padding: 10px 15px;
+  padding: 8px 12px;
   border-radius: 4px;
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: bold;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   border: 1px solid var(--primary-color);
   z-index: 2;
-  
-  /* Position for odd items (left side) */
-  ${TimelineItem}:nth-child(odd) & {
-    right: -55px;
-    transform: translateX(100%);
-  }
-  
-  /* Position for even items (right side) */
-  ${TimelineItem}:nth-child(even) & {
-    left: -55px;
-    transform: translateX(-100%);
+  margin-bottom: 8px;
+
+  @media (min-width: 769px) {
+    position: absolute;
+    top: 15px;
+    ${TimelineItem}:nth-child(odd) & {
+      right: -45px;
+      transform: translateX(100%);
+    }
+    ${TimelineItem}:nth-child(even) & {
+      left: -45px;
+      transform: translateX(-100%);
+    }
   }
 
   @media (max-width: 768px) {
-    position: relative;
-    left: auto;
+    position: static;
+    left: 0;
     right: auto;
     transform: none;
-    top: -10px;
-    display: inline-block;
-    margin-bottom: 10px;
+    top: 0;
+    display: block;
+    margin-bottom: 8px;
+    font-size: 0.8rem;
+    padding: 6px 10px;
   }
 `;
 
-
 const ProjectDescription = styled.p`
   margin: 0;
-  line-height: 1.6;
+  line-height: 1.5;
   color: #ddd;
+  font-size: 0.9rem;
+
+  @media (min-width: 768px) {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
 `;
 
 const AwardBanner = styled.div`
   position: absolute;
-  top: -15px;
-  right: -15px;
+  top: -12px;
+  right: -12px;
   background-color: gold;
   color: #000;
-  padding: 5px 10px;
+  padding: 4px 8px;
   border-radius: 4px;
   font-weight: bold;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   box-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 4px;
   z-index: 2;
   transform: rotate(5deg);
   
   @media (max-width: 768px) {
-    top: -10px;
-    right: -5px;
-    font-size: 0.8rem;
+    top: -8px;
+    right: -4px;
+    font-size: 0.7rem;
+    padding: 3px 6px;
   }
 `;
 
 const WtsaLogo = styled.img`
-  height: 20px;
+  height: 16px;
   width: auto;
   object-fit: contain;
+
+  @media (max-width: 768px) {
+    height: 14px;
+  }
 `;
 
 const ProjectTimeline = () => {
@@ -237,6 +272,7 @@ const ProjectTimeline = () => {
     <TimelineContainer>
       {projects.map(project => (
         <TimelineItem key={project.id}>
+          <ProjectDate>{project.date}</ProjectDate>
           <TimelineContent>
             {project.award && (
               <AwardBanner>
@@ -246,7 +282,6 @@ const ProjectTimeline = () => {
               </AwardBanner>
             )}
             <ProjectTitle>{project.title}</ProjectTitle>
-            <ProjectDate>{project.date}</ProjectDate>
             <ProjectDescription>{project.description}</ProjectDescription>
           </TimelineContent>
         </TimelineItem>

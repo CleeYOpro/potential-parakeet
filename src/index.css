@@ -2,7 +2,7 @@
 
 @font-face {
     font-family: 'Karnivore Digit';
-    src: url('../karnivore.digit.ttf') format('truetype');
+    src: url('./karnivore.digit.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
 }

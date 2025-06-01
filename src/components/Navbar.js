@@ -150,31 +150,7 @@ const MobileMenu = styled.div`
   }
 `;
 
-const UserCount = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  color: #fff;
-  font-size: 0.9rem;
-  margin-right: 1rem;
-  padding: 0.3rem 0.8rem;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 4px;
-  
-  @media (max-width: 768px) {
-    padding: 0.2rem 0.5rem;
-    margin-right: 0.5rem;
-    font-size: 0.8rem;
-  }
-`;
 
-const UserIcon = styled.span`
-  font-size: 1rem;
-  
-  @media (max-width: 768px) {
-    font-size: 0.9rem;
-  }
-`;
 
 const OnlineText = styled.span`
   @media (max-width: 768px) {
@@ -186,26 +162,7 @@ const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const [userCount, setUserCount] = useState(0);
   const { ledColor } = useContext(ThemeContext);
-
-  useEffect(() => {
-    // Connect to WebSocket server
-    const socket = io('https://your-websocket-server.com', {
-      transports: ['websocket'],
-      autoConnect: true
-    });
-
-    // Listen for user count updates
-    socket.on('userCount', (count) => {
-      setUserCount(count);
-    });
-
-    // Cleanup on unmount
-    return () => {
-      socket.disconnect();
-    };
-  }, []);
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -246,13 +203,6 @@ const Navbar = () => {
             <NavLink href="#projects" onClick={handleNavClick}>Projects</NavLink>
             <NavLink href="#contact" onClick={handleNavClick}>Contact</NavLink>
           </NavGroup>
-
-          {/* User count display */}
-          <UserCount>
-            <UserIcon>👥</UserIcon>
-            <span>{userCount}</span>
-            <OnlineText>online</OnlineText>
-          </UserCount>
 
           <SettingsButton onClick={handleSettingsClick}>
             ⚙️

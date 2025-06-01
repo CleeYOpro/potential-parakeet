@@ -16,31 +16,40 @@ const ProjectsPageContainer = styled.div`
 const ContentContainer = styled.div`
   flex: 1;
   width: 100%;
-  padding: 6rem 1rem 2rem 1rem;
+  padding: 4rem 0.5rem 2rem 0.5rem;
   position: relative;
   z-index: 5;
   overflow-y: auto;
+
+  @media (min-width: 768px) {
+    padding: 6rem 1rem 2rem 1rem;
+  }
 `;
 
 const ProjectsTitle = styled.h1`
   text-align: center;
   margin-bottom: 2rem;
-  font-size: 2.5rem;
+  font-size: 2rem;
   color: var(--primary-color);
   text-shadow: 0 0 10px rgba(0, 85, 255, 0.5);
+  padding: 0 1rem;
+
+  @media (min-width: 768px) {
+    font-size: 2.5rem;
+  }
 `;
 
 const ProjectsPage = () => {
-    return (
-        <ProjectsPageContainer>
-            <LedGrid />
-            <GradientOverlay />
-            <ContentContainer>
-                <ProjectsTitle>My Projects</ProjectsTitle>
-                <ProjectTimeline />
-            </ContentContainer>
-        </ProjectsPageContainer>
-    );
+  return (
+    <ProjectsPageContainer>
+      <LedGrid />
+      <GradientOverlay />
+      <ContentContainer>
+        <ProjectsTitle>My Projects</ProjectsTitle>
+        <ProjectTimeline />
+      </ContentContainer>
+    </ProjectsPageContainer>
+  );
 };
 
 export default ProjectsPage;
