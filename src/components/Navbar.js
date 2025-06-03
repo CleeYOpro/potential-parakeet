@@ -4,6 +4,7 @@ import UnderConstructionModal from './UnderConstructionModal';
 import SettingsModal from './SettingsModal';
 import { ThemeContext } from '../contexts/ThemeContext';
 import io from 'socket.io-client';
+import { SiPandora } from 'react-icons/si';
 
 
 const Nav = styled.nav`
