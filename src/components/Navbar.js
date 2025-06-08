@@ -1,10 +1,8 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 import UnderConstructionModal from './UnderConstructionModal';
 import SettingsModal from './SettingsModal';
 import { ThemeContext } from '../contexts/ThemeContext';
-import io from 'socket.io-client';
-import { SiPandora } from 'react-icons/si';
 
 
 const Nav = styled.nav`
@@ -153,11 +151,6 @@ const MobileMenu = styled.div`
 
 
 
-const OnlineText = styled.span`
-  @media (max-width: 768px) {
-    display: none;
-  }
-`;
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
