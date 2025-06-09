@@ -28,7 +28,8 @@ const ContentContainer = styled.div`
 
 const ProjectsTitle = styled.h1`
   text-align: center;
-  margin-bottom: 2rem;
+  margin-top: 2.5rem; // reduced from 3rem
+  margin-bottom: 1rem; // reduced from 2rem
   font-size: 2rem;
   color: var(--primary-color);
   text-shadow: 0 0 10px rgba(0, 85, 255, 0.5);
@@ -45,7 +46,7 @@ const ProjectsPage = () => {
       <LedGrid />
       <GradientOverlay />
       <ContentContainer>
-        <ProjectsTitle>My Projects</ProjectsTitle>
+        <ProjectsTitle>Project Timeline</ProjectsTitle>
         <ProjectTimeline />
       </ContentContainer>
     </ProjectsPageContainer>

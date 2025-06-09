@@ -41,18 +41,18 @@ const TimelineItem = styled.div`
   &:nth-child(odd) {
     left: 0;
     @media (max-width: 768px) {
-      left: 0;
-      width: calc(100% - 40px);
+      left: -52px;
+      width: calc(100% + 18px);
       margin-left: 40px;
       padding: 10px 20px 10px 40px;
     }
   }
   
   &:nth-child(even) {
-    left: 50%;
+    left: 50.8%;
     @media (max-width: 768px) {
-      left: 0;
-      width: calc(100% - 40px);
+      left: -45px;
+      width: calc(100% + 10px);
       margin-left: 40px;
       padding: 10px 20px 10px 40px;
     }
@@ -66,21 +66,15 @@ const TimelineItem = styled.div`
     background-color: var(--primary-color);
     border: 2px solid var(--primary-color);
     top: 50%;
+    left: 100%;
+    transform: translate(-50%, -50%);
     border-radius: 50%;
     z-index: 1;
     box-shadow: 0 0 10px var(--primary-color);
-    transform: translateY(-50%);
-    
+
     @media (max-width: 768px) {
-      left: calc(20px - 7px);
-      right: auto;
-    }
-    @media (min-width: 769px) {
-      right: -8px;
-      left: auto;
-      width: 16px;
-      height: 16px;
-      border-width: 3px;
+      left: 20px;
+      transform: translate(-50%, -50%);
     }
   }
   
