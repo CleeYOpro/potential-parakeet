@@ -194,10 +194,10 @@ const AboutMe = () => {
               <OrgLogo src={tsaLogo} alt="Technology Student Association" />
             </OrgLink>
             <OrgLink href="https://tesla.lwsd.org/" target="_blank" rel="noopener noreferrer">
-              <OrgLogo src={image12} alt="Organization 1" />
+              <OrgLogo src={image12} alt="Tesla STEM High School" />
             </OrgLink>
-            <OrgLink href="https://engineeryourworld.utexas.edu/" target="_blank" rel="noopener noreferrer">
-              <OrgLogo src={image} alt="Organization 2" />
+            <OrgLink href="https://www.fiverr.com/s/pd8krrY" target="_blank" rel="noopener noreferrer">
+              <OrgLogo src={fiver} alt="Fiverr" />
             </OrgLink>
           </Organizations>
         </Content>
