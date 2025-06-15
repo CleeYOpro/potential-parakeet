@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 import ProjectTimeline from './components/ProjectTimeline';
 import LedGrid from './components/LedGrid';

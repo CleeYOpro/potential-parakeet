@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 import AboutMe from './components/AboutMe';
 import LedGrid from './components/LedGrid';

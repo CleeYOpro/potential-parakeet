@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 import Contact from './components/Contact';
 import LedGrid from './components/LedGrid';

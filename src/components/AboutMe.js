@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import styled from 'styled-components';
 import TechStack from './TechStack';
 import { ThemeContext } from '../contexts/ThemeContext';
@@ -7,7 +7,7 @@ import cmcLogo from './imgs/cmc.png';
 import rockLogo from './imgs/rock.png';
 import tsaLogo from './imgs/tsa.png';
 import image12 from './imgs/image12.png';
-import image from './imgs/image.png';
+import fiver from './imgs/fiver.png';
 import screenshot from './imgs/Screenshot 2025-05-17 225201.png';
 import award from './imgs/WhatsApp Image 2025-05-17 at 22.55.10_fbedebc8.jpg';
 
