@@ -197,8 +197,8 @@ const Contact = () => {
                 <SocialIcon><FaGithub /></SocialIcon>GitHub
               </TableHeader>
               <TableData>
-                <SocialLink href="https://github.com/CleeYOpro" target="_blank" rel="noopener noreferrer">
-                  CleeYOpro
+                <SocialLink href="https://linkedin.com/in/cleofus123" target="_blank" rel="noopener noreferrer">
+                  cleofus123
                 </SocialLink>
               </TableData>
             </TableRow>

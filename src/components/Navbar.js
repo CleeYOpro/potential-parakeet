@@ -191,7 +191,7 @@ const Navbar = () => {
       <Nav>
         <NavContainer>
           <Logo href="#home" hoverColor={ledColor} onClick={handleNavClick}>CLEO BALARANJITH</Logo>
-          <NavGroup>
+          <NavGroup style={{ display: 'none' }}>
             <NavLink href="#home" onClick={handleNavClick}>Home</NavLink>
             <NavLink href="#about" onClick={handleNavClick}>About</NavLink>
             <NavLink href="#projects" onClick={handleNavClick}>Projects</NavLink>
@@ -202,14 +202,14 @@ const Navbar = () => {
             ⚙️
           </SettingsButton>
 
-          <MobileMenuButton onClick={toggleMobileMenu}>
+          <MobileMenuButton onClick={toggleMobileMenu} style={{ display: 'none' }}>
             ☰
           </MobileMenuButton>
         </NavContainer>
       </Nav>
 
       {/* Mobile menu */}
-      <MobileMenu isOpen={isMobileMenuOpen} onClick={() => setIsMobileMenuOpen(false)}>
+      <MobileMenu isOpen={isMobileMenuOpen} onClick={() => setIsMobileMenuOpen(false)} style={{ display: 'none' }}>
         <NavLink href="#home" onClick={handleNavClick}>Home</NavLink>
         <NavLink href="#about" onClick={handleNavClick}>About</NavLink>
         <NavLink href="#projects" onClick={handleNavClick}>Projects</NavLink>
