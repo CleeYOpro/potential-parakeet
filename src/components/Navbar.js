@@ -1,7 +1,9 @@
 import { useState, useContext } from 'react';
 import styled from 'styled-components';
+import { FaInfoCircle, FaCog } from 'react-icons/fa';
 import UnderConstructionModal from './UnderConstructionModal';
 import SettingsModal from './SettingsModal';
+import InformationModal from './InformationModal';
 import { ThemeContext } from '../contexts/ThemeContext';
 
 
@@ -111,10 +113,19 @@ const IconButton = styled.button`
   height: 44px;
   align-items: center;
   justify-content: center;
-  transition: color 0.3s ease;
+  transition: all 0.3s ease;
+  
+  svg {
+    transition: all 0.3s ease;
+  }
   
   &:hover {
-    color: var(--primary-color);
+    color: ${props => props.hoverColor || '#00aaff'};
+    
+    svg {
+      filter: drop-shadow(0 0 8px ${props => props.hoverColor || '#00aaff'});
+      transform: scale(1.1);
+    }
   }
 `;
 
@@ -156,6 +167,7 @@ const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [isInfoOpen, setIsInfoOpen] = useState(false);
   const { ledColor } = useContext(ThemeContext);
 
   const toggleMobileMenu = () => {
@@ -185,6 +197,10 @@ const Navbar = () => {
     setIsSettingsOpen(true);
   };
 
+  const handleInfoClick = () => {
+    setIsInfoOpen(true);
+  };
+
   // Inside the Navbar component's return statement
   return (
     <>
@@ -198,8 +214,11 @@ const Navbar = () => {
             <NavLink href="#contact" onClick={handleNavClick}>Contact</NavLink>
           </NavGroup>
 
-          <SettingsButton onClick={handleSettingsClick}>
-            ⚙️
+          <IconButton onClick={handleInfoClick} title="Information" hoverColor={ledColor}>
+            <FaInfoCircle />
+          </IconButton>
+          <SettingsButton onClick={handleSettingsClick} hoverColor={ledColor}>
+            <FaCog />
           </SettingsButton>
 
           <MobileMenuButton onClick={toggleMobileMenu} style={{ display: 'none' }}>
@@ -219,6 +238,7 @@ const Navbar = () => {
       {/* Modals */}
       <UnderConstructionModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
       <SettingsModal isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
+      <InformationModal isOpen={isInfoOpen} onClose={() => setIsInfoOpen(false)} />
     </>
   );
 };
