@@ -28,7 +28,7 @@ const SocialIcons = () => {
             <SocialLink href="https://linkedin.com/in/cleofus123" target="_blank" rel="noopener noreferrer">
                 <FaLinkedin />
             </SocialLink>
-            <SocialLink href="https://medium.com/@cleeo001" target="_blank" rel="noopener noreferrer">
+            <SocialLink href="https://medium.com/@cleobala" target="_blank" rel="noopener noreferrer">
                 <FaMedium />
             </SocialLink>
             <SocialLink href="https://instagram.com/cleobalaranjith" target="_blank" rel="noopener noreferrer">
