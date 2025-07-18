@@ -138,7 +138,7 @@ const EmailLink = styled.a`
 
 const FormContainer = styled.div`
   width: 100%;
-  max-width: 500px;
+  max-width: 700px;
   margin: 2rem auto 1.5rem auto;
   background: rgba(20, 20, 20, 0.83);
   border-radius: 8px;

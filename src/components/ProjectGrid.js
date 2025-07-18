@@ -4,9 +4,24 @@ const ProjectsGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 2rem;
-  padding: 2rem 0;
+  padding: 2rem 2vw;
   max-width: 900px;
   margin: 0 auto;
+
+  @media (max-width: 1024px) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.2rem;
+    max-width: 98vw;
+    padding-left: 3vw;
+    padding-right: 3vw;
+  }
+  @media (max-width: 700px) {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    max-width: 100vw;
+    padding: 1rem 5vw;
+  }
+  overflow-x: auto;
 `;
 
 const ProjectCard = styled.div`
@@ -19,9 +34,15 @@ const ProjectCard = styled.div`
   transition: transform 0.2s;
   border: 1px solid var(--primary-color);
   position: relative;
+  min-width: 260px;
+  max-width: 100%;
   &:hover {
     transform: translateY(-6px) scale(1.03);
     box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    
+  }
+    @media (max-width: 768px) {
+    padding: 1rem;
   }
 `;
 

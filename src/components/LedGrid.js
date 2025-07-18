@@ -8,12 +8,16 @@ import {
 } from 'react';
 import { ThemeContext } from '../contexts/ThemeContext';
 
+const CURSOR_FADE_MS = 1200;
+
 const LedGrid = () => {
   const [pixels, setPixels] = useState([]);
   const [opacity, setOpacity] = useState(1);
   const { ledColor, ledPattern } = useContext(ThemeContext);
   const matrixRef = useRef({ drops: [] });
   const randomRef = useRef({ timers: [] });
+  const [cursorLeds, setCursorLeds] = useState({});
+  const lastMouseCell = useRef({ row: -1, col: -1 });
 
   const gridSize = 50;
   const totalPixels = useMemo(() => gridSize * gridSize, [gridSize]);
@@ -63,15 +67,14 @@ const LedGrid = () => {
   const updateMatrixPattern = useCallback(() => {
     const matrix = matrixRef.current;
 
-    // drop if not exist
     if (!matrix.drops || matrix.drops.length !== gridSize) {
       matrix.drops = [];
       for (let col = 0; col < gridSize; col++) {
         matrix.drops.push({
           col,
           headY: 0,
-          speed: 0.5 + Math.random() * 0.5, //change speed later???
-          length: Math.floor(Math.random() * 20) + 9, //10-30
+          speed: 0.5 + Math.random() * 0.5,
+          length: Math.floor(Math.random() * 20) + 9,
         });
       }
     }
@@ -101,36 +104,31 @@ const LedGrid = () => {
   }, [gridSize, totalPixels]);
 
   const updateRandomPattern = useCallback(() => {
-
     const random = randomRef.current;
 
-    // Initialize timers if they don't exist
     if (!random.timers || random.timers.length !== totalPixels) {
       random.timers = Array(totalPixels).fill(null).map(() => ({
-        onTime: Math.random() * 4000 + 3000, // Random time between 3-7 seconds
-        offTime: Math.random() * 4000 + 3000, // Random time between 3-7 seconds
+        onTime: Math.random() * 4000 + 3000,
+        offTime: Math.random() * 4000 + 3000,
         lastToggle: Date.now(),
-        isOn: false
+        isOn: false,
       }));
     }
 
     const newPixels = Array(totalPixels).fill(false);
     const currentTime = Date.now();
 
-    // Update each pixel's state
     random.timers.forEach((timer, index) => {
       const timeSinceLastToggle = currentTime - timer.lastToggle;
       const targetTime = timer.isOn ? timer.onTime : timer.offTime;
 
       if (timeSinceLastToggle >= targetTime) {
-        // Toggle the state
         timer.isOn = !timer.isOn;
         timer.lastToggle = currentTime;
-        // Randomize the next toggle time
         if (timer.isOn) {
-          timer.onTime = Math.random() * 4000 + 3000; // 3-7 seconds
+          timer.onTime = Math.random() * 4000 + 3000;
         } else {
-          timer.offTime = Math.random() * 4000 + 3000; // 3-7 seconds
+          timer.offTime = Math.random() * 4000 + 3000;
         }
       }
 
@@ -155,8 +153,8 @@ const LedGrid = () => {
   useEffect(() => {
     const initialPixels = Array(totalPixels).fill(false);
     setPixels(initialPixels);
-    matrixRef.current.drops = []; //reset drops
-    randomRef.current.timers = []; //reset random timers
+    matrixRef.current.drops = [];
+    randomRef.current.timers = [];
 
     const updateFunction = getUpdateFunction();
     updateFunction();
@@ -164,7 +162,7 @@ const LedGrid = () => {
     const interval = setInterval(() => {
       const updateFn = getUpdateFunction();
       updateFn();
-    }, ledPattern === 'random' ? 200 : 100); // Slower updates for random pattern
+    }, ledPattern === 'random' ? 200 : 100);
 
     window.addEventListener('scroll', handleScroll, { passive: true });
 
@@ -174,15 +172,110 @@ const LedGrid = () => {
     };
   }, [handleScroll, getUpdateFunction, totalPixels, ledPattern]);
 
+  // Cursor effect: trail centered and no flickering
+  useEffect(() => {
+    if (ledPattern !== 'cursor') return;
+
+    const grid = document.querySelector('.led-grid');
+    if (!grid) return;
+
+    const handleMouseMove = (e) => {
+      const rect = grid.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      const cellWidth = rect.width / gridSize;
+      const cellHeight = rect.height / gridSize;
+
+      const col = Math.floor(x / cellWidth);
+      const row = Math.floor(y / cellHeight) - 9;
+
+      if (
+        lastMouseCell.current.row === row &&
+        lastMouseCell.current.col === col
+      )
+        return;
+
+      lastMouseCell.current = { row, col };
+
+      const radius = 1;
+      const now = Date.now();
+
+      setCursorLeds((prev) => {
+        const updated = { ...prev };
+        for (let r = row - radius; r <= row + radius; r++) {
+          for (let c = col - radius; c <= col + radius; c++) {
+            if (r >= 0 && r < gridSize && c >= 0 && c < gridSize) {
+              const index = r * gridSize + c;
+              updated[index] = now;
+            }
+          }
+        }
+        return updated;
+      });
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, [gridSize, ledPattern]);
+
+  // Cleanup old cursor trail pixels over time
+  useEffect(() => {
+    if (ledPattern !== 'cursor') return;
+
+    let animationFrame;
+
+    const clean = () => {
+      const now = Date.now();
+      setCursorLeds((prev) => {
+        const next = {};
+        for (const key in prev) {
+          if (now - prev[key] < CURSOR_FADE_MS) {
+            next[key] = prev[key];
+          }
+        }
+        return next;
+      });
+      animationFrame = requestAnimationFrame(clean);
+    };
+
+    animationFrame = requestAnimationFrame(clean);
+    return () => cancelAnimationFrame(animationFrame);
+  }, [ledPattern]);
+
   const pixelElements = useMemo(() => {
+    const now = Date.now();
+
+    if (ledPattern === 'cursor') {
+      return Array(totalPixels).fill(0).map((_, index) => {
+        const litTime = cursorLeds[index];
+        if (!litTime) return <div key={index} className="led-pixel" />;
+
+        const elapsed = now - litTime;
+        if (elapsed > CURSOR_FADE_MS) return <div key={index} className="led-pixel" />;
+
+        const intensity = 1 - elapsed / CURSOR_FADE_MS;
+        return (
+          <div
+            key={index}
+            className="led-pixel on"
+            style={{
+              backgroundColor: ledColor,
+              opacity: intensity,
+            }}
+          />
+        );
+      });
+    }
+
     return pixels.map((isOn, index) => (
       <div
         key={index}
-        className={`led-pixel ${isOn ? 'on' : ''}`}
+        className={`led-pixel${isOn ? ' on' : ''}`}
         style={isOn ? { backgroundColor: ledColor } : {}}
       />
     ));
-  }, [pixels, ledColor]);
+  }, [pixels, ledColor, cursorLeds, ledPattern, totalPixels]);
 
   return (
     <div

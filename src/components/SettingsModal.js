@@ -121,6 +121,16 @@ const Button = styled.button`
   }
 `;
 
+const Disclaimer = styled.div`
+  color: #ffcc00;
+  background: rgba(40,40,0,0.15);
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+  text-align: center;
+`;
+
 const SettingsModal = ({ isOpen, onClose }) => {
   // Get theme context
   const {
@@ -148,7 +158,8 @@ const SettingsModal = ({ isOpen, onClose }) => {
   const patternOptions = [
     { name: 'Wave', value: 'wave' },
     { name: 'Matrix', value: 'matrix' },
-    { name: 'Random', value: 'random' }
+    { name: 'Random', value: 'random' },
+    { name: 'Cursor', value: 'cursor' }
   ];
 
   // Handle save
@@ -201,6 +212,11 @@ const SettingsModal = ({ isOpen, onClose }) => {
               </PatternOption>
             ))}
           </PatternOptions>
+          {localLedPattern === 'cursor' && (
+            <Disclaimer>
+              The Cursor pattern is still under development and may not work perfectly yet.
+            </Disclaimer>
+          )}
         </SettingsGroup>
 
         <ButtonGroup>
