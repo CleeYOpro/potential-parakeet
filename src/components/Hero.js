@@ -1,5 +1,8 @@
 import styled, { keyframes } from 'styled-components';
 import SocialIcons from './SocialIcons';
+import aiImg from './imgs/6f5a8371-8a59-4b38-a637-70777158f5d3.jpeg';
+import gisImg from './imgs/output.jpg';
+import engImg from './imgs/e3159cdb-41e7-4064-a1fe-b7c51ab3f8e8.jpeg';
 
 const shine = keyframes`
   0% {
@@ -52,7 +55,7 @@ const Title = styled.h1`
 `;
 
 const Description = styled.p`
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   line-height: 1.6;
   margin-bottom: 1rem;
   color: #fff;
@@ -90,20 +93,73 @@ const TeslaLink = styled.a`
   }
 `;
 
+const WorkLink = styled.a`
+  color: var(--primary-color);
+  text-decoration: underline;
+  font-weight: bold;
+  cursor: pointer;
+  transition: color 0.2s;
+  &:hover {
+    color: #fff;
+    background: var(--primary-color);
+    border-radius: 4px;
+    padding: 0.1em 0.1em;
+    text-decoration: none;
+  }
+`;
+
+const ContactButton = styled.a`
+  display: inline-flex;
+  align-items: center;
+  background: var(--primary-color);
+  color: #fff;
+  font-weight: bold;
+  font-size: 1.1rem;
+  padding: 0.7em 1.4em;
+  border-radius: 8px;
+  margin-top: 1.2rem;
+  text-decoration: none;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.18);
+  transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+  gap: 0.7em;
+  &:hover {
+    background: var(--primary-color-dark, #0044aa);
+    transform: translateY(-2px) scale(1.04);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.28);
+    text-decoration: none;
+  }
+`;
+
+const Arrow = styled.span`
+  font-size: 1.3em;
+  margin-left: 0.2em;
+  transition: transform 0.2s;
+  ${ContactButton}:hover & {
+    transform: translateX(4px);
+  }
+`;
+
 const IconsContainer = styled.div`
   display: flex;
   justify-content: left;
   margin-top: 1rem;
 `;
 
-const WtsaLogo = styled.img`
-  height: 32px;
+const InlineImg = styled.img`
+  display: inline-block;
+  height: 1.5em;
   width: auto;
-  object-fit: contain;
-  margin-left: 4px;
-  margin-right: 0px;
+  border-radius: 10%;
+  margin: 0 0.2em;
   vertical-align: middle;
-  horizontal-align: middle;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+  &:hover {
+    transform: scale(1.15) rotate(-5deg);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+  }
 `;
 
 const Hero = () => {
@@ -112,8 +168,24 @@ const Hero = () => {
       <HeroContent>
         <Title>I'M CLEO!</Title>
         <Description>
-          Sophomore @ <TeslaLink href="https://www.usnews.com/education/best-high-schools/washington/districts/lake-washington-school-district/tesla-stem-high-school-146690" target="_blank" rel="noopener noreferrer">Tesla STEM</TeslaLink>. First Place <WtsaLogo src="/wtsa.png" alt="WTSA Logo" />. Web Development. AI. GeoTech. Engineering. <HighlightedText>Building What's Next</HighlightedText>.
+          <TeslaLink
+            href="https://www.usnews.com/education/best-high-schools/washington/districts/lake-washington-school-district/tesla-stem-high-school-146690"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Student Full Stack Developer @ Tesla STEM{" "}
+          </TeslaLink>
+          Effective <WorkLink href="#projects">work</WorkLink> in AI{" "}
+          <InlineImg src={aiImg} alt="AI" />
+          , GIS{" "}
+          <InlineImg src={gisImg} alt="GIS" />
+          , web, business, and engineering{" "}
+          <InlineImg src={engImg} alt="Engineering" />
+          . <HighlightedText>Let’s build what’s next.</HighlightedText>
         </Description>
+        <ContactButton href="#contact">
+          Get in touch <Arrow>&rarr;</Arrow>
+        </ContactButton>
         <IconsContainer>
           <SocialIcons />
         </IconsContainer>

@@ -30,7 +30,7 @@ const ModalContent = styled.div`
 const Title = styled.h2`
   margin-bottom: 1rem;
   color: var(--primary-color);
-  font-family: 'Pixelify Sans', system-ui;
+  font-family: var(--font-family-mono);
 `;
 
 const Message = styled.p`
@@ -45,7 +45,7 @@ const CloseButton = styled.button`
   padding: 0.5rem 1.5rem;
   border-radius: 4px;
   cursor: pointer;
-  font-family: 'Pixelify Sans', system-ui;
+  font-family: var(--font-family-mono);
   transition: background 0.3s ease;
 
   &:hover {

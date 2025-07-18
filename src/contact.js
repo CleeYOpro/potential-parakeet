@@ -1,7 +1,5 @@
 import styled from 'styled-components';
 import Contact from './components/Contact';
-import LedGrid from './components/LedGrid';
-import GradientOverlay from './components/GradientOverlay';
 
 const ContentContainer = styled.div`
   min-height: 100vh;
@@ -17,13 +15,9 @@ const ContentContainer = styled.div`
 
 const ContactPage = () => {
   return (
-    <>
-      <LedGrid />
-      <GradientOverlay />
-      <ContentContainer>
-        <Contact />
-      </ContentContainer>
-    </>
+    <ContentContainer>
+      <Contact />
+    </ContentContainer>
   );
 };
 

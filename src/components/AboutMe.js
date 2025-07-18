@@ -1,13 +1,7 @@
-import { useContext } from 'react';
 import styled from 'styled-components';
 import TechStack from './TechStack';
-import { ThemeContext } from '../contexts/ThemeContext';
+import { useEffect, useState } from 'react';
 
-import cmcLogo from './imgs/cmc.png';
-import rockLogo from './imgs/rock.png';
-import tsaLogo from './imgs/tsa.png';
-import image12 from './imgs/image12.png';
-import fiver from './imgs/fiver.png';
 import screenshot from './imgs/WhatsApp Image 2025-06-17 at 20.15.26_5e311667.jpg';
 import award from './imgs/WhatsApp Image 2025-05-17 at 22.55.10_fbedebc8.jpg';
 
@@ -56,7 +50,7 @@ const Content = styled.div`
 const Title = styled.h2`
   font-size: 2rem;
   margin-bottom: 1.5rem;
-  color: ${props => props.isDarkMode ? 'var(--primary-color)' : 'var(--primary-color-light)'};
+  color: var(--primary-color-light);
 
   @media (max-width: 768px) {
     font-size: 1.8rem;
@@ -69,7 +63,7 @@ const Title = styled.h2`
 `;
 
 const Description = styled.p`
-  color: ${props => props.isDarkMode ? '#666' : '#555'};
+  color: #555;
   line-height: 1.6;
   margin-bottom: 2rem;
   text-align: left;
@@ -80,45 +74,6 @@ const Description = styled.p`
 
   @media (max-width: 480px) {
     font-size: 0.9rem;
-  }
-`;
-
-const Organizations = styled.div`
-  display: flex;
-  gap: 2rem;
-  margin-bottom: 2rem;
-  justify-content: flex-start;
-  flex-wrap: wrap;
-`;
-
-const OrgLink = styled.a`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.3s ease;
-  
-  &:hover {
-    transform: scale(1.1);
-  }
-`;
-
-const OrgLogo = styled.img`
-  height: 80px;
-  width: auto;
-  object-fit: contain;
-  filter: grayscale(100%);
-  transition: filter 0.3s ease;
-
-  @media (max-width: 768px) {
-    height: 60px;
-  }
-
-  @media (max-width: 480px) {
-    height: 50px;
-  }
-
-  &:hover {
-    filter: grayscale(0%);
   }
 `;
 
@@ -141,7 +96,7 @@ const PictureBoxes = styled.div`
 const PictureBox = styled.div`
   width: 100%;
   height: 200px;
-  background: ${props => props.isDarkMode ? 'var(--card-bg-dark)' : 'var(--card-bg-light)'};
+  background: var(--card-bg-light);
   border-radius: 8px;
   overflow: hidden;
   transition: transform 0.3s ease;
@@ -172,45 +127,114 @@ const TechStackSection = styled.div`
   }
 `;
 
+const AnimatedSentence = styled.span`
+  display: block;
+  opacity: ${props => (props.visible ? 1 : 0)};
+  transform: translateY(${props => (props.visible ? '0' : '20px')});
+  transition: opacity 0.6s, transform 0.6s;
+  margin-bottom: 0.5em;
+`;
+
+const Emph = styled.span`
+  position: relative;
+  display: inline-block;
+  color: var(--primary-color);
+  font-weight: 700;
+  z-index: 1;
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0px;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, var(--primary-color-light), var(--primary-color) 80%);
+    border-radius: 1px;
+    transform: scaleX(${props => (props.underline ? 1 : 0)});
+    transform-origin: left;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 0;
+    opacity: 0.7;
+  }
+`;
+
+const sentences = [
+  [
+    "I’m a high school junior, ",
+    { emph: "web developer", underline: true },
+    ", and automation specialist focused on helping clients solve ",
+    { emph: "real problems", underline: true },
+    " through technology."
+  ],
+  [
+    "I build ",
+    { emph: "clean, responsive websites", underline: true },
+    ", streamline operations through automation, and deliver ",
+    { emph: "custom digital solutions", underline: true },
+    " that drive measurable results."
+  ],
+  [
+    "Whether it's AI-driven tools, ",
+    { emph: "GIS dashboards", underline: true },
+    ", or business-ready platforms, I bring a mix of technical skill and strategic thinking."
+  ],
+  [
+    "I also offer strengths in business development, clear communication, and research-backed problem solving."
+  ],
+  [
+    "Clients value my ",
+    { emph: "collaborative style", underline: true },
+    ", transparency, and commitment to getting things done—no matter how complex the challenge."
+  ]
+];
+
 const AboutMe = () => {
-  const { isDarkMode } = useContext(ThemeContext);
+  const [visibleSentences, setVisibleSentences] = useState(Array(sentences.length).fill(false));
+  const [showUnderline, setShowUnderline] = useState(false);
+
+  useEffect(() => {
+    let timeouts = [];
+    sentences.forEach((_, i) => {
+      timeouts.push(setTimeout(() => {
+        setVisibleSentences(prev => {
+          const next = [...prev];
+          next[i] = true;
+          return next;
+        });
+        // After the last sentence, trigger underline
+        if (i === sentences.length - 1) {
+          setTimeout(() => setShowUnderline(true), 700);
+        }
+      }, i * 600));
+    });
+    return () => timeouts.forEach(clearTimeout);
+  }, []);
 
   return (
     <AboutContainer>
       <AboutSection>
         <Content>
-          <Title isDarkMode={isDarkMode}>About Me</Title>
-          <Description isDarkMode={isDarkMode}>
-            I'm passionate about learning through doing. Like working on projects where I can code, build, and lead—especially when there's a chance to collaborate with others. Whether it's a team based task, a coding project, or something completely new, I'm all about figuring things out and making ideas come to life.
+          <Title>About Me</Title>
+          <Description as="div">
+            {sentences.map((parts, i) => (
+              <AnimatedSentence key={i} visible={visibleSentences[i]}>
+                {parts.map((part, j) =>
+                  typeof part === 'string' ? part :
+                    <Emph key={j} underline={showUnderline && part.underline}>{part.emph}</Emph>
+                )}
+              </AnimatedSentence>
+            ))}
           </Description>
-          <Organizations>
-            <OrgLink href="https://www.cmch-vellore.edu/" target="_blank" rel="noopener noreferrer">
-              <OrgLogo src={cmcLogo} alt="Christian Medical College Vellore" />
-            </OrgLink>
-            <OrgLink href="https://rocketcontest.org/" target="_blank" rel="noopener noreferrer">
-              <OrgLogo src={rockLogo} alt="American Rocketry Challenge" />
-            </OrgLink>
-            <OrgLink href="https://tsaweb.org/" target="_blank" rel="noopener noreferrer">
-              <OrgLogo src={tsaLogo} alt="Technology Student Association" />
-            </OrgLink>
-            <OrgLink href="https://tesla.lwsd.org/" target="_blank" rel="noopener noreferrer">
-              <OrgLogo src={image12} alt="Tesla STEM High School" />
-            </OrgLink>
-            <OrgLink href="https://www.fiverr.com/s/pd8krrY" target="_blank" rel="noopener noreferrer">
-              <OrgLogo src={fiver} alt="Fiverr" />
-            </OrgLink>
-          </Organizations>
         </Content>
         <PictureBoxes>
-          <PictureBox isDarkMode={isDarkMode}>
+          <PictureBox>
             <img src={screenshot} alt="About me" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '8px' }} />
           </PictureBox>
-          <PictureBox isDarkMode={isDarkMode}>
+          <PictureBox>
             <img src={award} alt="Award" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '8px' }} />
           </PictureBox>
         </PictureBoxes>
       </AboutSection>
-
       <TechStackSection>
         <TechStack />
       </TechStackSection>

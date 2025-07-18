@@ -89,11 +89,11 @@ const AppWrapper = ({ currentPage }) => {
   // Inside the AppWrapper component's return statement:
   return (
     <AppContainer currentPage={currentPage} theme={isDarkMode ? 'dark' : 'light'}>
+      <LedGrid />
+      <GradientOverlay />
       <Navbar />
       {currentPage === 'home' && (
         <TopSection>
-          <LedGrid />
-          <GradientOverlay />
           <ContentContainer>
             <Hero />
           </ContentContainer>

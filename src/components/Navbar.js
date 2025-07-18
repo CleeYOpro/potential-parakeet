@@ -54,25 +54,85 @@ const Logo = styled.a`
   text-align: left;
   font-size: 1.6rem;
   font-weight: bold;
-  font-family: 'Pixelify Sans', sans-serif;
+  font-family: var(--font-family-mono), 'Rubik Mono One', monospace;
   color: white;
   margin-right: auto;
   text-decoration: none;
   cursor: pointer;
-  transition: color 0.3s ease;
+  transition: color 0.3s ease, width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: visible;
+  display: inline-block;
+  min-width: 2.5em;
+  min-height: 1.6em;
+  width: 2.5em;
+  box-sizing: content-box;
+  white-space: nowrap;
 
+  .logo-inner {
+    display: inline-block;
+    height: 1.6em;
+    width: 100%;
+    white-space: nowrap;
+    position: relative;
+  }
+  .c-base {
+    display: inline-block;
+    color: var(--primary-color);
+    transition: color 0.3s;
+    z-index: 2;
+    position: relative;
+  }
+  .leo {
+    display: inline-block;
+    overflow: hidden;
+    max-width: 0;
+    opacity: 0;
+    vertical-align: top;
+    transition: max-width 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s;
+    white-space: nowrap;
+    color: white;
+  }
+  .leo span {
+    display: inline-block;
+    padding-left: 0.1em;
+  }
+  .b-base {
+    display: inline-block;
+    color: var(--primary-color);
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    z-index: 2;
+    margin-left: 0.1em;
+  }
+  .alaranjith {
+    display: inline-block;
+    overflow: hidden;
+    max-width: 0;
+    opacity: 0;
+    vertical-align: top;
+    transition: max-width 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s;
+    white-space: nowrap;
+    color: white;
+  } 
+  .alaranjith span {
+    display: inline-block;
+    padding-left: 0.1em;
+  }
   &:hover {
-    color: ${props => props.hoverColor || '#00aaff'}; /* Use the chosen color or default to light blue */
+    width: 15em;
+    min-width: 15em;
   }
-
-  @media (max-width: 768px) {
-    font-size: 1.4rem;
-    flex: 1;
-    margin: 0 0.5rem;
+  &:hover .leo {
+    max-width: 3.5em;
+    opacity: 1;
   }
-
-  @media (max-width: 480px) {
-    font-size: 1.2rem;
+  &:hover .b-base {
+    transform: translateX(0.13em);
+  }
+  &:hover .alaranjith {
+    max-width: 12em;
+    opacity: 1;
   }
 `;
 
@@ -190,7 +250,14 @@ const Navbar = () => {
     <>
       <Nav>
         <NavContainer>
-          <Logo href="#home" hoverColor={ledColor} onClick={handleNavClick}>CLEO BALARANJITH</Logo>
+          <Logo href="#home" hoverColor={ledColor} onClick={handleNavClick}>
+            <span className="logo-inner">
+              <span className="c-base">C</span>
+              <span className="leo"><span>LEO</span></span>
+              <span className="b-base">B</span>
+              <span className="alaranjith"><span>ALARANJITH</span></span>
+            </span>
+          </Logo>
           <NavGroup>
             <NavLink href="#home" onClick={handleNavClick}>Home</NavLink>
             <NavLink href="#about" onClick={handleNavClick}>About</NavLink>

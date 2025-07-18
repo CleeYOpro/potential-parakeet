@@ -1,7 +1,5 @@
 import styled from 'styled-components';
 import AboutMe from './components/AboutMe';
-import LedGrid from './components/LedGrid';
-import GradientOverlay from './components/GradientOverlay';
 
 const AboutPageContainer = styled.div`
   min-height: 100vh;
@@ -22,8 +20,6 @@ const ContentContainer = styled.div`
 const About = () => {
   return (
     <AboutPageContainer>
-      <LedGrid />
-      <GradientOverlay />
       <ContentContainer>
         <AboutMe />
       </ContentContainer>

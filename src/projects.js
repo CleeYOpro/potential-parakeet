@@ -1,7 +1,5 @@
 import styled from 'styled-components';
-import ProjectTimeline from './components/ProjectTimeline';
-import LedGrid from './components/LedGrid';
-import GradientOverlay from './components/GradientOverlay';
+import ProjectGrid from './components/ProjectGrid';
 
 const ProjectsPageContainer = styled.div`
   min-height: 100vh;
@@ -42,11 +40,9 @@ const ProjectsTitle = styled.h1`
 const ProjectsPage = () => {
   return (
     <ProjectsPageContainer>
-      <LedGrid />
-      <GradientOverlay />
       <ContentContainer>
-        <ProjectsTitle>Project Timeline</ProjectsTitle>
-        <ProjectTimeline />
+        <ProjectsTitle>Featured Projects</ProjectsTitle>
+        <ProjectGrid />
       </ContentContainer>
     </ProjectsPageContainer>
   );

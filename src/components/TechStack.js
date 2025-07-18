@@ -1,7 +1,5 @@
-import { useContext } from 'react';
 import styled from 'styled-components';
 import { Icons } from './icons';
-import { ThemeContext } from '../contexts/ThemeContext';
 
 const TechStackContainer = styled.section`
   padding: 2rem;
@@ -15,7 +13,7 @@ const TechStackContainer = styled.section`
 const Title = styled.h2`
   font-size: 1.5rem;
   margin-bottom: 1.5rem;
-  color: ${props => props.isDarkMode ? 'var(--primary-color)' : 'var(--primary-color-light)'};
+  color: var(--primary-color-light);
   text-align: center;
 `;
 
@@ -64,7 +62,7 @@ const IconWrapper = styled.div`
 `;
 
 const IconName = styled.span`
-  color: ${props => props.isDarkMode ? '#666' : '#555'};
+  color: #555;
   font-size: 0.8rem;
   text-align: center;
 `;
@@ -73,31 +71,36 @@ const techStack = [
   { name: 'GitHub', icon: Icons.gitIcon },
   { name: 'ArcGIS', icon: Icons.arcIcon },
   { name: 'OpenStreetMap', icon: Icons.mapIcon },
+  { name: 'Google Earth Engine', icon: require('./imgs/engine.png') },
   { name: 'VS Code', icon: Icons.VSCode },
+  { name: 'Eclipse IDE', icon: require('./imgs/eclipse.png') },
   { name: 'Figma', icon: Icons.Figma },
   { name: 'Framer', icon: Icons.Framer },
   { name: 'Hugging Face', icon: Icons.hugIcon },
   { name: 'JavaScript', icon: Icons.JS },
   { name: 'React', icon: Icons.ReactLogo },
+  { name: 'Node.js', icon: require('./imgs/node.png') },
+  { name: 'Typescript', icon: require('./imgs/ts.png') },
   { name: 'HTML', icon: Icons.HTML },
   { name: 'CSS', icon: Icons.CSS },
   { name: 'Java', icon: Icons.Java },
-  { name: 'Python', icon: Icons.Python }
+  { name: 'Python', icon: Icons.Python },
+  { name: 'Google Firebase', icon: require('./imgs/firebase.png') },
+  { name: 'Supabase', icon: require('./imgs/supa.png') },
+  { name: 'Adobe Illustrator', icon: require('./imgs/ai.png') }
 ];
 
 const TechStack = () => {
-  const { isDarkMode } = useContext(ThemeContext);
-  
   return (
     <TechStackContainer>
-      <Title isDarkMode={isDarkMode}>Tech Stack</Title>
+      <Title>Tech Stack</Title>
       <IconsContainer>
         {techStack.map((tech, index) => (
           <Icon key={index}>
             <IconWrapper>
               <img src={tech.icon} alt={tech.name} />
             </IconWrapper>
-            <IconName isDarkMode={isDarkMode}>{tech.name}</IconName>
+            <IconName>{tech.name}</IconName>
           </Icon>
         ))}
       </IconsContainer>

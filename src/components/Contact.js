@@ -1,7 +1,6 @@
-import { useContext } from 'react';
 import styled from 'styled-components';
-import { ThemeContext } from '../contexts/ThemeContext';
 import { FaGithub, FaLinkedin, FaInstagram, FaDiscord } from 'react-icons/fa';
+import { useState } from 'react';
 
 const ContactContainer = styled.div`
   display: flex;
@@ -23,12 +22,11 @@ const ContactContainer = styled.div`
 
 const Title = styled.h2`
   font-size: 2.5rem;
+  color: var(--primary-color);
   margin-top: 2rem; /* Add space at the top to position below navbar for desktop only */
   margin-bottom: 1.5rem;
-  color: ${props => props.isDarkMode ? '#fff' : '#333'};
   text-align: center;
-  font-family: 'Pixelify Sans', sans-serif;
-  
+  text-shadow: 0 0 10px rgba(0, 85, 255, 0.5);
   @media (max-width: 1024px) {
     font-size: 2rem;
   }
@@ -38,7 +36,7 @@ const Description = styled.p`
   font-size: 1.1rem;
   line-height: 1.6;
   margin-bottom: 2rem;
-  color: ${props => props.isDarkMode ? '#ddd' : '#444'};
+  color: white;
   text-align: center;
   max-width: 700px;
   
@@ -138,15 +136,121 @@ const EmailLink = styled.a`
   }
 `;
 
+const FormContainer = styled.div`
+  width: 100%;
+  max-width: 500px;
+  margin: 2rem auto 1.5rem auto;
+  background: rgba(20, 20, 20, 0.83);
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+`;
+
+const Input = styled.input`
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 4px;
+  border: 1px solid var(--primary-color-light);
+  background: #181818;
+  color: #fff;
+  font-size: 1rem;
+  outline: none;
+`;
+
+const Textarea = styled.textarea`
+  width: 100%;
+  min-height: 100px;
+  padding: 0.75rem 1rem;
+  border-radius: 4px;
+  border: 1px solid var(--primary-color-light);
+  background: #181818;
+  color: #fff;
+  font-size: 1rem;
+  outline: none;
+  resize: vertical;
+`;
+
+const SendButton = styled.button`
+  background: var(--primary-color);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+  align-self: flex-end;
+  &:hover {
+    background: var(--primary-color-dark);
+  }
+`;
+
+const FormMessage = styled.div`
+  color: ${props => props.error ? '#ff5555' : 'var(--primary-color)'};
+  font-size: 1rem;
+  margin-top: 0.5rem;
+  text-align: center;
+`;
+
 const Contact = () => {
-  const { isDarkMode } = useContext(ThemeContext);
+  const [email, setEmail] = useState('');
+  const [message, setMessage] = useState('');
+  const [formMsg, setFormMsg] = useState('');
+  const [formError, setFormError] = useState(false);
+  const [sending, setSending] = useState(false);
+
+  const handleSend = (e) => {
+    e.preventDefault();
+    setFormMsg('');
+    setFormError(false);
+    if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+      setFormMsg('Please enter a valid email address.');
+      setFormError(true);
+      return;
+    }
+    if (!message || message.length < 5) {
+      setFormMsg('Please enter a message.');
+      setFormError(true);
+      return;
+    }
+    setSending(true);
+    setTimeout(() => {
+      setSending(false);
+      setFormMsg('Message sent! (This is a demo, no email was actually sent.)');
+      setFormError(false);
+      setEmail('');
+      setMessage('');
+    }, 1200);
+  };
 
   return (
     <ContactContainer>
-      <Title isDarkMode={isDarkMode}>Contact Me</Title>
-      <Description isDarkMode={isDarkMode}>
+      <Title>Contact Me</Title>
+      <Description>
         You're always welcome to reach out to me on email or social media first — I'm happy to share my phone number if needed after that!
       </Description>
+
+      <FormContainer as="form" onSubmit={handleSend}>
+        <Input
+          type="email"
+          placeholder="Your email address"
+          value={email}
+          onChange={e => setEmail(e.target.value)}
+          disabled={sending}
+        />
+        <Textarea
+          placeholder="Your message"
+          value={message}
+          onChange={e => setMessage(e.target.value)}
+          disabled={sending}
+        />
+        <SendButton type="submit" disabled={sending}>{sending ? 'Sending...' : 'Send'}</SendButton>
+        {formMsg && <FormMessage error={formError}>{formMsg}</FormMessage>}
+      </FormContainer>
 
       <TableContainer>
         <Table>
