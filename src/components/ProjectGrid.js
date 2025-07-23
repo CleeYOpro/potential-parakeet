@@ -187,24 +187,25 @@ const projects = [
   },
   {
     title: 'GrowSmart: A Research Project',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc sit amet ultricies lacinia, nisl nisl aliquam nisl, eget aliquam nisl nisl sit amet nisl.',
-    image: 'https://via.placeholder.com/600x400/222/00aaff?text=Grow+Smart',
-    tech: ['Research', 'Web'],
-    link: '#',
+    description: 'We tackled the challenge of keeping plants healthy in Seattle’s climate by designing an automated indoor care system to fix issues like underwatering, poor lighting, and inconsistent conditions.',
+    image: '/grwsma.png',
+    tech: ['Research', 'Engineering', 'Botany', 'PBL'],
+    link: 'https://nonchalant-flier-bae.notion.site/d5b70b7b30b14757bc5239e26c594806?v=d6636509a7cb4404b510fd03c2784612',
   },
   {
     title: 'Wordle Whiz',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc sit amet ultricies lacinia, nisl nisl aliquam nisl, eget aliquam nisl nisl sit amet nisl.',
-    image: 'https://via.placeholder.com/600x400/222/00aaff?text=Wordle+Whiz',
-    tech: ['Game', 'Web'],
-    link: '#',
+    description: 'An interactive Wordle-solving tool built using the python library CMU CS academy that filters words based on clues using input logic, visuals, and clean UI.',
+    image: '/cs-academy-canvas.png',
+    tech: ['Game', 'Web', 'Python'],
+    link: '/wordle.html',
   },
   {
     title: 'Model Rocket for TARC',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc sit amet ultricies lacinia, nisl nisl aliquam nisl, eget aliquam nisl nisl sit amet nisl.',
-    image: 'https://via.placeholder.com/600x400/222/00aaff?text=Model+Rocket',
+    description: 'Our rocketry team qualified for TARC nationals after overcoming major launch setbacks, refining our design, and achieving near-perfect flight scores through teamwork, grit, and persistence.',
+    image: '/WhatsApp Image 2024-04-07 at 11.00.16 AM.jpeg',
     tech: ['Rocketry', 'STEM'],
-    link: '#',
+    launch: 'https://youtube.com/shorts/ijfCUH0ua78?si=FOFAJj5UrJFGQmuk', // TODO: Replace with actual launch link
+    readMore: 'https://medium.com/@cleobala/launching-dreams-my-rocketry-journey-cacee0deb780', // TODO: Replace with actual read more link
   },
   {
     title: 'The EYW Pinhole Camera',
@@ -237,6 +238,20 @@ const ProjectGrid = () => {
               ))}
             </TechList>
             {/* Project links section */}
+            {project.launch || project.readMore ? (
+              <div style={{ display: 'flex', gap: '0.7rem', alignItems: 'center', marginTop: '0.5rem', justifyContent: 'center' }}>
+                {project.launch && (
+                  <ProjectLink href={project.launch} target="_blank" rel="noopener noreferrer">
+                    ▶ Launch
+                  </ProjectLink>
+                )}
+                {project.readMore && (
+                  <ProjectLink href={project.readMore} target="_blank" rel="noopener noreferrer">
+                    📰 Read More
+                  </ProjectLink>
+                )}
+              </div>
+            ) : null}
             {project.portfolio || project.poster ? (
               <div style={{ display: 'flex', gap: '0.7rem', alignItems: 'center', marginTop: '0.5rem', justifyContent: 'center' }}>
                 {project.portfolio && (

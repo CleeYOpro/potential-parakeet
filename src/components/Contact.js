@@ -203,7 +203,7 @@ const Contact = () => {
   const [formError, setFormError] = useState(false);
   const [sending, setSending] = useState(false);
 
-  const handleSend = (e) => {
+  const handleSend = async (e) => {
     e.preventDefault();
     setFormMsg('');
     setFormError(false);
@@ -218,13 +218,32 @@ const Contact = () => {
       return;
     }
     setSending(true);
-    setTimeout(() => {
-      setSending(false);
-      setFormMsg('Message sent! (This is a demo, no email was actually sent.)');
-      setFormError(false);
-      setEmail('');
-      setMessage('');
-    }, 1200);
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          access_key: '59f0091b-3373-4a30-a7f2-fc521d804457',
+          email,
+          message,
+          subject: 'New Contact Form Submission'
+        })
+      });
+      const data = await res.json();
+      if (data.success) {
+        setFormMsg('Message sent!');
+        setFormError(false);
+        setEmail('');
+        setMessage('');
+      } else {
+        setFormMsg(data.message || 'Failed to send message.');
+        setFormError(true);
+      }
+    } catch (err) {
+      setFormMsg('Failed to send message.');
+      setFormError(true);
+    }
+    setSending(false);
   };
 
   return (
