@@ -207,13 +207,6 @@ const projects = [
     launch: 'https://youtube.com/shorts/ijfCUH0ua78?si=FOFAJj5UrJFGQmuk', // TODO: Replace with actual launch link
     readMore: 'https://medium.com/@cleobala/launching-dreams-my-rocketry-journey-cacee0deb780', // TODO: Replace with actual read more link
   },
-  {
-    title: 'The EYW Pinhole Camera',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc sit amet ultricies lacinia, nisl nisl aliquam nisl, eget aliquam nisl nisl sit amet nisl.',
-    image: 'https://via.placeholder.com/600x400/222/00aaff?text=Pinhole+Camera',
-    tech: ['Photography', 'STEM'],
-    link: '#',
-  },
 ];
 
 const ProjectGrid = () => {
