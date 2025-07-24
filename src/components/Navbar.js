@@ -199,11 +199,6 @@ const IconButton = styled.button`
   }
 `;
 
-const MobileMenuButton = styled(IconButton)`
-  @media (min-width: 769px) {
-    display: none;
-  }
-`;
 
 const SettingsButton = styled(IconButton)`
   margin-left: 1.7rem;
@@ -213,26 +208,6 @@ const SettingsButton = styled(IconButton)`
   }
 `;
 
-const MobileMenu = styled.div`
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  background: rgba(61, 61, 61, 0.7);
-  backdrop-filter: blur(8px);
-  padding: 2rem;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 2rem;
-  z-index: 999;
-
-  @media (max-width: 768px) {
-    display: ${props => (props.isOpen ? 'flex' : 'none')};
-  }
-`;
 
 const DropdownContainer = styled.div`
   position: relative;
