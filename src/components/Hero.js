@@ -1,8 +1,6 @@
 import styled, { keyframes } from 'styled-components';
 import SocialIcons from './SocialIcons';
-import aiImg from './imgs/6f5a8371-8a59-4b38-a637-70777158f5d3.jpeg';
-import gisImg from './imgs/output.jpg';
-import engImg from './imgs/e3159cdb-41e7-4064-a1fe-b7c51ab3f8e8.jpeg';
+
 
 const shine = keyframes`
   0% {
@@ -116,13 +114,18 @@ const ContactButton = styled.a`
   font-weight: bold;
   font-size: 1.1rem;
   padding: 0.7em 1.4em;
-  border-radius: 8px;
+  border-radius: 2.5rem;
   margin-top: 1.2rem;
   text-decoration: none;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.18);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18), 0 1.5px 8px 0 rgba(0,0,0,0.10);
+  border: 1.5px solid rgba(255,255,255,0.13);
+  backdrop-filter: blur(18px) saturate(1.5);
+  -webkit-backdrop-filter: blur(18px) saturate(1.5);
+  opacity: 0.97;
   transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
   cursor: pointer;
   gap: 0.7em;
+  font-family: var(--font-family);
   &:hover {
     background: var(--primary-color-dark, #0044aa);
     transform: translateY(-2px) scale(1.04);
@@ -146,21 +149,6 @@ const IconsContainer = styled.div`
   margin-top: 1rem;
 `;
 
-const InlineImg = styled.img`
-  display: inline-block;
-  height: 1.5em;
-  width: auto;
-  border-radius: 10%;
-  margin: 0 0.2em;
-  vertical-align: middle;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-  transition: transform 0.2s, box-shadow 0.2s;
-  cursor: pointer;
-  &:hover {
-    transform: scale(1.15) rotate(-5deg);
-    box-shadow: 0 4px 16px rgba(0,0,0,0.25);
-  }
-`;
 
 const Hero = () => {
   return (
@@ -173,14 +161,9 @@ const Hero = () => {
             target="_blank"
             rel="noopener noreferrer"
           >
-            Student Full Stack Developer @ Tesla STEM{" "}
+            Student Full Stack Developer @ Tesla STEM.{" "}
           </TeslaLink>
-          Effective <WorkLink href="#projects">work</WorkLink> in AI{" "}
-          <InlineImg src={aiImg} alt="AI" />
-          , GIS{" "}
-          <InlineImg src={gisImg} alt="GIS" />
-          , web, business, and engineering{" "}
-          <InlineImg src={engImg} alt="Engineering" />
+          Effective <WorkLink href="#projects">work</WorkLink> in AI, GIS, web, business, and engineering
           . <HighlightedText>Let’s build what’s next.</HighlightedText>
         </Description>
         <ContactButton href="#contact">

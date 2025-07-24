@@ -1,7 +1,7 @@
 import { useState, useContext } from 'react';
 import styled from 'styled-components';
-import UnderConstructionModal from './UnderConstructionModal';
 import SettingsModal from './SettingsModal';
+import WorkInProgressModal from './WorkInProgressModal';
 import { ThemeContext } from '../contexts/ThemeContext';
 
 
@@ -200,6 +200,7 @@ const IconButton = styled.button`
 `;
 
 
+
 const SettingsButton = styled(IconButton)`
   margin-left: 1.7rem;
   transition: margin 0.3s;
@@ -207,6 +208,7 @@ const SettingsButton = styled(IconButton)`
     margin-left: 0.7rem;
   }
 `;
+
 
 
 const DropdownContainer = styled.div`
@@ -278,11 +280,12 @@ const DropdownItem = styled.a`
 
 
 const Navbar = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [dropdownHover, setDropdownHover] = useState(false);
   const [logoHover, setLogoHover] = useState(false);
+  const [showWip, setShowWip] = useState(false);
   const { ledColor } = useContext(ThemeContext);
 
   const handleNavClick = (e) => {
@@ -299,12 +302,14 @@ const Navbar = () => {
     } else if (href === '#projects') {
       window.location.hash = 'projects';
     } else if (href === '#reading-list') {
-      window.location.hash = 'reading-list';
+      setShowWip(true); // Show the Work In Progress modal
+      return;
     } else if (href === '#blog') {
       window.location.hash = 'blog';
-    } else {
-      setIsModalOpen(true);
-    }
+    } 
+    //else {
+      //setIsModalOpen(true);
+    //}
     setDropdownOpen(false);
   };
 
@@ -388,8 +393,9 @@ const Navbar = () => {
         </NavContainer>
       </Nav>
       {/* Modals */}
-      <UnderConstructionModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      
       <SettingsModal isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
+      <WorkInProgressModal isOpen={showWip} onClose={() => setShowWip(false)} />
     </>
   );
 };

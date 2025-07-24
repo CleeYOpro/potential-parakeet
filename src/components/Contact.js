@@ -156,43 +156,57 @@ const FormContainer = styled.div`
   gap: 1.2rem;
 `;
 
-const Input = styled.input`
-  width: 100%;
-  padding: 0.75rem 1rem;
-  border-radius: 4px;
-  border: 1px solid var(--primary-color-light);
-  background: #181818;
+const GlassyInput = styled.input`
+  background: rgba(31, 30, 30, 0.8);
+  backdrop-filter: blur(18px) saturate(1.5);
+  -webkit-backdrop-filter: blur(18px) saturate(1.5);
+  border-radius: 1.2rem;
+  border: 1.5px solid rgba(255,255,255,0.13);
+  box-shadow: 0 4px 16px 0 rgba(31, 38, 135, 0.10), 0 1.5px 8px 0 rgba(0,0,0,0.08);
   color: #fff;
   font-size: 1rem;
+  padding: 0.9rem 1.2rem;
+  margin-bottom: 1.2rem;
+  width: 100%;
+  font-family: var(--font-family);
   outline: none;
+  transition: background 0.3s, box-shadow 0.3s;
 `;
 
-const Textarea = styled.textarea`
-  width: 100%;
-  min-height: 100px;
-  padding: 0.75rem 1rem;
-  border-radius: 4px;
-  border: 1px solid var(--primary-color-light);
-  background: #181818;
+const GlassyTextarea = styled.textarea`
+  background: rgba(31, 30, 30, 0.8);
+  backdrop-filter: blur(18px) saturate(1.5);
+  -webkit-backdrop-filter: blur(18px) saturate(1.5);
+  border-radius: 1.2rem;
+  border: 1.5px solid rgba(255,255,255,0.13);
+  box-shadow: 0 4px 16px 0 rgba(31, 38, 135, 0.10), 0 1.5px 8px 0 rgba(0,0,0,0.08);
   color: #fff;
   font-size: 1rem;
+  padding: 0.9rem 1.2rem;
+  margin-bottom: 1.2rem;
+  width: 100%;
+  font-family: var(--font-family);
   outline: none;
+  min-height: 120px;
   resize: vertical;
+  transition: background 0.3s, box-shadow 0.3s;
 `;
 
-const SendButton = styled.button`
-  background: var(--primary-color);
+const GlassyButton = styled.button`
+  background: var(--primary-color, #4f8cff);
   color: #fff;
   border: none;
-  border-radius: 4px;
-  padding: 0.75rem 2rem;
-  font-size: 1rem;
-  font-weight: bold;
+  border-radius: 1.2rem;
+  padding: 0.9rem 2.2rem;
+  font-size: 1.1rem;
+  font-family: var(--font-family);
+  box-shadow: 0 4px 16px 0 rgba(31, 38, 135, 0.10), 0 1.5px 8px 0 rgba(0,0,0,0.08);
+  backdrop-filter: blur(18px) saturate(1.5);
+  -webkit-backdrop-filter: blur(18px) saturate(1.5);
   cursor: pointer;
-  transition: background 0.2s;
-  align-self: flex-end;
+  transition: background 0.3s, box-shadow 0.3s;
   &:hover {
-    background: var(--primary-color-dark);
+    background: var(--primary-color-hover, #3570d4);
   }
 `;
 
@@ -261,20 +275,22 @@ const Contact = () => {
       </Description>
 
       <FormContainer as="form" onSubmit={handleSend}>
-        <Input
+        <GlassyInput
           type="email"
           placeholder="Your email address"
           value={email}
           onChange={e => setEmail(e.target.value)}
           disabled={sending}
+          required
         />
-        <Textarea
+        <GlassyTextarea
           placeholder="Your message"
           value={message}
           onChange={e => setMessage(e.target.value)}
           disabled={sending}
+          required
         />
-        <SendButton type="submit" disabled={sending}>{sending ? 'Sending...' : 'Send'}</SendButton>
+        <GlassyButton type="submit" disabled={sending}>{sending ? 'Sending...' : 'Send'}</GlassyButton>
         {formMsg && <FormMessage error={formError}>{formMsg}</FormMessage>}
       </FormContainer>
 

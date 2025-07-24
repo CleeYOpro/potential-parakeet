@@ -8,6 +8,8 @@ import About from './about';
 import Contact from './contact';
 import { ThemeProvider } from './contexts/ThemeContext';
 import Projects from './projects';
+import Blog from './components/Blog';
+
 
 const AppContainer = styled.div`
   min-height: 100vh;
@@ -107,6 +109,9 @@ const AppWrapper = ({ currentPage }) => {
       )}
       {currentPage === 'contact' && (
         <Contact />
+      )}
+      {currentPage === 'blog' && (
+        <Blog />
       )}
     </AppContainer>
   );

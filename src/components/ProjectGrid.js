@@ -109,11 +109,17 @@ const TechList = styled.ul`
 `;
 
 const TechItem = styled.li`
-  background: var(--primary-color);
+  background: rgba(31, 30, 30, 0.8);
   color: #fff;
-  border-radius: 4px;
-  padding: 0.2rem 0.7rem;
+  border-radius: 1.2rem;
+  padding: 0.2rem 0.9rem;
   font-size: 0.85rem;
+  border: 1px solid rgba(255,255,255,0.13);
+  box-shadow: 0 4px 16px 0 rgba(31, 38, 135, 0.10), 0 1.5px 8px 0 rgba(0,0,0,0.08);
+  backdrop-filter: blur(18px) saturate(1.5);
+  -webkit-backdrop-filter: blur(18px) saturate(1.5);
+  font-family: var(--font-family);
+  margin-bottom: 2px;
 `;
 
 const ProjectLink = styled.a`
@@ -193,7 +199,7 @@ const projects = [
     award: '1st place',
     level: 'Washington',
     image: '/urm.png',
-    tech: ['GIS Mapping', 'Data Analysis', 'Python', 'Research', 'Disaster Response'],
+    tech: [ 'Data Analysis', 'Python', 'Disaster Response','GIS'],
     pdf: 'https://drive.google.com/file/d/1gLBq9b4jJ90F_pYGyh_cpTNpMdKyHJj-/view?usp=sharing', // Add this line
     github: 'https://github.com/CleeYOpro/seattle_fault_project', // Add this line
   },
@@ -228,10 +234,10 @@ const projects = [
     link: '/wordle.html',
   },
   {
-    title: 'Model Rocket for TARC',
-    description: 'Our rocketry team qualified for TARC nationals after overcoming major launch setbacks, refining our design, and achieving near-perfect flight scores through teamwork, grit, and persistence.',
+    title: 'Rocket for TARC',
+    description: 'Our rocketry team built a working model rocket to qualify for TARC nationals after overcoming major launch setbacks, refining our design, and achieving near-perfect flight scores.',
     image: '/WhatsApp Image 2024-04-07 at 11.00.16 AM.jpeg',
-    tech: ['Rocketry', 'STEM'],
+    tech: ['Data Analysis', 'Rocket Engineering'],
     launch: 'https://youtube.com/shorts/ijfCUH0ua78?si=FOFAJj5UrJFGQmuk', // TODO: Replace with actual launch link
     readMore: 'https://medium.com/@cleobala/launching-dreams-my-rocketry-journey-cacee0deb780', // TODO: Replace with actual read more link
   },
@@ -350,4 +356,4 @@ const ProjectGrid = () => {
   );
 };
 
-export default ProjectGrid; 
+export default ProjectGrid;
