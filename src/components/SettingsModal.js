@@ -17,15 +17,19 @@ const ModalOverlay = styled.div`
 `;
 
 const ModalContent = styled.div`
-  background: rgba(32, 32, 32, 0.9);
+  background: rgba(31, 30, 30, 0.8);
+  opacity: 1;
+  backdrop-filter: blur(400px) saturate(1.8);
+  -webkit-backdrop-filter: blur(400px) saturate(1.8);
+  border-radius: 2.5rem 2.5rem 2.5rem 2.5rem / 2.2rem 2.2rem 2.2rem 2.2rem;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18), 0 1.5px 8px 0 rgba(0,0,0,0.10);
+  border: 1.5px solid rgba(255,255,255,0.13);
   padding: 2rem;
-  border-radius: 8px;
   text-align: center;
   color: #fff;
   max-width: 400px;
   width: 90%;
   position: relative;
-  border: 1px solid rgba(255, 255, 255, 0.1);
 `;
 
 const Title = styled.h2`
@@ -101,23 +105,26 @@ const ButtonGroup = styled.div`
 const Button = styled.button`
   background: ${props => props.primary
     ? 'var(--primary-color)'
-    : 'transparent'};
+    : 'rgba(31, 30, 30, 0.8)'};
   color: ${props => props.primary
     ? '#fff'
     : 'var(--primary-color)'};
   border: ${props => props.primary
     ? 'none'
-    : '1px solid var(--primary-color)'};
+    : '1.5px solid var(--primary-color)'};
   padding: 0.5rem 1.5rem;
-  border-radius: 4px;
+  border-radius: 2.5rem 2.5rem 2.5rem 2.5rem / 2.2rem 2.2rem 2.2rem 2.2rem;
+  box-shadow: 0 4px 16px 0 rgba(31, 38, 135, 0.10);
+  font-family: var(--font-family);
+  font-size: 1rem;
   cursor: pointer;
-  font-family: 'Pixelify Sans', system-ui;
   transition: all 0.3s ease;
-
+  margin: 0 0.2rem;
   &:hover {
     background: ${props => props.primary
     ? 'var(--primary-color-dark)'
-    : 'rgba(0, 102, 255, 0.1)'};
+    : 'rgba(0, 102, 255, 0.13)'};
+    color: #fff;
   }
 `;
 

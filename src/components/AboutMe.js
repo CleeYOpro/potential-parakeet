@@ -27,9 +27,13 @@ const AboutSection = styled.div`
   display: flex;
   justify-content: center;
   gap: 2rem;
-  background: rgba(20, 20, 20, 0.8);
-  backdrop-filter: blur(2px);
-  border-radius: 8px;
+  background: rgba(31, 30, 30, 0.8);
+  opacity: 1;
+  backdrop-filter: blur(400px) saturate(1.8);
+  -webkit-backdrop-filter: blur(400px) saturate(1.8);
+  border-radius: 2.5rem 2.5rem 2.5rem 2.5rem / 2.2rem 2.2rem 2.2rem 2.2rem;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18), 0 1.5px 8px 0 rgba(0,0,0,0.10);
+  border: 1.5px solid rgba(255,255,255,0.13);
   padding: 2rem;
   
   @media (max-width: 768px) {
@@ -96,8 +100,13 @@ const PictureBoxes = styled.div`
 const PictureBox = styled.div`
   width: 100%;
   height: 200px;
-  background: var(--card-bg-light);
-  border-radius: 8px;
+  background: rgba(31, 30, 30, 0.8);
+  opacity: 1;
+  backdrop-filter: blur(400px) saturate(1.8);
+  -webkit-backdrop-filter: blur(400px) saturate(1.8);
+  border-radius: 2.5rem 2.5rem 2.5rem 2.5rem / 2.2rem 2.2rem 2.2rem 2.2rem;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18), 0 1.5px 8px 0 rgba(0,0,0,0.10);
+  border: 1.5px solid rgba(255,255,255,0.13);
   overflow: hidden;
   transition: transform 0.3s ease;
 
@@ -113,9 +122,13 @@ const PictureBox = styled.div`
 const TechStackSection = styled.div`
   margin-top: 1rem;
   width: 100%;
-  background: rgba(20, 20, 20, 0.8);
-  backdrop-filter: blur(2px);
-  border-radius: 8px;
+  background: rgba(31, 30, 30, 0.8);
+  opacity: 1;
+  backdrop-filter: blur(400px) saturate(1.8);
+  -webkit-backdrop-filter: blur(400px) saturate(1.8);
+  border-radius: 2.5rem 2.5rem 2.5rem 2.5rem / 2.2rem 2.2rem 2.2rem 2.2rem;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18), 0 1.5px 8px 0 rgba(0,0,0,0.10);
+  border: 1.5px solid rgba(255,255,255,0.13);
   padding: 2rem;
   
   @media (max-width: 768px) {

@@ -49,11 +49,14 @@ const TableContainer = styled.div`
   width: 100%;
   max-width: 700px;
   margin-bottom: 3rem;
-  background: rgba(20, 20, 20, 0.83);
-  backdrop-filter: blur(2px);
-  border-radius: 8px;
+  background: rgba(31, 30, 30, 0.8);
+  opacity: 1;
+  backdrop-filter: blur(400px) saturate(1.8);
+  -webkit-backdrop-filter: blur(400px) saturate(1.8);
+  border-radius: 2.5rem 2.5rem 2.5rem 2.5rem / 2.2rem 2.2rem 2.2rem 2.2rem;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18), 0 1.5px 8px 0 rgba(0,0,0,0.10);
+  border: 1.5px solid rgba(255,255,255,0.13);
   padding: 1.5rem;
-  
   @media (max-width: 768px) {
     padding: 1rem;
   }
@@ -140,10 +143,14 @@ const FormContainer = styled.div`
   width: 100%;
   max-width: 700px;
   margin: 2rem auto 1.5rem auto;
-  background: rgba(20, 20, 20, 0.83);
-  border-radius: 8px;
+  background: rgba(31, 30, 30, 0.8);
+  opacity: 1;
+  backdrop-filter: blur(400px) saturate(1.8);
+  -webkit-backdrop-filter: blur(400px) saturate(1.8);
+  border-radius: 2.5rem 2.5rem 2.5rem 2.5rem / 2.2rem 2.2rem 2.2rem 2.2rem;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18), 0 1.5px 8px 0 rgba(0,0,0,0.10);
+  border: 1.5px solid rgba(255,255,255,0.13);
   padding: 1.5rem;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
