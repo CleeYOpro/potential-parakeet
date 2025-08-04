@@ -106,43 +106,6 @@ const WorkLink = styled.a`
   }
 `;
 
-const ContactButton = styled.a`
-  display: inline-flex;
-  align-items: center;
-  background: var(--primary-color);
-  color: #fff;
-  font-weight: bold;
-  font-size: 1.1rem;
-  padding: 0.7em 1.4em;
-  border-radius: 2.5rem;
-  margin-top: 1.2rem;
-  text-decoration: none;
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18), 0 1.5px 8px 0 rgba(0,0,0,0.10);
-  border: 1.5px solid rgba(255,255,255,0.13);
-  backdrop-filter: blur(18px) saturate(1.5);
-  -webkit-backdrop-filter: blur(18px) saturate(1.5);
-  opacity: 0.97;
-  transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
-  cursor: pointer;
-  gap: 0.7em;
-  font-family: var(--font-family);
-  &:hover {
-    background: var(--primary-color-dark, #0044aa);
-    transform: translateY(-2px) scale(1.04);
-    box-shadow: 0 4px 20px rgba(0,0,0,0.28);
-    text-decoration: none;
-  }
-`;
-
-const Arrow = styled.span`
-  font-size: 1.3em;
-  margin-left: 0.2em;
-  transition: transform 0.2s;
-  ${ContactButton}:hover & {
-    transform: translateX(4px);
-  }
-`;
-
 const IconsContainer = styled.div`
   display: flex;
   justify-content: left;
@@ -166,9 +129,13 @@ const Hero = () => {
           Effective <WorkLink href="#projects">work</WorkLink> in AI, GIS, web, business, and engineering
           . <HighlightedText>Let’s build what’s next.</HighlightedText>
         </Description>
-        <ContactButton href="#contact">
-          Get in touch <Arrow>&rarr;</Arrow>
-        </ContactButton>
+        <NotesBox
+          href="https://emojifycleofus.vercel.app/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          make
+        </NotesBox>
         <IconsContainer>
           <SocialIcons />
         </IconsContainer>
