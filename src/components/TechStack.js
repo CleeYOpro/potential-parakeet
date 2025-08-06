@@ -87,7 +87,7 @@ const techStack = [
   { name: 'Supabase', icon: require('./imgs/supa.png') },
   { name: 'MongoDB', icon: require('./imgs/mongo.png')},
   { name: 'Adobe Illustrator', icon: require('./imgs/ai.png') },
-  
+  { name: 'Open Rocket', icon: require('./imgs/openrocket.png')}
 ];
 
 const TechStack = () => {
