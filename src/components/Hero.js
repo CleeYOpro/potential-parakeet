@@ -1,7 +1,6 @@
 import styled, { keyframes } from 'styled-components';
 import SocialIcons from './SocialIcons';
 
-
 const shine = keyframes`
   0% {
     background-position: -100% center;
@@ -62,7 +61,7 @@ const Description = styled.p`
 const HighlightedText = styled.span`
   color: var(--primary-color);
   transition: all 0.3s ease;
-  
+
   &:hover {
     background: linear-gradient(
       120deg,
@@ -112,7 +111,6 @@ const IconsContainer = styled.div`
   margin-top: 1rem;
 `;
 
-
 const Hero = () => {
   return (
     <HeroContainer>
@@ -129,13 +127,6 @@ const Hero = () => {
           Effective <WorkLink href="#projects">work</WorkLink> in AI, GIS, web, business, and engineering
           . <HighlightedText>Let’s build what’s next.</HighlightedText>
         </Description>
-        <NotesBox
-          href="https://emojifycleofus.vercel.app/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          make
-        </NotesBox>
         <IconsContainer>
           <SocialIcons />
         </IconsContainer>

@@ -129,14 +129,16 @@ const Button = styled.button`
 `;
 
 const Disclaimer = styled.div`
-  color: #ffcc00;
-  background: rgba(40,40,0,0.15);
+  color: ${props => props.isMonochrome ? '#bbb' : '#ffcc00'};
+  background: ${props => props.isMonochrome ? 'rgba(80,80,80,0.15)' : 'rgba(40,40,0,0.15)'};
   border-radius: 4px;
   padding: 0.5rem 1rem;
   margin-top: 0.5rem;
   font-size: 0.95rem;
   text-align: center;
 `;
+
+
 
 const SettingsModal = ({ isOpen, onClose }) => {
   // Get theme context
@@ -153,12 +155,12 @@ const SettingsModal = ({ isOpen, onClose }) => {
 
   // Color options
   const colorOptions = [
-    { name: 'Blue', value: '#0055ff' },
-    { name: 'Green', value: '#00ff66' },
-    { name: 'Red', value: '#ff3333' },
-    { name: 'Yellow', value: '#ffcc00' },
-    { name: 'Cyan', value: '#00ffff' },
-    { name: 'Pink', value: '#ff66ff' }
+    { name: 'Claude Orange', value: '#DA7453' },
+    { name: 'Kiro AI Purple', value: '#8D45FF' },
+    { name: 'LinkedIn Blue', value: '#006CBF' },
+    { name: 'Matrix Green', value: '#00FF41' },
+    { name: 'Starbucks Green', value: '#007042' },
+    
   ];
 
   // Pattern options
@@ -225,6 +227,8 @@ const SettingsModal = ({ isOpen, onClose }) => {
             </Disclaimer>
           )}
         </SettingsGroup>
+
+
 
         <ButtonGroup>
           <Button onClick={handleCancel}>

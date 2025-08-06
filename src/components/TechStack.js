@@ -69,25 +69,25 @@ const IconName = styled.span`
 
 const techStack = [
   { name: 'GitHub', icon: Icons.gitIcon },
+  { name: 'Hugging Face', icon: Icons.hugIcon },
   { name: 'ArcGIS', icon: Icons.arcIcon },
   { name: 'OpenStreetMap', icon: Icons.mapIcon },
-  { name: 'Google Earth Engine', icon: require('./imgs/engine.png') },
   { name: 'VS Code', icon: Icons.VSCode },
   { name: 'Eclipse IDE', icon: require('./imgs/eclipse.png') },
   { name: 'Figma', icon: Icons.Figma },
   { name: 'Framer', icon: Icons.Framer },
-  { name: 'Hugging Face', icon: Icons.hugIcon },
   { name: 'JavaScript', icon: Icons.JS },
+  { name: 'Typescript', icon: require('./imgs/ts.png') },
   { name: 'React', icon: Icons.ReactLogo },
   { name: 'Node.js', icon: require('./imgs/node.png') },
-  { name: 'Typescript', icon: require('./imgs/ts.png') },
   { name: 'HTML', icon: Icons.HTML },
   { name: 'CSS', icon: Icons.CSS },
   { name: 'Java', icon: Icons.Java },
   { name: 'Python', icon: Icons.Python },
-  { name: 'Google Firebase', icon: require('./imgs/firebase.png') },
   { name: 'Supabase', icon: require('./imgs/supa.png') },
-  { name: 'Adobe Illustrator', icon: require('./imgs/ai.png') }
+  { name: 'MongoDB', icon: require('./imgs/mongo.png')},
+  { name: 'Adobe Illustrator', icon: require('./imgs/ai.png') },
+  
 ];
 
 const TechStack = () => {
