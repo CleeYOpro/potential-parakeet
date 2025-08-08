@@ -8,16 +8,14 @@ import {
 } from 'react';
 import { ThemeContext } from '../contexts/ThemeContext';
 
-const CURSOR_FADE_MS = 1200;
-
 const LedGrid = () => {
   const [pixels, setPixels] = useState([]);
   const [opacity, setOpacity] = useState(1);
   const { ledColor, ledPattern } = useContext(ThemeContext);
   const matrixRef = useRef({ drops: [] });
   const randomRef = useRef({ timers: [] });
-  const [cursorLeds, setCursorLeds] = useState({});
   const lastMouseCell = useRef({ row: -1, col: -1 });
+  const [cursorCenter, setCursorCenter] = useState({ row: -1, col: -1 });
 
   const gridSize = 50;
   const totalPixels = useMemo(() => gridSize * gridSize, [gridSize]);
@@ -74,7 +72,7 @@ const LedGrid = () => {
           col,
           headY: 0,
           speed: 0.5 + Math.random() * 0.5,
-          length: Math.floor(Math.random() * 20) + 9,
+          length: Math.floor(Math.random() * 20),
         });
       }
     }
@@ -95,7 +93,7 @@ const LedGrid = () => {
 
       if (stream.headY - stream.length > gridSize) {
         stream.headY = 0;
-        stream.length = Math.floor(Math.random() * 20) + 9;
+        stream.length = Math.floor(Math.random() * 20);
         stream.speed = 0.5 + Math.random() * 0.5;
       }
     });
@@ -172,7 +170,7 @@ const LedGrid = () => {
     };
   }, [handleScroll, getUpdateFunction, totalPixels, ledPattern]);
 
-  // Cursor effect: trail centered and no flickering
+  // Cursor effect: solid circle, no fade
   useEffect(() => {
     if (ledPattern !== 'cursor') return;
 
@@ -181,91 +179,77 @@ const LedGrid = () => {
 
     const handleMouseMove = (e) => {
       const rect = grid.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
 
-      const cellWidth = rect.width / gridSize;
-      const cellHeight = rect.height / gridSize;
+      const totalPaddingX = 8 * 2;
+      const totalPaddingY = 8 * 2;
 
-      const col = Math.floor(x / cellWidth);
-      const row = Math.floor(y / cellHeight) - 9;
+      const totalGapX = (gridSize - 1) * 8;
+      const totalGapY = (gridSize - 1) * 8;
+
+      const usableWidth = rect.width - totalPaddingX - totalGapX;
+      const usableHeight = rect.height - totalPaddingY - totalGapY;
+
+      const cellWidth = usableWidth / gridSize;
+      const cellHeight = usableHeight / gridSize;
+
+      const x = e.clientX - rect.left - 8;
+      const y = e.clientY - rect.top - 8;
+
+      const col = Math.floor(x / (cellWidth + 8));
+      const row = Math.floor(y / (cellHeight + 8));
+
+      const clampedCol = Math.min(Math.max(col, 0), gridSize - 1);
+      const clampedRow = Math.min(Math.max(row, 0), gridSize - 1);
 
       if (
-        lastMouseCell.current.row === row &&
-        lastMouseCell.current.col === col
+        lastMouseCell.current &&
+        lastMouseCell.current.row === clampedRow &&
+        lastMouseCell.current.col === clampedCol
       )
         return;
 
-      lastMouseCell.current = { row, col };
+      lastMouseCell.current = { row: clampedRow, col: clampedCol };
 
-      const radius = 1;
-      const now = Date.now();
-
-      setCursorLeds((prev) => {
-        const updated = { ...prev };
-        for (let r = row - radius; r <= row + radius; r++) {
-          for (let c = col - radius; c <= col + radius; c++) {
-            if (r >= 0 && r < gridSize && c >= 0 && c < gridSize) {
-              const index = r * gridSize + c;
-              updated[index] = now;
-            }
-          }
-        }
-        return updated;
-      });
+      setCursorCenter({ row: clampedRow, col: clampedCol });
     };
 
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, [gridSize, ledPattern]);
 
-  // Cleanup old cursor trail pixels over time
-  useEffect(() => {
-    if (ledPattern !== 'cursor') return;
-
-    let animationFrame;
-
-    const clean = () => {
-      const now = Date.now();
-      setCursorLeds((prev) => {
-        const next = {};
-        for (const key in prev) {
-          if (now - prev[key] < CURSOR_FADE_MS) {
-            next[key] = prev[key];
-          }
-        }
-        return next;
-      });
-      animationFrame = requestAnimationFrame(clean);
-    };
-
-    animationFrame = requestAnimationFrame(clean);
-    return () => cancelAnimationFrame(animationFrame);
-  }, [ledPattern]);
+  const radius = 15; // solid circle radius
 
   const pixelElements = useMemo(() => {
-    const now = Date.now();
-
     if (ledPattern === 'cursor') {
-      return Array(totalPixels).fill(0).map((_, index) => {
-        const litTime = cursorLeds[index];
-        if (!litTime) return <div key={index} className="led-pixel" />;
+      if (cursorCenter.row === -1) {
+        return Array(totalPixels)
+          .fill(0)
+          .map((_, index) => <div key={index} className="led-pixel" />);
+      }
 
-        const elapsed = now - litTime;
-        if (elapsed > CURSOR_FADE_MS) return <div key={index} className="led-pixel" />;
+      return Array(totalPixels)
+        .fill(0)
+        .map((_, index) => {
+          const row = Math.floor(index / gridSize);
+          const col = index % gridSize;
 
-        const intensity = 1 - elapsed / CURSOR_FADE_MS;
-        return (
-          <div
-            key={index}
-            className="led-pixel on"
-            style={{
-              backgroundColor: ledColor,
-              opacity: intensity,
-            }}
-          />
-        );
-      });
+          const dist = Math.sqrt(
+            (row - cursorCenter.row) ** 2 + (col - cursorCenter.col) ** 2
+          );
+
+          // Just ON/OFF circle, no opacity fade
+          if (dist <= radius) {
+            return (
+              <div
+                key={index}
+                className="led-pixel on"
+                style={{ backgroundColor: ledColor }}
+              />
+            );
+          } else {
+            return <div key={index} className="led-pixel" />;
+          }
+        });
     }
 
     return pixels.map((isOn, index) => (
@@ -275,7 +259,7 @@ const LedGrid = () => {
         style={isOn ? { backgroundColor: ledColor } : {}}
       />
     ));
-  }, [pixels, ledColor, cursorLeds, ledPattern, totalPixels]);
+  }, [pixels, ledColor, cursorCenter, ledPattern, totalPixels]);
 
   return (
     <div
