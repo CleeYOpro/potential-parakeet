@@ -128,15 +128,6 @@ const Button = styled.button`
   }
 `;
 
-const Disclaimer = styled.div`
-  color: ${props => props.isMonochrome ? '#bbb' : '#ffcc00'};
-  background: ${props => props.isMonochrome ? 'rgba(80,80,80,0.15)' : 'rgba(40,40,0,0.15)'};
-  border-radius: 4px;
-  padding: 0.5rem 1rem;
-  margin-top: 0.5rem;
-  font-size: 0.95rem;
-  text-align: center;
-`;
 
 
 
@@ -221,11 +212,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
               </PatternOption>
             ))}
           </PatternOptions>
-          {localLedPattern === 'cursor' && (
-            <Disclaimer>
-              The Cursor pattern is still under development and may not work perfectly yet.
-            </Disclaimer>
-          )}
+
         </SettingsGroup>
 
 

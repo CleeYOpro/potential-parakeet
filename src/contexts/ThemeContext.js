@@ -9,10 +9,10 @@ export const ThemeProvider = ({ children }) => {
   const [isDarkMode, setIsDarkMode] = useState(true); // Default to dark mode
 
   // State for LED color
-  const [ledColor, setLedColor] = useState('#0055ff'); // Default blue
+  const [ledColor, setLedColor] = useState('#DA7453'); // Default orange
 
   // State for LED pattern
-  const [ledPattern, setLedPattern] = useState('wave'); // Default wave
+  const [ledPattern, setLedPattern] = useState('cursor'); // Default wave
 
   // Toggle dark mode
   const toggleDarkMode = (value) => {
@@ -94,7 +94,7 @@ export const ThemeProvider = ({ children }) => {
       document.documentElement.style.setProperty('--primary-color-light', calculateLighterColor(savedLedColor));
     } else {
       // Set default color variables
-      document.documentElement.style.setProperty('--primary-color', '#0055ff');
+      document.documentElement.style.setProperty('--primary-color', '#DA7453');
       document.documentElement.style.setProperty('--primary-color-dark', '#0044cc');
       document.documentElement.style.setProperty('--primary-color-light', '#3377ff');
     }
