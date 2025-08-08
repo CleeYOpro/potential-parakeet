@@ -302,8 +302,7 @@ const Navbar = () => {
     } else if (href === '#projects') {
       window.location.hash = 'projects';
     } else if (href === '#reading-list') {
-      setShowWip(true); // Show the Work In Progress modal
-      return;
+      window.location.hash = 'reading-list';
     } else if (href === '#blog') {
       window.location.hash = 'blog';
     } 

@@ -220,13 +220,6 @@ const projects = [
     github: 'https://github.com/CleeYOpro/CMC-project',
   },
   {
-    title: 'GrowSmart: A Research Project',
-    description: 'We tackled the challenge of keeping plants healthy in Seattle’s climate by designing an automated indoor care system to fix issues like underwatering, poor lighting, and inconsistent conditions.',
-    image: '/grwsma.png',
-    tech: ['Research', 'Engineering', 'Botany', 'PBL'],
-    link: 'https://nonchalant-flier-bae.notion.site/d5b70b7b30b14757bc5239e26c594806?v=d6636509a7cb4404b510fd03c2784612',
-  },
-  {
     title: 'Wordle Whiz',
     description: 'An interactive Wordle-solving tool built using the python library CMU CS academy that filters words based on clues using input logic, visuals, and clean UI.',
     image: '/cs-academy-canvas.png',
