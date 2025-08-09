@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 
 const BookCardContainer = styled.div`
@@ -82,7 +82,7 @@ const BookCardContainer = styled.div`
 
 const BookImageContainer = styled.div`
   width: 100%;
-  height: 250px;
+  aspect-ratio: 2/3;
   background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
   display: flex;
   align-items: center;
@@ -112,7 +112,7 @@ const BookImage = styled.img`
   
   /* Ensure proper aspect ratio for book covers */
   aspect-ratio: 2/3;
-  max-width: 133px; /* Maintain book cover proportions */
+  /* Maintain book cover proportions */
   margin: 0 auto;
   border-radius: 4px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
@@ -544,6 +544,28 @@ const BookCard = ({ book, isExpanded: controlledExpanded, onToggle }) => {
     // Use controlled state if provided, otherwise use internal state
     const isExpanded = controlledExpanded !== undefined ? controlledExpanded : internalExpanded;
 
+    // Preload image for better UX
+    const preloadImage = useCallback((imageUrl) => {
+        if (!imageUrl || typeof imageUrl !== 'string' || imageUrl.trim() === '') {
+            return;
+        }
+
+        setImageLoading(true);
+        setImageError(false);
+
+        const img = new Image();
+        img.onload = () => {
+            setImageLoading(false);
+            setImageError(false);
+        };
+        img.onerror = () => {
+            console.warn(`BookCard: Failed to preload image for "${book?.title || 'Unknown'}": ${imageUrl}`);
+            setImageLoading(false);
+            setImageError(true);
+        };
+        img.src = imageUrl;
+    }, [book?.title]);
+
     // Validate book data on mount and when book prop changes
     useEffect(() => {
         const errors = [];
@@ -598,7 +620,7 @@ const BookCard = ({ book, isExpanded: controlledExpanded, onToggle }) => {
         } else {
             setImageLoading(false);
         }
-    }, [book]);
+    }, [book, preloadImage]);
 
     const handleClick = (e) => {
         e.preventDefault();
@@ -657,28 +679,6 @@ const BookCard = ({ book, isExpanded: controlledExpanded, onToggle }) => {
         if (e.target) {
             e.target.style.display = 'none';
         }
-    };
-
-    // Preload image for better UX
-    const preloadImage = (imageUrl) => {
-        if (!imageUrl || typeof imageUrl !== 'string' || imageUrl.trim() === '') {
-            return;
-        }
-
-        setImageLoading(true);
-        setImageError(false);
-
-        const img = new Image();
-        img.onload = () => {
-            setImageLoading(false);
-            setImageError(false);
-        };
-        img.onerror = () => {
-            console.warn(`BookCard: Failed to preload image for "${book?.title || 'Unknown'}": ${imageUrl}`);
-            setImageLoading(false);
-            setImageError(true);
-        };
-        img.src = imageUrl;
     };
 
     const handleLinkClick = (e, url) => {
