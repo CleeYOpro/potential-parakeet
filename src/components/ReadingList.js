@@ -11,6 +11,7 @@ const ReadingListContainer = styled.div`
 `;
 
 const PageTitle = styled.h1`
+  margin-top: 2rem;
   text-align: center;
   margin-bottom: 3rem;
   font-size: 2.5rem;
