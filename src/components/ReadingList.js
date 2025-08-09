@@ -1,4 +1,6 @@
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import BookCard from './BookCard';
 
 const ReadingListContainer = styled.div`
   min-height: 100vh;
@@ -29,7 +31,34 @@ const BooksContainer = styled.div`
   padding: 0 1rem;
 `;
 
-// Static book data array based on the provided information
+const BooksGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+
+  gap: 2rem;
+  margin-top: 2rem;
+  
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+`;
+
+const BooksCount = styled.div`
+  color: var(--primary-color);
+  text-align: center;
+  font-size: 1.2rem;
+  margin-top: 2rem;
+  font-family: var(--font-family-mono);
+  letter-spacing: 1px;
+  
+  span {
+    color: var(--accent-color, #ffd700);
+    font-weight: bold;
+  }
+`;
+
+// Real book data from CSV file with proper book cover images
 const booksData = [
   {
     timeRead: "May 2023",
@@ -37,78 +66,204 @@ const booksData = [
     author: "Walter Isaacson",
     pages: 688,
     description: "https://thebestbiographies.com/2023/09/17/review-of-elon-musk-by-walter-isaacson/",
-    image: "",
+    image: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1692288251i/122765395.jpg",
     status: "completed"
   },
   {
-    timeRead: "April 2023",
-    title: "Steve Jobs",
+    timeRead: "November 2023",
+    title: "Moby Dick",
+    author: "Herman Melville",
+    pages: 378,
+    description: "https://www.readinglength.com/book/BDIyjNj",
+    image: "https://prodimage.images-bn.com/pimages/9781454959809_p0_v9_s600x595.jpg",
+    status: "completed"
+  },
+  {
+    timeRead: "December 2023",
+    title: "Google It: A History of Google",
+    author: "Anne Fine",
+    pages: 207,
+    description: "https://missmegslibrary.wordpress.com/2019/09/22/book-review-google-it-a-history-of-google/",
+    image: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1524786081i/37901985.jpg",
+    status: "completed"
+  },
+  {
+    timeRead: "July 2024",
+    title: "Fahrenheit 451",
+    author: "Ray Bradbury",
+    pages: 159,
+    description: "https://www.readinglength.com/book/Bz8A7q1",
+    image: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1383718290i/13079982.jpg",
+    status: "completed"
+  },
+  {
+    timeRead: "January 2025",
+    title: "The Martian",
+    author: "Andy Weir",
+    pages: 388,
+    description: "https://www.readinglength.com/book/BNN9esY",
+    image: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1413706054i/18007564.jpg",
+    status: "completed"
+  },
+  {
+    timeRead: "June 2025",
+    title: "Leonardo da Vinci",
     author: "Walter Isaacson",
-    pages: 656,
-    description: "A comprehensive biography of Apple's co-founder, exploring his innovative genius and complex personality.",
-    image: "",
-    status: "completed"
-  },
-  {
-    timeRead: "March 2023",
-    title: "The Lean Startup",
-    author: "Eric Ries",
-    pages: 336,
-    description: "A methodology for developing businesses and products through validated learning and iterative design.",
-    image: "",
-    status: "completed"
-  },
-  {
-    timeRead: "February 2023",
-    title: "Atomic Habits",
-    author: "James Clear",
-    pages: 320,
-    description: "A practical guide to building good habits and breaking bad ones through small, incremental changes.",
-    image: "",
+    pages: 624,
+    description: "https://en.wikipedia.org/wiki/Leonardo_da_Vinci_(Isaacson_book)",
+    image: "https://m.media-amazon.com/images/I/91Ey0+6N-LL._UF1000,1000_QL80_.jpg",
     status: "completed"
   },
   {
     timeRead: "Reading now",
-    title: "The Innovator's Dilemma",
-    author: "Clayton M. Christensen",
-    pages: 288,
-    description: "Explores why successful companies fail when faced with disruptive innovation and technological change.",
-    image: "",
+    title: "The Coming Wave",
+    author: "Mustafa Suleyman",
+    pages: 352,
+    description: "https://books.google.com/books/about/The_Coming_Wave.html?id=a-26EAAAQBAJ",
+    image: "https://m.media-amazon.com/images/I/81zQiMu4A5L._UF1000,1000_QL80_.jpg",
     status: "reading"
   },
   {
     timeRead: "Future",
-    title: "Zero to One",
-    author: "Peter Thiel",
-    pages: 224,
-    description: "Notes on startups and how to build the future, focusing on creating unique value and monopolistic advantages.",
-    image: "",
+    title: "Imagine Heaven",
+    author: "John Burke",
+    pages: 352,
+    description: "https://www.barnesandnoble.com/w/imagine-heaven-john-burke/1121147299?bvstate=pg%3A2%2Fct%3Ar",
+    image: "https://m.media-amazon.com/images/I/710z-whEH9L._UF1000,1000_QL80_.jpg",
     status: "future"
   },
-  {
-    timeRead: "Future",
-    title: "The Hard Thing About Hard Things",
-    author: "Ben Horowitz",
-    pages: 304,
-    description: "Practical advice for building and running a startup, dealing with difficult business decisions.",
-    image: "",
-    status: "future"
-  },
-  {
-    timeRead: "January 2023",
-    title: "Sapiens",
-    author: "Yuval Noah Harari",
-    pages: 464,
-    description: "A brief history of humankind, exploring how Homo sapiens came to dominate the world.",
-    image: "",
-    status: "completed"
-  }
 ];
+
+// Book data validation utility
+const validateBookData = (book, index) => {
+  const errors = [];
+  const warnings = [];
+  
+  // Required fields validation
+  if (!book.title || typeof book.title !== 'string' || book.title.trim() === '') {
+    errors.push(`Book at index ${index}: Missing or invalid title`);
+  }
+  
+  if (!book.author || typeof book.author !== 'string' || book.author.trim() === '') {
+    errors.push(`Book at index ${index}: Missing or invalid author`);
+  }
+  
+  if (!book.timeRead || typeof book.timeRead !== 'string' || book.timeRead.trim() === '') {
+    errors.push(`Book at index ${index}: Missing or invalid timeRead`);
+  }
+  
+  if (!book.status || typeof book.status !== 'string') {
+    errors.push(`Book at index ${index}: Missing or invalid status`);
+  } else if (!['completed', 'reading', 'future'].includes(book.status)) {
+    warnings.push(`Book at index ${index}: Invalid status "${book.status}". Expected: completed, reading, or future`);
+  }
+  
+  // Optional fields validation
+  if (book.pages !== undefined && (typeof book.pages !== 'number' || book.pages <= 0)) {
+    warnings.push(`Book at index ${index}: Invalid pages count "${book.pages}". Should be a positive number`);
+  }
+  
+  if (book.description !== undefined && typeof book.description !== 'string') {
+    warnings.push(`Book at index ${index}: Invalid description type. Should be a string`);
+  }
+  
+  if (book.image !== undefined && typeof book.image !== 'string') {
+    warnings.push(`Book at index ${index}: Invalid image type. Should be a string URL`);
+  }
+  
+  // URL validation for description if it looks like a URL
+  if (book.description && typeof book.description === 'string') {
+    const trimmedDesc = book.description.trim();
+    if (trimmedDesc.startsWith('http://') || trimmedDesc.startsWith('https://')) {
+      try {
+        new URL(trimmedDesc);
+      } catch {
+        warnings.push(`Book at index ${index}: Invalid URL in description "${trimmedDesc}"`);
+      }
+    }
+  }
+  
+  // Image URL validation if provided
+  if (book.image && typeof book.image === 'string' && book.image.trim() !== '') {
+    const trimmedImage = book.image.trim();
+    if (!trimmedImage.startsWith('http://') && !trimmedImage.startsWith('https://') && !trimmedImage.startsWith('/')) {
+      warnings.push(`Book at index ${index}: Image URL "${trimmedImage}" may be invalid. Should start with http://, https://, or /`);
+    }
+  }
+  
+  return { errors, warnings, isValid: errors.length === 0 };
+};
+
+// Function to validate and filter book data
+const validateAndFilterBooks = (books) => {
+  if (!Array.isArray(books)) {
+    console.error('ReadingList: Book data is not an array');
+    return [];
+  }
+  
+  const validBooks = [];
+  let totalErrors = 0;
+  let totalWarnings = 0;
+  
+  books.forEach((book, index) => {
+    if (!book || typeof book !== 'object') {
+      console.error(`ReadingList: Book at index ${index} is not a valid object`);
+      totalErrors++;
+      return;
+    }
+    
+    const validation = validateBookData(book, index);
+    
+    // Log errors
+    validation.errors.forEach(error => {
+      console.error(`ReadingList Validation Error: ${error}`);
+      totalErrors++;
+    });
+    
+    // Log warnings
+    validation.warnings.forEach(warning => {
+      console.warn(`ReadingList Validation Warning: ${warning}`);
+      totalWarnings++;
+    });
+    
+    // Only include valid books
+    if (validation.isValid) {
+      // Sanitize the book data
+      const sanitizedBook = {
+        ...book,
+        title: book.title.trim(),
+        author: book.author.trim(),
+        timeRead: book.timeRead.trim(),
+        status: book.status.toLowerCase(),
+        description: book.description ? book.description.trim() : '',
+        image: book.image ? book.image.trim() : '',
+        pages: typeof book.pages === 'number' ? book.pages : undefined
+      };
+      
+      validBooks.push(sanitizedBook);
+    }
+  });
+  
+  // Summary logging
+  if (totalErrors > 0 || totalWarnings > 0) {
+    console.group('ReadingList Data Validation Summary');
+    console.log(`Total books processed: ${books.length}`);
+    console.log(`Valid books: ${validBooks.length}`);
+    console.log(`Books with errors (excluded): ${totalErrors}`);
+    console.log(`Books with warnings (included): ${totalWarnings}`);
+    console.groupEnd();
+  }
+  
+  return validBooks;
+};
 
 // Function to sort books chronologically
 const sortBooksChronologically = (books) => {
   return [...books].sort((a, b) => {
-    // Priority order: reading > completed (newest first) > future
+    // Priority order: future > reading > completed (newest first)
+    if (a.status === 'future' && b.status !== 'future') return -1;
+    if (b.status === 'future' && a.status !== 'future') return 1;
+    
     if (a.status === 'reading' && b.status !== 'reading') return -1;
     if (b.status === 'reading' && a.status !== 'reading') return 1;
     
@@ -119,69 +274,117 @@ const sortBooksChronologically = (books) => {
       return dateB - dateA;
     }
     
-    if (a.status === 'completed' && b.status === 'future') return -1;
-    if (b.status === 'completed' && a.status === 'future') return 1;
-    
-    // Future books maintain their original order
+    // Maintain original order for same status
     return 0;
   });
 };
 
 const ReadingList = () => {
-  // Sort books chronologically for display
-  const sortedBooks = sortBooksChronologically(booksData);
+  const [validatedBooks, setValidatedBooks] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [hasValidationErrors, setHasValidationErrors] = useState(false);
+  const [expandedCards, setExpandedCards] = useState(new Set());
   
+  // Validate and process book data on component mount
+  useEffect(() => {
+    try {
+      console.log('ReadingList: Starting book data validation...');
+      const validBooks = validateAndFilterBooks(booksData);
+      
+      if (validBooks.length === 0) {
+        console.error('ReadingList: No valid books found after validation');
+        setHasValidationErrors(true);
+      } else if (validBooks.length < booksData.length) {
+        console.warn(`ReadingList: ${booksData.length - validBooks.length} books were excluded due to validation errors`);
+        setHasValidationErrors(true);
+      }
+      
+      setValidatedBooks(validBooks);
+    } catch (error) {
+      console.error('ReadingList: Critical error during book data validation:', error);
+      setHasValidationErrors(true);
+      setValidatedBooks([]);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+  
+  // Sort books chronologically for display
+  const sortedBooks = sortBooksChronologically(validatedBooks);
+  
+  // Handle card expansion
+  const handleCardToggle = (index) => {
+    const newExpandedCards = new Set(expandedCards);
+    if (newExpandedCards.has(index)) {
+      newExpandedCards.delete(index);
+    } else {
+      newExpandedCards.add(index);
+    }
+    setExpandedCards(newExpandedCards);
+  };
+  
+  // Loading state
+  if (isLoading) {
+    return (
+      <ReadingListContainer>
+        <PageTitle>Reading List</PageTitle>
+        <BooksContainer>
+          <div style={{ 
+            color: 'var(--primary-color)', 
+            textAlign: 'center', 
+            fontSize: '1.2rem',
+            marginTop: '2rem'
+          }}>
+            Loading books...
+          </div>
+        </BooksContainer>
+      </ReadingListContainer>
+    );
+  }
+  
+  // Error state
+  if (hasValidationErrors && sortedBooks.length === 0) {
+    return (
+      <ReadingListContainer>
+        <PageTitle>Reading List</PageTitle>
+        <BooksContainer>
+          <div style={{ 
+            color: '#ff6b6b', 
+            textAlign: 'center', 
+            fontSize: '1.2rem',
+            marginTop: '2rem'
+          }}>
+            ⚠️ Unable to load books due to data validation errors.
+            <br />
+            <span style={{ fontSize: '1rem', opacity: 0.8, marginTop: '1rem', display: 'block' }}>
+              Check the console for detailed error information.
+            </span>
+          </div>
+        </BooksContainer>
+      </ReadingListContainer>
+    );
+  }
+
   return (
     <ReadingListContainer>
       <PageTitle>Reading List</PageTitle>
       <BooksContainer>
-        {/* Book display will be implemented in subsequent tasks */}
-        <div style={{ 
-          color: 'var(--primary-color)', 
-          textAlign: 'center', 
-          fontSize: '1.2rem',
-          marginTop: '2rem'
-        }}>
-          {sortedBooks.length} books in collection
-        </div>
+
         
-        {/* Temporary display for development - will be replaced with BookGrid component */}
-        <div style={{ marginTop: '2rem' }}>
+        <BooksCount>
+          <span>{sortedBooks.length}</span> books in collection
+        </BooksCount>
+        
+        <BooksGrid>
           {sortedBooks.map((book, index) => (
-            <div key={index} style={{
-              background: 'rgba(30, 30, 30, 0.85)',
-              border: `2px solid ${
-                book.status === 'completed' ? 'rgba(34, 197, 94, 0.6)' :
-                book.status === 'reading' ? 'rgba(251, 191, 36, 0.6)' :
-                'rgba(107, 114, 128, 0.4)'
-              }`,
-              borderRadius: '10px',
-              padding: '1rem',
-              margin: '1rem 0',
-              color: '#ddd',
-              opacity: book.status === 'future' ? 0.9 : 1
-            }}>
-              <div style={{ 
-                color: book.status === 'completed' ? 'rgba(34, 197, 94, 1)' :
-                       book.status === 'reading' ? 'rgba(251, 191, 36, 1)' :
-                       'rgba(107, 114, 128, 0.9)',
-                fontWeight: 'bold',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.5rem'
-              }}>
-                {book.status === 'completed' && '✓'}
-                {book.status === 'reading' && '📖'}
-                {book.status === 'future' && '📅'}
-                {book.timeRead}
-              </div>
-              <h3 style={{ color: 'var(--primary-color)', margin: '0.5rem 0' }}>
-                {book.title}
-              </h3>
-              <div>by {book.author}</div>
-            </div>
+            <BookCard
+              key={`${book.title}-${book.author}-${index}`}
+              book={book}
+              isExpanded={expandedCards.has(index)}
+              onToggle={() => handleCardToggle(index)}
+            />
           ))}
-        </div>
+        </BooksGrid>
       </BooksContainer>
     </ReadingListContainer>
   );

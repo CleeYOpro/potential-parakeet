@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 const BookCardContainer = styled.div`
@@ -16,9 +16,9 @@ const BookCardContainer = styled.div`
   
   /* Status-based border colors */
   ${props => {
-    switch(props.status) {
-      case 'completed':
-        return `
+        switch (props.status) {
+            case 'completed':
+                return `
           border: 2px solid rgba(34, 197, 94, 0.6);
           
           &:hover {
@@ -26,8 +26,8 @@ const BookCardContainer = styled.div`
             box-shadow: 0 8px 32px rgba(34, 197, 94, 0.2);
           }
         `;
-      case 'reading':
-        return `
+            case 'reading':
+                return `
           border: 2px solid rgba(251, 191, 36, 0.6);
           
           &:hover {
@@ -35,8 +35,8 @@ const BookCardContainer = styled.div`
             box-shadow: 0 8px 32px rgba(251, 191, 36, 0.2);
           }
         `;
-      case 'future':
-        return `
+            case 'future':
+                return `
           border: 2px solid rgba(107, 114, 128, 0.4);
           opacity: 0.9;
           
@@ -46,12 +46,12 @@ const BookCardContainer = styled.div`
             opacity: 1;
           }
         `;
-      default:
-        return `
+            default:
+                return `
           border: 1px solid var(--primary-color);
         `;
-    }
-  }}
+        }
+    }}
   
   ${props => props.isExpanded && `
     border-color: var(--accent-color, #ffd700);
@@ -82,20 +82,45 @@ const BookCardContainer = styled.div`
 
 const BookImageContainer = styled.div`
   width: 100%;
-  height: 180px;
-  background: #222;
+  height: 250px;
+  background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
   overflow: hidden;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  
+  /* Light mode adjustments */
+  body.light-mode & {
+    background: linear-gradient(135deg, #f5f5f5 0%, #e5e5e5 100%);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  }
 `;
 
 const BookImage = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: opacity 0.3s ease;
+  object-position: center top;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  
+  /* Hover effect for better interactivity */
+  ${BookCardContainer}:hover & {
+    transform: scale(1.02);
+  }
+  
+  /* Ensure proper aspect ratio for book covers */
+  aspect-ratio: 2/3;
+  max-width: 133px; /* Maintain book cover proportions */
+  margin: 0 auto;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  
+  /* Light mode adjustments */
+  body.light-mode & {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  }
 `;
 
 const BookImagePlaceholder = styled.div`
@@ -103,15 +128,78 @@ const BookImagePlaceholder = styled.div`
   height: 100%;
   background: linear-gradient(135deg, #333 0%, #222 100%);
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   color: var(--primary-color);
-  font-size: 3rem;
+  font-size: 2.5rem;
   opacity: 0.7;
+  transition: opacity 0.3s ease;
   
   &::before {
     content: "📚";
     filter: drop-shadow(0 0 5px var(--primary-color));
+    margin-bottom: 0.5rem;
+  }
+  
+  &::after {
+    content: "No Cover";
+    font-size: 0.8rem;
+    font-family: var(--font-family-mono);
+    opacity: 0.6;
+    letter-spacing: 1px;
+  }
+  
+  /* Light mode adjustments */
+  body.light-mode & {
+    background: linear-gradient(135deg, #e0e0e0 0%, #d0d0d0 100%);
+    color: var(--primary-color);
+  }
+  
+  ${BookCardContainer}:hover & {
+    opacity: 0.9;
+  }
+`;
+
+const ImageLoadingSpinner = styled.div`
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary-color);
+  font-size: 1rem;
+  font-family: var(--font-family-mono);
+  
+  &::before {
+    content: "⏳";
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    animation: pulse 1.5s infinite;
+  }
+  
+  &::after {
+    content: "Loading...";
+    opacity: 0.8;
+    letter-spacing: 1px;
+  }
+  
+  @keyframes pulse {
+    0%, 100% { 
+      opacity: 0.6;
+      transform: scale(1);
+    }
+    50% { 
+      opacity: 1;
+      transform: scale(1.1);
+    }
+  }
+  
+  /* Light mode adjustments */
+  body.light-mode & {
+    background: linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 100%);
   }
 `;
 
@@ -235,9 +323,9 @@ const TimeRead = styled.div`
   
   /* Status-based styling */
   ${props => {
-    switch(props.status) {
-      case 'completed':
-        return `
+        switch (props.status) {
+            case 'completed':
+                return `
           color: rgba(34, 197, 94, 1);
           text-shadow: 0 0 5px rgba(34, 197, 94, 0.5);
           
@@ -253,8 +341,8 @@ const TimeRead = styled.div`
             text-shadow: 0 0 3px rgba(34, 197, 94, 0.3);
           }
         `;
-      case 'reading':
-        return `
+            case 'reading':
+                return `
           color: rgba(251, 191, 36, 1);
           text-shadow: 0 0 5px rgba(251, 191, 36, 0.5);
           animation: pulse 2s infinite;
@@ -298,8 +386,8 @@ const TimeRead = styled.div`
             }
           }
         `;
-      case 'future':
-        return `
+            case 'future':
+                return `
           color: rgba(107, 114, 128, 0.9);
           text-shadow: none;
           opacity: 0.8;
@@ -316,13 +404,13 @@ const TimeRead = styled.div`
             opacity: 0.9;
           }
         `;
-      default:
-        return `
+            default:
+                return `
           color: var(--primary-color);
           text-shadow: 0 0 5px var(--primary-color);
         `;
-    }
-  }}
+        }
+    }}
 `;
 
 const BookTitle = styled.h3`
@@ -369,9 +457,9 @@ const StatusIndicator = styled.div`
   transition: all 0.3s ease;
   
   ${props => {
-    switch(props.status) {
-      case 'completed':
-        return `
+        switch (props.status) {
+            case 'completed':
+                return `
           background-color: rgba(34, 197, 94, 0.9);
           color: #fff;
           box-shadow: 0 0 10px rgba(34, 197, 94, 0.5);
@@ -384,8 +472,8 @@ const StatusIndicator = styled.div`
             box-shadow: 0 0 8px rgba(34, 197, 94, 0.4);
           }
         `;
-      case 'reading':
-        return `
+            case 'reading':
+                return `
           background-color: rgba(251, 191, 36, 0.9);
           color: #000;
           box-shadow: 0 0 10px rgba(251, 191, 36, 0.5);
@@ -421,8 +509,8 @@ const StatusIndicator = styled.div`
             }
           }
         `;
-      case 'future':
-        return `
+            case 'future':
+                return `
           background-color: rgba(107, 114, 128, 0.9);
           color: #fff;
           box-shadow: 0 0 10px rgba(107, 114, 128, 0.3);
@@ -437,163 +525,360 @@ const StatusIndicator = styled.div`
             opacity: 0.9;
           }
         `;
-      default:
-        return `
+            default:
+                return `
           background-color: rgba(107, 114, 128, 0.9);
           color: #fff;
           border: 1px solid rgba(107, 114, 128, 0.5);
         `;
-    }
-  }}
+        }
+    }}
 `;
 
 const BookCard = ({ book, isExpanded: controlledExpanded, onToggle }) => {
-  const [internalExpanded, setInternalExpanded] = useState(false);
-  
-  // Use controlled state if provided, otherwise use internal state
-  const isExpanded = controlledExpanded !== undefined ? controlledExpanded : internalExpanded;
-  
-  const handleClick = (e) => {
-    e.preventDefault();
-    
-    // If controlled by parent, call onToggle
-    if (controlledExpanded !== undefined && onToggle) {
-      onToggle();
-    } else {
-      // Otherwise, manage internal state
-      setInternalExpanded(!internalExpanded);
-      if (onToggle) {
-        onToggle();
-      }
-    }
-  };
+    const [internalExpanded, setInternalExpanded] = useState(false);
+    const [imageError, setImageError] = useState(false);
+    const [imageLoading, setImageLoading] = useState(false);
+    const [validationErrors, setValidationErrors] = useState([]);
 
-  const getStatusText = (status) => {
-    switch(status) {
-      case 'completed': return 'Done';
-      case 'reading': return 'Reading';
-      case 'future': return 'Planned';
-      default: return 'Unknown';
-    }
-  };
+    // Use controlled state if provided, otherwise use internal state
+    const isExpanded = controlledExpanded !== undefined ? controlledExpanded : internalExpanded;
 
-  const isUrl = (str) => {
-    if (!str || typeof str !== 'string') return false;
-    
-    try {
-      const url = new URL(str);
-      // Check for valid protocols
-      return url.protocol === 'http:' || url.protocol === 'https:';
-    } catch {
-      return false;
-    }
-  };
+    // Validate book data on mount and when book prop changes
+    useEffect(() => {
+        const errors = [];
 
-  const handleLinkClick = (e, url) => {
-    e.stopPropagation();
-    
-    try {
-      // Additional validation before opening
-      if (isUrl(url)) {
-        window.open(url, '_blank', 'noopener,noreferrer');
-      } else {
-        console.warn('Invalid URL attempted to open:', url);
-      }
-    } catch (error) {
-      console.error('Failed to open external link:', error);
-      // Fallback: try direct navigation
-      try {
-        window.open(url, '_blank');
-      } catch (fallbackError) {
-        console.error('Fallback link opening also failed:', fallbackError);
-      }
-    }
-  };
+        // Validate required fields
+        if (!book) {
+            errors.push('Book data is missing');
+            setValidationErrors(errors);
+            return;
+        }
 
-  const renderDescription = () => {
-    if (!book.description) return null;
-    
-    // Handle empty or whitespace-only descriptions
-    const trimmedDescription = book.description.trim();
-    if (!trimmedDescription) return null;
-    
-    if (isUrl(trimmedDescription)) {
-      return (
-        <a 
-          href={trimmedDescription} 
-          target="_blank" 
-          rel="noopener noreferrer"
-          onClick={(e) => handleLinkClick(e, trimmedDescription)}
-          onError={(e) => {
-            console.warn('Link error detected:', e);
-          }}
-        >
-          Read full review →
-        </a>
-      );
-    }
-    
-    // For non-URL descriptions, render as plain text
-    return <span>{trimmedDescription}</span>;
-  };
+        if (!book.title || typeof book.title !== 'string' || book.title.trim() === '') {
+            errors.push('Missing or invalid book title');
+        }
 
-  return (
-    <BookCardContainer onClick={handleClick} isExpanded={isExpanded} status={book.status} data-testid="book-card">
-      <StatusIndicator status={book.status}>
-        {getStatusText(book.status)}
-      </StatusIndicator>
-      
-      <BookImageContainer>
-        {book.image ? (
-          <BookImage 
-            src={book.image} 
-            alt={`${book.title} cover`}
-            onError={(e) => {
-              e.target.style.display = 'none';
-              e.target.nextSibling.style.display = 'flex';
-            }}
-          />
-        ) : null}
-        <BookImagePlaceholder style={{ display: book.image ? 'none' : 'flex' }} />
-      </BookImageContainer>
-      
-      <BookContent>
-        <TimeRead status={book.status}>
-          {book.timeRead}
-        </TimeRead>
-        
-        <BookTitle>
-          {book.title}
-        </BookTitle>
-        
-        <BookAuthor>
-          {book.author}
-        </BookAuthor>
-        
-        <ExpandedContent isExpanded={isExpanded}>
-          {book.pages && (
-            <PageCount>
-              <span>{book.pages}</span> pages
-            </PageCount>
-          )}
-          
-          {book.description && (
-            <Description>
-              {renderDescription()}
-            </Description>
-          )}
-          
-          {!book.description && isExpanded && (
-            <Description>
-              <span>No description available</span>
-            </Description>
-          )}
-        </ExpandedContent>
-      </BookContent>
-      
-      <ExpandIndicator isExpanded={isExpanded} />
-    </BookCardContainer>
-  );
+        if (!book.author || typeof book.author !== 'string' || book.author.trim() === '') {
+            errors.push('Missing or invalid book author');
+        }
+
+        if (!book.timeRead || typeof book.timeRead !== 'string' || book.timeRead.trim() === '') {
+            errors.push('Missing or invalid time read');
+        }
+
+        if (!book.status || !['completed', 'reading', 'future'].includes(book.status)) {
+            errors.push('Missing or invalid book status');
+        }
+
+        // Validate optional fields
+        if (book.pages !== undefined && (typeof book.pages !== 'number' || book.pages <= 0)) {
+            errors.push('Invalid pages count');
+        }
+
+        if (book.description !== undefined && typeof book.description !== 'string') {
+            errors.push('Invalid description type');
+        }
+
+        if (book.image !== undefined && typeof book.image !== 'string') {
+            errors.push('Invalid image type');
+        }
+
+        // Log validation errors
+        if (errors.length > 0) {
+            console.warn(`BookCard validation errors for "${book?.title || 'Unknown'}":`, errors);
+        }
+
+        setValidationErrors(errors);
+
+        // Reset image states when book changes and preload image if available
+        setImageError(false);
+        if (book?.image && typeof book.image === 'string' && book.image.trim() !== '') {
+            preloadImage(book.image.trim());
+        } else {
+            setImageLoading(false);
+        }
+    }, [book]);
+
+    const handleClick = (e) => {
+        e.preventDefault();
+
+        // If controlled by parent, call onToggle
+        if (controlledExpanded !== undefined && onToggle) {
+            onToggle();
+        } else {
+            // Otherwise, manage internal state
+            setInternalExpanded(!internalExpanded);
+            if (onToggle) {
+                onToggle();
+            }
+        }
+    };
+
+    const getStatusText = (status) => {
+        switch (status) {
+            case 'completed': return 'Done';
+            case 'reading': return 'Reading';
+            case 'future': return 'Planned';
+            default: return 'Unknown';
+        }
+    };
+
+    const isUrl = (str) => {
+        if (!str || typeof str !== 'string') return false;
+
+        const trimmedStr = str.trim();
+        if (trimmedStr === '') return false;
+
+        try {
+            const url = new URL(trimmedStr);
+            // Check for valid protocols
+            return url.protocol === 'http:' || url.protocol === 'https:';
+        } catch (error) {
+            // Log invalid URL attempts for debugging
+            if (trimmedStr.startsWith('http://') || trimmedStr.startsWith('https://')) {
+                console.warn(`BookCard: Invalid URL detected for "${book?.title || 'Unknown'}": "${trimmedStr}"`, error);
+            }
+            return false;
+        }
+    };
+
+    const handleImageLoad = () => {
+        setImageLoading(false);
+        setImageError(false);
+    };
+
+    const handleImageError = (e) => {
+        console.warn(`BookCard: Failed to load image for "${book?.title || 'Unknown'}": ${book?.image}`);
+        setImageLoading(false);
+        setImageError(true);
+
+        // Hide the broken image element
+        if (e.target) {
+            e.target.style.display = 'none';
+        }
+    };
+
+    // Preload image for better UX
+    const preloadImage = (imageUrl) => {
+        if (!imageUrl || typeof imageUrl !== 'string' || imageUrl.trim() === '') {
+            return;
+        }
+
+        setImageLoading(true);
+        setImageError(false);
+
+        const img = new Image();
+        img.onload = () => {
+            setImageLoading(false);
+            setImageError(false);
+        };
+        img.onerror = () => {
+            console.warn(`BookCard: Failed to preload image for "${book?.title || 'Unknown'}": ${imageUrl}`);
+            setImageLoading(false);
+            setImageError(true);
+        };
+        img.src = imageUrl;
+    };
+
+    const handleLinkClick = (e, url) => {
+        e.stopPropagation();
+
+        if (!url || typeof url !== 'string') {
+            console.warn(`BookCard: Invalid URL type for "${book?.title || 'Unknown'}":`, typeof url);
+            return;
+        }
+
+        const trimmedUrl = url.trim();
+        if (!trimmedUrl) {
+            console.warn(`BookCard: Empty URL for "${book?.title || 'Unknown'}"`);
+            return;
+        }
+
+        try {
+            // Additional validation before opening
+            if (isUrl(trimmedUrl)) {
+                window.open(trimmedUrl, '_blank', 'noopener,noreferrer');
+            } else {
+                console.warn(`BookCard: Invalid URL attempted to open for "${book?.title || 'Unknown'}": "${trimmedUrl}"`);
+            }
+        } catch (error) {
+            console.error(`BookCard: Failed to open external link for "${book?.title || 'Unknown'}":`, error);
+
+            // Fallback: try direct navigation with additional safety checks
+            try {
+                if (trimmedUrl.startsWith('http://') || trimmedUrl.startsWith('https://')) {
+                    window.open(trimmedUrl, '_blank');
+                } else {
+                    console.error(`BookCard: Fallback also failed - URL doesn't start with http(s) for "${book?.title || 'Unknown'}": "${trimmedUrl}"`);
+                }
+            } catch (fallbackError) {
+                console.error(`BookCard: Fallback link opening also failed for "${book?.title || 'Unknown'}":`, fallbackError);
+            }
+        }
+    };
+
+    const renderDescription = () => {
+        if (!book || !book.description) {
+            return (
+                <span style={{ color: '#888', fontStyle: 'italic' }}>
+                    No description available
+                </span>
+            );
+        }
+
+        // Handle non-string descriptions
+        if (typeof book.description !== 'string') {
+            console.warn(`BookCard: Invalid description type for "${book?.title || 'Unknown'}":`, typeof book.description);
+            return (
+                <span style={{ color: '#888', fontStyle: 'italic' }}>
+                    Description unavailable (invalid format)
+                </span>
+            );
+        }
+
+        // Handle empty or whitespace-only descriptions
+        const trimmedDescription = book.description.trim();
+        if (!trimmedDescription) {
+            return (
+                <span style={{ color: '#888', fontStyle: 'italic' }}>
+                    No description available
+                </span>
+            );
+        }
+
+        if (isUrl(trimmedDescription)) {
+            return (
+                <a
+                    href={trimmedDescription}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(e) => handleLinkClick(e, trimmedDescription)}
+                    onError={(e) => {
+                        console.warn(`BookCard: Link error detected for "${book?.title || 'Unknown'}":`, e);
+                    }}
+                    style={{
+                        // Add visual indication if URL validation failed
+                        opacity: isUrl(trimmedDescription) ? 1 : 0.6,
+                        cursor: isUrl(trimmedDescription) ? 'pointer' : 'not-allowed'
+                    }}
+                >
+                    Read full review →
+                </a>
+            );
+        }
+
+        // For non-URL descriptions, render as plain text with length validation
+        if (trimmedDescription.length > 500) {
+            console.warn(`BookCard: Description is very long (${trimmedDescription.length} chars) for "${book?.title || 'Unknown'}"`);
+            return <span>{trimmedDescription.substring(0, 497)}...</span>;
+        }
+
+        return <span>{trimmedDescription}</span>;
+    };
+
+    // Don't render if critical validation errors exist
+    if (validationErrors.length > 0 && (!book || !book.title || !book.author)) {
+        return (
+            <BookCardContainer style={{
+                border: '2px solid #ff6b6b',
+                opacity: 0.7,
+                cursor: 'not-allowed'
+            }} data-testid="book-card-error">
+                <BookContent>
+                    <div style={{ color: '#ff6b6b', textAlign: 'center', padding: '2rem' }}>
+                        <div style={{ fontSize: '2rem', marginBottom: '1rem' }}>⚠️</div>
+                        <div style={{ fontSize: '1rem', fontWeight: 'bold', marginBottom: '0.5rem' }}>
+                            Invalid Book Data
+                        </div>
+                        <div style={{ fontSize: '0.8rem', opacity: 0.8 }}>
+                            {validationErrors.slice(0, 2).join(', ')}
+                            {validationErrors.length > 2 && '...'}
+                        </div>
+                    </div>
+                </BookContent>
+            </BookCardContainer>
+        );
+    }
+
+    return (
+        <BookCardContainer onClick={handleClick} isExpanded={isExpanded} status={book?.status || 'unknown'} data-testid="book-card">
+            <StatusIndicator status={book?.status || 'unknown'}>
+                {getStatusText(book?.status)}
+            </StatusIndicator>
+
+            <BookImageContainer>
+                {/* Show loading spinner while image is loading */}
+                {imageLoading && book?.image && (
+                    <ImageLoadingSpinner />
+                )}
+
+                {/* Show actual image when loaded successfully */}
+                {book?.image && !imageError && !imageLoading && (
+                    <BookImage
+                        src={book.image}
+                        alt={`${book?.title || 'Unknown book'} cover`}
+                        onLoad={handleImageLoad}
+                        onError={handleImageError}
+                        loading="lazy"
+                        decoding="async"
+                    />
+                )}
+
+                {/* Show placeholder when no image or image failed to load */}
+                {(!book?.image || imageError) && !imageLoading && (
+                    <BookImagePlaceholder />
+                )}
+            </BookImageContainer>
+
+            <BookContent>
+                <TimeRead status={book?.status || 'unknown'}>
+                    {book?.timeRead || 'Unknown time'}
+                </TimeRead>
+
+                <BookTitle>
+                    {book?.title || 'Unknown Title'}
+                </BookTitle>
+
+                <BookAuthor>
+                    {book?.author || 'Unknown Author'}
+                </BookAuthor>
+
+                {/* Show validation warnings if any */}
+                {validationErrors.length > 0 && isExpanded && (
+                    <div style={{
+                        background: 'rgba(251, 191, 36, 0.1)',
+                        border: '1px solid rgba(251, 191, 36, 0.3)',
+                        borderRadius: '4px',
+                        padding: '0.5rem',
+                        margin: '0.5rem 0',
+                        fontSize: '0.8rem',
+                        color: 'rgba(251, 191, 36, 0.9)'
+                    }}>
+                        ⚠️ Data issues: {validationErrors.slice(0, 2).join(', ')}
+                    </div>
+                )}
+
+                <ExpandedContent isExpanded={isExpanded}>
+                    {book?.pages && typeof book.pages === 'number' && book.pages > 0 ? (
+                        <PageCount>
+                            <span>{book.pages}</span> pages
+                        </PageCount>
+                    ) : isExpanded && book?.pages !== undefined && (
+                        <PageCount style={{ color: '#888', fontStyle: 'italic' }}>
+                            <span>Invalid page count</span>
+                        </PageCount>
+                    )}
+
+                    <Description>
+                        {renderDescription()}
+                    </Description>
+                </ExpandedContent>
+            </BookContent>
+
+            <ExpandIndicator isExpanded={isExpanded} />
+        </BookCardContainer>
+    );
 };
 
 export default BookCard;

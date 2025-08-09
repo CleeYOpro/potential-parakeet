@@ -49,6 +49,21 @@ const mockBookWithWhitespaceDescription = {
   description: "   "
 };
 
+const mockBookWithImage = {
+  ...mockBook,
+  image: "https://example.com/book-cover.jpg"
+};
+
+const mockBookWithInvalidImage = {
+  ...mockBook,
+  image: "invalid-url"
+};
+
+const mockBookWithEmptyImage = {
+  ...mockBook,
+  image: ""
+};
+
 describe('BookCard', () => {
   test('renders book information', () => {
     render(<BookCard book={mockBook} />);
@@ -148,5 +163,59 @@ describe('BookCard', () => {
     
     // Card toggle should not be called when clicking the link
     expect(mockOnToggle).not.toHaveBeenCalled();
+  });
+
+  test('renders book cover image when provided', () => {
+    render(<BookCard book={mockBookWithImage} />);
+    
+    const image = screen.getByAltText('Test Book cover');
+    expect(image).toBeInTheDocument();
+    expect(image).toHaveAttribute('src', 'https://example.com/book-cover.jpg');
+    expect(image).toHaveAttribute('loading', 'lazy');
+    expect(image).toHaveAttribute('decoding', 'async');
+  });
+
+  test('shows placeholder when no image is provided', () => {
+    render(<BookCard book={mockBookWithEmptyImage} />);
+    
+    // Should show placeholder with book emoji and "No Cover" text
+    const placeholder = screen.getByText('📚');
+    expect(placeholder).toBeInTheDocument();
+  });
+
+  test('handles image loading states', () => {
+    render(<BookCard book={mockBookWithImage} />);
+    
+    // Initially should show loading state
+    expect(screen.getByText('⏳')).toBeInTheDocument();
+    expect(screen.getByText('Loading...')).toBeInTheDocument();
+  });
+
+  test('handles image error gracefully', () => {
+    render(<BookCard book={mockBookWithInvalidImage} />);
+    
+    const image = screen.getByAltText('Test Book cover');
+    
+    // Simulate image load error
+    fireEvent.error(image);
+    
+    // Should show placeholder after error
+    expect(screen.getByText('📚')).toBeInTheDocument();
+  });
+
+  test('preloads images for better performance', () => {
+    // Mock Image constructor
+    const mockImage = {
+      onload: null,
+      onerror: null,
+      src: ''
+    };
+    
+    global.Image = jest.fn(() => mockImage);
+    
+    render(<BookCard book={mockBookWithImage} />);
+    
+    // Should create new Image instance for preloading
+    expect(global.Image).toHaveBeenCalled();
   });
 });

@@ -1,7 +1,6 @@
 import { useState, useContext } from 'react';
 import styled from 'styled-components';
 import SettingsModal from './SettingsModal';
-import WorkInProgressModal from './WorkInProgressModal';
 import { ThemeContext } from '../contexts/ThemeContext';
 
 
@@ -285,7 +284,6 @@ const Navbar = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [dropdownHover, setDropdownHover] = useState(false);
   const [logoHover, setLogoHover] = useState(false);
-  const [showWip, setShowWip] = useState(false);
   const { ledColor } = useContext(ThemeContext);
 
   const handleNavClick = (e) => {
@@ -394,7 +392,6 @@ const Navbar = () => {
       {/* Modals */}
       
       <SettingsModal isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
-      <WorkInProgressModal isOpen={showWip} onClose={() => setShowWip(false)} />
     </>
   );
 };

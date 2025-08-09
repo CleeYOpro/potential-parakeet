@@ -35,26 +35,53 @@ const mockBooks = [
     author: "Walter Isaacson",
     pages: 688,
     description: "https://thebestbiographies.com/2023/09/17/review-of-elon-musk-by-walter-isaacson/",
-    image: "",
+    image: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1692288251i/122765395.jpg",
     status: "completed"
   },
   {
     timeRead: "Reading now",
-    title: "The Innovator's Dilemma",
-    author: "Clayton M. Christensen",
-    pages: 288,
-    description: "Explores why successful companies fail when faced with disruptive innovation and technological change.",
-    image: "",
+    title: "The Coming Wave: Technology, Power, and the Twenty-first Century's Greatest Dilemma",
+    author: "Mustafa Suleyman",
+    pages: 352,
+    description: "https://books.google.com/books/about/The_Coming_Wave.html?id=a-26EAAAQBAJ",
+    image: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1677634533i/123255564.jpg",
     status: "reading"
   },
   {
+    timeRead: "July 2024",
+    title: "Fahrenheit 451",
+    author: "Ray Bradbury",
+    pages: 159,
+    description: "https://www.readinglength.com/book/Bz8A7q1",
+    image: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1383718290i/13079982.jpg",
+    status: "completed"
+  },
+  {
     timeRead: "Future",
-    title: "Zero to One",
-    author: "Peter Thiel",
-    pages: 224,
-    description: "Notes on startups and how to build the future, focusing on creating unique value and monopolistic advantages.",
-    image: "",
+    title: "Leonardo da Vinci",
+    author: "Walter Isaacson",
+    pages: 624,
+    description: "https://en.wikipedia.org/wiki/Leonardo_da_Vinci_(Isaacson_book)",
+    image: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1498061258i/34684622.jpg",
     status: "future"
+  },
+  {
+    timeRead: "Test",
+    title: "Book Without Cover",
+    author: "Test Author",
+    pages: 200,
+    description: "This book demonstrates the placeholder functionality when no image is available.",
+    image: "",
+    status: "completed"
+  },
+  {
+    timeRead: "Test",
+    title: "Book With Broken Image",
+    author: "Test Author",
+    pages: 250,
+    description: "This book demonstrates error handling for broken image URLs.",
+    image: "https://invalid-url-that-will-fail.com/image.jpg",
+    status: "reading"
   }
 ];
 
