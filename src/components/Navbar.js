@@ -354,7 +354,7 @@ const Navbar = () => {
           <NavGroup className={logoHover ? 'logo-hover' : ''}>
             <NavLink href="#about" onClick={handleNavClick}>About</NavLink>
             <NavLink href="#projects" onClick={handleNavClick}>Projects</NavLink>
-            <NavLink href="#reading-list" onClick={handleNavClick}>Reading List</NavLink>
+            <NavLink href="#reading-list" onClick={handleNavClick}>Bookshelf</NavLink>
             <NavLink href="#blog" onClick={handleNavClick}>Blog</NavLink>
             <NavLink href="#contact" onClick={handleNavClick}>Contact</NavLink>
           </NavGroup>
