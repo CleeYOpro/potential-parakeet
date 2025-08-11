@@ -1,1 +1,5 @@
 node_modules
+.kiro
+.vscode
+bash.exe.stackdump
+

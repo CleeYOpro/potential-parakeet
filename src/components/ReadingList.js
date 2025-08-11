@@ -11,9 +11,8 @@ const ReadingListContainer = styled.div`
 `;
 
 const PageTitle = styled.h1`
-  margin-top: 2rem;
-  text-align: center;
-  margin-bottom: 3rem;
+  margin-top: 5rem;
+  text-align: center;  
   font-size: 2.5rem;
   color: var(--primary-color);
   text-shadow: 0 0 10px var(--primary-color);
@@ -48,7 +47,7 @@ const BooksGrid = styled.div`
 const BooksCount = styled.div`
   color: var(--primary-color);
   text-align: center;
-  font-size: 1.2rem;
+  font-size: 1rem;
   margin-top: 2rem;
   font-family: var(--font-family-mono);
   letter-spacing: 1px;
@@ -58,9 +57,24 @@ const BooksCount = styled.div`
     font-weight: bold;
   }
 `;
-
-// Real book data from CSV file with proper book cover images
 const booksData = [
+  {timeRead: "Ongoing",
+    title: "The Bible",
+    author: "Various",
+    pages: 1300,
+    description: "https://www.bibleref.com/John/1/John-chapter-1.html",
+    image: "https://bbhchurchconnection.wordpress.com/wp-content/uploads/2010/11/king-james-cover.jpg",
+    status: "reading"},
+  {
+    timeRead: "March 2023",
+    title: "Every Falling Star",
+    author: "Sungju Lee",
+    pages: 344,
+    description: "https://www.supersummary.com/every-falling-star/summary/",
+    image: "https://m.media-amazon.com/images/I/81NP3EJAgdL._SY522_.jpg",
+    status: "completed"
+
+  },
   {
     timeRead: "May 2023",
     title: "Elon Musk",
@@ -81,7 +95,7 @@ const booksData = [
   },
   {
     timeRead: "December 2023",
-    title: "Google It: A History of Google",
+    title: "Google It",
     author: "Anne Fine",
     pages: 207,
     description: "https://missmegslibrary.wordpress.com/2019/09/22/book-review-google-it-a-history-of-google/",
@@ -98,6 +112,15 @@ const booksData = [
     status: "completed"
   },
   {
+    timeRead: "October 2024",
+    title: "Shoe Dog",
+    author: "Phil Knight",
+    pages: 400,
+    description: "https://en.wikipedia.org/wiki/Shoe_Dog",
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Shoe_dog_book_cover.jpg/800px-Shoe_dog_book_cover.jpg",
+    status: "completed"
+  },
+  {
     timeRead: "January 2025",
     title: "The Martian",
     author: "Andy Weir",
@@ -107,12 +130,21 @@ const booksData = [
     status: "completed"
   },
   {
-    timeRead: "June 2025",
+    timeRead: "April 2025",
     title: "Leonardo da Vinci",
     author: "Walter Isaacson",
     pages: 624,
     description: "https://en.wikipedia.org/wiki/Leonardo_da_Vinci_(Isaacson_book)",
     image: "https://m.media-amazon.com/images/I/91Ey0+6N-LL._UF1000,1000_QL80_.jpg",
+    status: "completed"
+  },
+  {
+    timeRead: "June 2025",
+    title: "The Kite Runner",
+    author: "Khaled Hosseini",
+    pages: 371,
+    description: "https://en.wikipedia.org/wiki/The_Kite_Runner",
+    image: "https://upload.wikimedia.org/wikipedia/en/6/62/Kite_runner.jpg",
     status: "completed"
   },
   {
@@ -123,15 +155,6 @@ const booksData = [
     description: "https://books.google.com/books/about/The_Coming_Wave.html?id=a-26EAAAQBAJ",
     image: "https://m.media-amazon.com/images/I/81zQiMu4A5L._UF1000,1000_QL80_.jpg",
     status: "reading"
-  },
-  {
-    timeRead: "Future",
-    title: "Imagine Heaven",
-    author: "John Burke",
-    pages: 352,
-    description: "https://www.barnesandnoble.com/w/imagine-heaven-john-burke/1121147299?bvstate=pg%3A2%2Fct%3Ar",
-    image: "https://m.media-amazon.com/images/I/710z-whEH9L._UF1000,1000_QL80_.jpg",
-    status: "future"
   },
 ];
 
@@ -347,7 +370,7 @@ const ReadingList = () => {
   if (hasValidationErrors && sortedBooks.length === 0) {
     return (
       <ReadingListContainer>
-        <PageTitle>Reading List</PageTitle>
+        <PageTitle>Bookshelf</PageTitle>
         <BooksContainer>
           <div style={{ 
             color: '#ff6b6b', 
@@ -368,12 +391,10 @@ const ReadingList = () => {
 
   return (
     <ReadingListContainer>
-      <PageTitle>Reading List</PageTitle>
+      <PageTitle>Bookshelf</PageTitle>
       <BooksContainer>
-
-        
-        <BooksCount>
-          <span>{sortedBooks.length}</span> books in collection
+      <BooksCount>
+          Not a big bookworm, but I’ll read for school or if it’s actually interesting. My YouTube history says more about me—anyway, here’s what I’ve read/been reading. Right now I have <span>{sortedBooks.length}</span> books in collection
         </BooksCount>
         
         <BooksGrid>
