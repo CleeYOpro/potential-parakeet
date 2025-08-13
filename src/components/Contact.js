@@ -8,7 +8,7 @@ const ContactContainer = styled.div`
   align-items: center;
   width: 100%;
   max-width: 900px;
-  padding: 2rem;
+  padding: 1rem;
   margin: 0 auto;
   position: relative;
   z-index: 1;

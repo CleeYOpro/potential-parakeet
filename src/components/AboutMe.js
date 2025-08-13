@@ -6,7 +6,7 @@ import screenshot from './imgs/WhatsApp Image 2025-06-17 at 20.15.26_5e311667.jp
 import award from './imgs/WhatsApp Image 2025-05-17 at 22.55.10_fbedebc8.jpg';
 
 const AboutContainer = styled.section`
-  padding: 2rem;
+  padding: 1rem;
   display: flex;
   flex-direction: column;
   max-width: 1200px;
@@ -19,7 +19,7 @@ const AboutContainer = styled.section`
   }
 
   @media (max-width: 480px) {
-    padding: 1rem;
+    padding: 0rem;
   }
 `;
 
