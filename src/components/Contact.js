@@ -333,7 +333,7 @@ const Contact = () => {
                 <SocialIcon><FaInstagram /></SocialIcon>Instagram
               </TableHeader>
               <TableData>
-                <SocialLink href="https://instagram.com/cleobalaranjith" target="_blank" rel="noopener noreferrer">
+                <SocialLink href="https://instagram.com/cle0b" target="_blank" rel="noopener noreferrer">
                   cleobalaranjith
                 </SocialLink>
               </TableData>
@@ -353,7 +353,7 @@ const Contact = () => {
                 <SocialIcon><FaLinkedin /></SocialIcon>LinkedIn
               </TableHeader>
               <TableData>
-                <SocialLink href="https://linkedin.com/in/cleofus123" target="_blank" rel="noopener noreferrer">
+                <SocialLink href="https://linkedin.com/in/cleofus" target="_blank" rel="noopener noreferrer">
                   cleofus123
                 </SocialLink>
               </TableData>
@@ -363,7 +363,7 @@ const Contact = () => {
                 <SocialIcon><FaDiscord /></SocialIcon>Discord
               </TableHeader>
               <TableData>
-                <SocialLink href="https://discord.com" target="_blank" rel="noopener noreferrer">
+                <SocialLink href="https://discordapp.com/users/1287117811482628286" target="_blank" rel="noopener noreferrer">
                   mecahedron
                 </SocialLink>
               </TableData>

@@ -125,7 +125,7 @@ const Hero = () => {
             Student Full Stack Developer @ Tesla STEM.{" "}
           </TeslaLink>
           Effective <WorkLink href="#projects">work</WorkLink> in AI, GIS, web, business, and engineering
-          . <HighlightedText>Let’s build what’s next.</HighlightedText>
+          . <HighlightedText>Building Building Building</HighlightedText>
         </Description>
         <IconsContainer>
           <SocialIcons />
