@@ -1,12 +1,11 @@
 import styled from 'styled-components';
-import TechStack from './TechStack';
 import { useEffect, useState } from 'react';
 
 import screenshot from './imgs/WhatsApp Image 2025-06-17 at 20.15.26_5e311667.jpg';
 import award from './imgs/WhatsApp Image 2025-05-17 at 22.55.10_fbedebc8.jpg';
 
 const AboutContainer = styled.section`
-  padding: 1rem;
+  padding-top: 2rem;
   display: flex;
   flex-direction: column;
   max-width: 1200px;
@@ -119,26 +118,7 @@ const PictureBox = styled.div`
   }
 `;
 
-const TechStackSection = styled.div`
-  margin-top: 1rem;
-  width: 100%;
-  background: rgba(31, 30, 30, 0.8);
-  opacity: 1;
-  backdrop-filter: blur(400px) saturate(1.8);
-  -webkit-backdrop-filter: blur(400px) saturate(1.8);
-  border-radius: 2.5rem 2.5rem 2.5rem 2.5rem / 2.2rem 2.2rem 2.2rem 2.2rem;
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18), 0 1.5px 8px 0 rgba(0,0,0,0.10);
-  border: 1.5px solid rgba(255,255,255,0.13);
-  padding: 2rem;
-  
-  @media (max-width: 768px) {
-    padding: 1.5rem;
-  }
-  
-  @media (max-width: 480px) {
-    padding: 1rem;
-  }
-`;
+
 
 const AnimatedSentence = styled.span`
   display: block;
@@ -174,32 +154,37 @@ const Emph = styled.span`
 const sentences = [
   [
     "I’m a high school junior, ",
-    { emph: "web developer", underline: true },
-    ", and automation specialist focused on helping clients solve ",
-    { emph: "real problems", underline: true },
-    " through technology."
+    { emph: "full-stack developer", underline: true },
+    " and builder passionate about turning ambitious ideas into real products."
   ],
   [
-    "I build ",
-    { emph: "clean, responsive websites", underline: true },
-    ", streamline operations through automation, and deliver ",
-    { emph: "custom digital solutions", underline: true },
-    " that drive measurable results."
+    "I thrive in fast-paced, ",
+    { emph: "startup-style environments", underline: true },
+    " where rapid learning and execution matter most."
   ],
   [
-    "Whether it's AI-driven tools, ",
-    { emph: "GIS dashboards", underline: true },
-    ", or business-ready platforms, I bring a mix of technical skill and strategic thinking."
+    "From designing ",
+    { emph: "scalable web apps", underline: true },
+    " to leading projects in engineering competitions, I combine technical skills with strategic thinking."
   ],
   [
-    "I also offer strengths in business development, clear communication, and research-backed problem solving."
+    "I take pride in my ",
+    { emph: "leadership and collaboration", underline: true },
+    " — organizing teams, solving complex problems, and delivering under tight deadlines."
   ],
   [
-    "Clients value my ",
-    { emph: "collaborative style", underline: true },
-    ", transparency, and commitment to getting things done—no matter how complex the challenge."
-  ]
+    "For me, technology is about ",
+    { emph: "building things that matter", underline: true },
+    " and making an impact beyond the classroom."
+  ],
+  [
+    "Check out my ",
+    { emph: "tech stack below", underline: true },
+    " — a mix of modern frameworks, backend tools, and creative software that keep ideas moving from concept to launch."
+  ]  
+  
 ];
+
 
 const AboutMe = () => {
   const [visibleSentences, setVisibleSentences] = useState(Array(sentences.length).fill(false));
@@ -248,9 +233,6 @@ const AboutMe = () => {
           </PictureBox>
         </PictureBoxes>
       </AboutSection>
-      <TechStackSection>
-        <TechStack />
-      </TechStackSection>
     </AboutContainer>
   );
 };

@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import AboutMe from './components/AboutMe';
+import TechStack from './components/TechStack';
 
 const AboutPageContainer = styled.div`
   min-height: 100vh;
@@ -20,9 +21,12 @@ const ContentContainer = styled.div`
 const About = () => {
   return (
     <AboutPageContainer>
+      
       <ContentContainer>
         <AboutMe />
+        
       </ContentContainer>
+      <TechStack />
     </AboutPageContainer>
   );
 };

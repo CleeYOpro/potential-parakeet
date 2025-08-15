@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
 import {
   SiGithub, SiHuggingface, SiFigma, SiFramer, SiJavascript, SiTypescript, SiReact, SiNodedotjs,
@@ -7,7 +8,7 @@ import {
 import { DiJava, DiEclipse } from 'react-icons/di';
 import { SiFlask } from "react-icons/si";
 import { SiPandas } from 'react-icons/si';
-import { VscCode } from 'react-icons/vsc';
+import { VscVscode } from "react-icons/vsc";
 import OpenRocketIcon from './OpenRocketIcon';
 
 const fadeIn = keyframes`
@@ -21,38 +22,111 @@ const fadeIn = keyframes`
   }
 `;
 
+const infiniteScroll = keyframes`
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+`;
+
+const slideUp = keyframes`
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
+
+const fadeOut = keyframes`
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+`;
+
 const TechStackContainer = styled.section`
-  padding: 2rem;
+  padding: 1rem;
+  padding-bottom: 4rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  max-width: 1000px;
+  max-width: 1150px;
   margin: 0 auto;
+
+  position: relative;
+  z-index: 2;
+
+  @media (max-width: 768px) {
+    padding: 1.5rem;
+    padding-bottom: 3rem;
+    margin: 2rem;
+    margin-bottom: 0;
+  }
+
+  @media (max-width: 480px) {
+    padding: 0rem;
+    padding-bottom: 2.5rem;
+    margin: 2rem;
+    margin-bottom: 0;
+  }
 `;
 
-const Title = styled.h2`
-  font-size: 1.5rem;
-  margin-bottom: 1.5rem;
-  color: var(--primary-color-light);
-  text-align: center;
-`;
-
-const IconsContainer = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
-  gap: 1.5rem;
+const CarouselWrapper = styled.div`
+  position: relative;
   width: 100%;
-  justify-items: center;
+`;
+
+const CarouselContainer = styled.div`
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background: rgba(31, 30, 30, 0.8);
+  opacity: 1;
+  backdrop-filter: blur(400px) saturate(1.8);
+  -webkit-backdrop-filter: blur(400px) saturate(1.8);
+  border-radius: 2.5rem 2.5rem 2.5rem 2.5rem / 2.2rem 2.2rem 2.2rem 2.2rem;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18), 0 1.5px 8px 0 rgba(0,0,0,0.10);
+  border: 1.5px solid rgba(255,255,255,0.13);
+  padding: 2rem 0;
+  
+  @media (max-width: 768px) {
+    padding: 1.5rem 0;
+  }
+  
+  @media (max-width: 480px) {
+    padding: 1rem 0;
+  }
+`;
+
+const CarouselTrack = styled.div`
+  display: flex;
+  animation: ${infiniteScroll} 30s linear infinite;
+  width: fit-content;
+`;
+
+const CarouselSlide = styled.div`
+  flex: 0 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 0.75rem;
 `;
 
 const Icon = styled.div`
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
-  opacity: 0;
-  animation: ${fadeIn} 0.5s ease-out forwards;
-  animation-delay: ${({ index }) => `${index * 0.1}s`};
+  justify-content: center;
+  opacity: 1;
+  animation: ${fadeIn} 0.5s ease-out;
 `;
 
 const IconWrapper = styled.div`
@@ -61,26 +135,30 @@ const IconWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 12px;
+  border-radius: 8px;
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
-  position: relative;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
 
   &:hover {
-    transform: scale(1.2);
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 
     svg {
       color: var(--primary-color);
-      filter: drop-shadow(0 0 6px var(--primary-color));
+      filter: drop-shadow(0 0 4px var(--primary-color));
     }
   }
 
+  &:active {
+    transform: scale(1.05);
+  }
+
   svg {
-    width: 70%;
-    height: 70%;
+    width: 30px;
+    height: 30px;
     color: white;
     transition: color 0.3s, filter 0.3s;
   }
@@ -88,42 +166,50 @@ const IconWrapper = styled.div`
   @media (max-width: 768px) {
     width: 40px;
     height: 40px;
+    
+    svg {
+      width: 24px;
+      height: 24px;
+    }
   }
 
   @media (max-width: 480px) {
-    width: 32px;
-    height: 32px;
+    width: 35px;
+    height: 35px;
+    
+    svg {
+      width: 20px;
+      height: 20px;
+    }
   }
 `;
 
-const IconName = styled.span`
-  color: #eee;
-  font-size: 0.8rem;
-  text-align: center;
-`;
+const NotificationBox = styled.div`
+  position: fixed;
+  left: 47%;
+  transform: translate(-50%, -50%);
+  background: rgba(31, 30, 30, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  color: var(--primary-color-light);
+  font-size: 0.9rem;
+  font-weight: 500;
+  white-space: nowrap;
+  z-index: 9999;
+  animation: ${({ isVisible, isFading }) => 
+    isFading ? fadeOut : isVisible ? slideUp : 'none'
+  } 0.3s ease-out forwards;
 
-const Tooltip = styled.div`
-  visibility: hidden;
-  opacity: 0;
-  position: absolute;
-  bottom: 125%;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: rgba(0, 0, 0, 0.75);
-  color: #fff;
-  text-align: center;
-  border-radius: 5px;
-  padding: 5px;
-  width: max-content;
-  z-index: 1;
-  font-size: 0.75rem;
-  transition: opacity 0.3s;
-
-  ${IconWrapper}:hover & {
-    visibility: visible;
-    opacity: 1;
+  @media (max-width: 480px) {
+    font-size: 0.8rem;
+    padding: 0.4rem 0.8rem;
   }
 `;
+
+
+
 
 const techStack = [
   // Version Control & AI
@@ -131,7 +217,7 @@ const techStack = [
   { name: 'Hugging Face', icon: SiHuggingface, tooltip: 'AI model hub' },
 
   // IDEs
-  { name: 'VS Code', icon: VscCode, tooltip: 'Source code editor' },
+  { name: 'VS Code', icon: VscVscode, tooltip: 'Source code editor' },
   { name: 'Eclipse IDE', icon: DiEclipse, tooltip: 'Java IDE' },
 
   // Design & Prototyping
@@ -175,23 +261,71 @@ const techStack = [
 ];
 
 const TechStack = () => {
+  const [clickedTech, setClickedTech] = useState(null);
+  const [isVisible, setIsVisible] = useState(false);
+  const [isFading, setIsFading] = useState(false);
+
+  // Create duplicated array for seamless infinite scroll
+  const duplicatedTechStack = [...techStack, ...techStack];
+
+  const handleIconClick = (techName) => {
+    // Reset any existing animation
+    setIsFading(false);
+    setIsVisible(false);
+    
+    // Set new tech name and show
+    setTimeout(() => {
+      setClickedTech(techName);
+      setIsVisible(true);
+    }, 50);
+  };
+
+  useEffect(() => {
+    if (isVisible && clickedTech) {
+      // Start fade out after 1.5 seconds
+      const fadeTimer = setTimeout(() => {
+        setIsFading(true);
+      }, 1500);
+
+      // Hide completely after fade animation
+      const hideTimer = setTimeout(() => {
+        setIsVisible(false);
+        setClickedTech(null);
+        setIsFading(false);
+      }, 1800);
+
+      return () => {
+        clearTimeout(fadeTimer);
+        clearTimeout(hideTimer);
+      };
+    }
+  }, [isVisible, clickedTech]);
+
   return (
     <TechStackContainer>
-      <Title>Tech Stack</Title>
-      <IconsContainer>
-        {techStack.map((tech, index) => {
-          const IconComponent = tech.icon;
-          return (
-            <Icon key={index} index={index}>
-              <IconWrapper>
-                <IconComponent />
-                <Tooltip>{tech.tooltip}</Tooltip>
-              </IconWrapper>
-              <IconName>{tech.name}</IconName>
-            </Icon>
-          );
-        })}
-      </IconsContainer>
+      <CarouselWrapper>
+        <CarouselContainer>
+          <CarouselTrack>
+            {duplicatedTechStack.map((tech, index) => {
+              const IconComponent = tech.icon;
+              return (
+                <CarouselSlide key={index}>
+                  <Icon>
+                    <IconWrapper onClick={() => handleIconClick(tech.name)}>
+                      <IconComponent />
+                    </IconWrapper>
+                  </Icon>
+                </CarouselSlide>
+              );
+            })}
+          </CarouselTrack>
+        </CarouselContainer>
+        {clickedTech && (
+          <NotificationBox isVisible={isVisible} isFading={isFading}>
+            {clickedTech}
+          </NotificationBox>
+        )}
+      </CarouselWrapper>
     </TechStackContainer>
   );
 };
