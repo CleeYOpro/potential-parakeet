@@ -14,6 +14,9 @@ export const ThemeProvider = ({ children }) => {
   // State for LED pattern
   const [ledPattern, setLedPattern] = useState('cursor'); // Default wave
 
+  // State for cursor interactions
+  const [cursorInteractions, setCursorInteractions] = useState(true); // Default enabled
+
   // Toggle dark mode
   const toggleDarkMode = (value) => {
     const newMode = typeof value === 'boolean' ? value : !isDarkMode;
@@ -42,6 +45,12 @@ export const ThemeProvider = ({ children }) => {
   const handleSetLedPattern = (pattern) => {
     setLedPattern(pattern);
     localStorage.setItem('ledPattern', pattern);
+  };
+
+  // Set cursor interactions
+  const handleSetCursorInteractions = (enabled) => {
+    setCursorInteractions(enabled);
+    localStorage.setItem('cursorInteractions', JSON.stringify(enabled));
   };
 
   // Helper function to calculate a darker shade of a color
@@ -104,6 +113,12 @@ export const ThemeProvider = ({ children }) => {
     if (savedLedPattern) {
       setLedPattern(savedLedPattern);
     }
+
+    // Check for cursor interactions
+    const savedCursorInteractions = localStorage.getItem('cursorInteractions');
+    if (savedCursorInteractions !== null) {
+      setCursorInteractions(JSON.parse(savedCursorInteractions));
+    }
   }, []);
 
   // Apply dark mode to body
@@ -124,7 +139,9 @@ export const ThemeProvider = ({ children }) => {
         ledColor,
         setLedColor: handleSetLedColor,
         ledPattern,
-        setLedPattern: handleSetLedPattern
+        setLedPattern: handleSetLedPattern,
+        cursorInteractions,
+        setCursorInteractions: handleSetCursorInteractions
       }}
     >
       {children}

@@ -279,7 +279,7 @@ const DropdownItem = styled.a`
 
 
 const Navbar = () => {
-  
+
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [dropdownHover, setDropdownHover] = useState(false);
@@ -303,9 +303,9 @@ const Navbar = () => {
       window.location.hash = 'reading-list';
     } else if (href === '#blog') {
       window.location.hash = 'blog';
-    } 
+    }
     //else {
-      //setIsModalOpen(true);
+    //setIsModalOpen(true);
     //}
     setDropdownOpen(false);
   };
@@ -390,7 +390,7 @@ const Navbar = () => {
         </NavContainer>
       </Nav>
       {/* Modals */}
-      
+
       <SettingsModal isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
     </>
   );

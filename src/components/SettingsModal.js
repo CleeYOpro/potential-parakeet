@@ -71,29 +71,41 @@ const ColorOption = styled.button`
   }
 `;
 
-const PatternOptions = styled.div`
+const ToggleContainer = styled.div`
   display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
   margin-bottom: 1rem;
 `;
 
-const PatternOption = styled.button`
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  border: none;
-  background-color: ${props => props.isSelected
-    ? 'var(--primary-color)'
-    : 'rgba(0, 0, 0, 0.3)'};
-  color: ${props => props.isSelected ? '#fff' : '#ddd'};
+const ToggleSwitch = styled.div`
+  position: relative;
+  width: 50px;
+  height: 24px;
+  background-color: ${props => props.isOn ? 'var(--primary-color)' : 'rgba(255, 255, 255, 0.3)'};
+  border-radius: 12px;
   cursor: pointer;
-  transition: all 0.2s ease;
-  
-  &:hover {
-    background-color: var(--primary-color-dark);
-    color: #fff;
-  }
+  transition: background-color 0.3s ease;
 `;
+
+const ToggleSlider = styled.div`
+  position: absolute;
+  top: 2px;
+  left: ${props => props.isOn ? '26px' : '2px'};
+  width: 20px;
+  height: 20px;
+  background-color: white;
+  border-radius: 50%;
+  transition: left 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+`;
+
+const ToggleLabel = styled.span`
+  color: #fff;
+  font-size: 1rem;
+`;
+
+
 
 const ButtonGroup = styled.div`
   display: flex;
@@ -136,13 +148,13 @@ const SettingsModal = ({ isOpen, onClose }) => {
   const {
     ledColor,
     setLedColor,
-    ledPattern,
-    setLedPattern
+    cursorInteractions,
+    setCursorInteractions
   } = useContext(ThemeContext);
 
   // Local state for settings (will be applied on save)
   const [localLedColor, setLocalLedColor] = useState(ledColor);
-  const [localLedPattern, setLocalLedPattern] = useState(ledPattern);
+  const [localCursorInteractions, setLocalCursorInteractions] = useState(cursorInteractions);
 
   // Color options
   const colorOptions = [
@@ -151,21 +163,15 @@ const SettingsModal = ({ isOpen, onClose }) => {
     { name: 'LinkedIn Blue', value: '#006CBF' },
     { name: 'Matrix Green', value: '#00FF41' },
     { name: 'Starbucks Green', value: '#007042' },
-    
+
   ];
 
-  // Pattern options
-  const patternOptions = [
-    { name: 'Wave', value: 'wave' },
-    { name: 'Matrix', value: 'matrix' },
-    { name: 'Random', value: 'random' },
-    { name: 'Cursor', value: 'cursor' }
-  ];
+
 
   // Handle save
   const handleSave = () => {
     setLedColor(localLedColor);
-    setLedPattern(localLedPattern);
+    setCursorInteractions(localCursorInteractions);
     onClose();
   };
 
@@ -173,7 +179,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
   const handleCancel = () => {
     // Reset local state to current settings
     setLocalLedColor(ledColor);
-    setLocalLedPattern(ledPattern);
+    setLocalCursorInteractions(cursorInteractions);
     onClose();
   };
 
@@ -200,20 +206,19 @@ const SettingsModal = ({ isOpen, onClose }) => {
         </SettingsGroup>
 
         <SettingsGroup>
-          <SettingLabel>LED Pattern</SettingLabel>
-          <PatternOptions>
-            {patternOptions.map(pattern => (
-              <PatternOption
-                key={pattern.value}
-                isSelected={localLedPattern === pattern.value}
-                onClick={() => setLocalLedPattern(pattern.value)}
-              >
-                {pattern.name}
-              </PatternOption>
-            ))}
-          </PatternOptions>
-
+          <SettingLabel>Cursor Interactions</SettingLabel>
+          <ToggleContainer>
+            <ToggleLabel>Enable cursor effects</ToggleLabel>
+            <ToggleSwitch 
+              isOn={localCursorInteractions}
+              onClick={() => setLocalCursorInteractions(!localCursorInteractions)}
+            >
+              <ToggleSlider isOn={localCursorInteractions} />
+            </ToggleSwitch>
+          </ToggleContainer>
         </SettingsGroup>
+
+
 
 
 

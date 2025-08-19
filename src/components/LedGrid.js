@@ -1,284 +1,306 @@
-import {
-  useEffect,
-  useState,
-  useCallback,
-  useContext,
-  useMemo,
-  useRef,
-} from 'react';
+'use client';
+import { useRef, useEffect, useCallback, useMemo, useContext } from "react";
+import { gsap } from "gsap";
+import { InertiaPlugin } from "gsap/InertiaPlugin";
 import { ThemeContext } from '../contexts/ThemeContext';
 
-const LedGrid = () => {
-  const [pixels, setPixels] = useState([]);
-  const [opacity, setOpacity] = useState(1);
-  const { ledColor, ledPattern } = useContext(ThemeContext);
-  const matrixRef = useRef({ drops: [] });
-  const randomRef = useRef({ timers: [] });
-  const lastMouseCell = useRef({ row: -1, col: -1 });
-  const [cursorCenter, setCursorCenter] = useState({ row: -1, col: -1 });
+import "./DotGrid.css";
 
-  const gridSize = 50;
-  const totalPixels = useMemo(() => gridSize * gridSize, [gridSize]);
+gsap.registerPlugin(InertiaPlugin);
 
-  const handleScroll = useCallback(() => {
-    if (handleScroll.timeout) return;
-    handleScroll.timeout = setTimeout(() => {
-      handleScroll.timeout = null;
-    }, 20);
-
-    const scrollPosition = window.scrollY;
-    const windowHeight = window.innerHeight;
-    const documentHeight = document.documentElement.scrollHeight;
-    const fadeStart = windowHeight * 0.1;
-    const fadeEnd = windowHeight * 0.5;
-
-    if (scrollPosition > fadeStart && scrollPosition < documentHeight - windowHeight) {
-      const fadeRange = fadeEnd - fadeStart;
-      const newOpacity = 1 - Math.min((scrollPosition - fadeStart) / fadeRange, 0.7);
-      setOpacity(newOpacity);
-    } else {
-      setOpacity(1);
+const throttle = (func, limit) => {
+  let lastCall = 0;
+  return function (...args) {
+    const now = performance.now();
+    if (now - lastCall >= limit) {
+      lastCall = now;
+      func.apply(this, args);
     }
+  };
+};
+
+function hexToRgb(hex) {
+  const m = hex.match(/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i);
+  if (!m) return { r: 0, g: 0, b: 0 };
+  return {
+    r: parseInt(m[1], 16),
+    g: parseInt(m[2], 16),
+    b: parseInt(m[3], 16),
+  };
+}
+
+const LedGrid = ({
+  dotSize = 32,
+  gap = 13,
+  proximity = 200,
+  speedTrigger = 100,
+  shockRadius = 250,
+  shockStrength = 5,
+  maxSpeed = 5000,
+  resistance = 750,
+  returnDuration = 1.5,
+  className = "",
+  style,
+}) => {
+  const { ledColor, cursorInteractions } = useContext(ThemeContext);
+
+  // Detect if device is mobile or tablet
+  const isMobileOrTablet = useMemo(() => {
+    if (typeof window === "undefined") return false;
+
+    // Check for touch capability and screen size
+    const hasTouchScreen = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    const isSmallScreen = window.innerWidth <= 1024; // Tablets are usually <= 1024px
+
+    // Also check user agent for mobile/tablet indicators
+    const userAgent = navigator.userAgent.toLowerCase();
+    const mobileKeywords = ['mobile', 'tablet', 'android', 'iphone', 'ipad', 'ipod'];
+    const isMobileUA = mobileKeywords.some(keyword => userAgent.includes(keyword));
+
+    return hasTouchScreen && (isSmallScreen || isMobileUA);
   }, []);
 
-  const updateWavePattern = useCallback(() => {
-    const time = Date.now() / 1000;
-    const cols = gridSize;
-    const rows = gridSize;
+  // Override cursor interactions for mobile/tablet
+  const effectiveCursorInteractions = cursorInteractions && !isMobileOrTablet;
+  const wrapperRef = useRef(null);
+  const canvasRef = useRef(null);
+  const dotsRef = useRef([]);
+  const pointerRef = useRef({
+    x: 0,
+    y: 0,
+    vx: 0,
+    vy: 0,
+    speed: 0,
+    lastTime: 0,
+    lastX: 0,
+    lastY: 0,
+  });
 
-    setPixels((prev) => {
-      const newPixels = [...prev];
-      for (let row = 0; row < rows; row++) {
-        for (let col = 0; col < cols; col++) {
-          const index = row * cols + col;
-          const distFromCenter = Math.sqrt(
-            Math.pow((row - rows / 2) / rows, 2) + Math.pow((col - cols / 2) / cols, 2)
-          );
-          const wave = Math.sin(distFromCenter * 10 - time * 2);
-          newPixels[index] = wave > 0.7;
-        }
-      }
-      return newPixels;
-    });
-  }, [gridSize]);
+  const baseRgb = useMemo(() => hexToRgb("#1a1a1a"), []);
+  const activeRgb = useMemo(() => hexToRgb(ledColor || "#5227FF"), [ledColor]);
 
-  const updateMatrixPattern = useCallback(() => {
-    const matrix = matrixRef.current;
+  const circlePath = useMemo(() => {
+    if (typeof window === "undefined" || !window.Path2D) return null;
 
-    if (!matrix.drops || matrix.drops.length !== gridSize) {
-      matrix.drops = [];
-      for (let col = 0; col < gridSize; col++) {
-        matrix.drops.push({
-          col,
-          headY: 0,
-          speed: 0.5 + Math.random() * 0.5,
-          length: Math.floor(Math.random() * 20),
-        });
+    const p = new window.Path2D();
+    p.arc(0, 0, dotSize / 2, 0, Math.PI * 2);
+    return p;
+  }, [dotSize]);
+
+  const buildGrid = useCallback(() => {
+    const wrap = wrapperRef.current;
+    const canvas = canvasRef.current;
+    if (!wrap || !canvas) return;
+
+    const { width, height } = wrap.getBoundingClientRect();
+    const dpr = window.devicePixelRatio || 1;
+
+    canvas.width = width * dpr;
+    canvas.height = height * dpr;
+    canvas.style.width = `${width}px`;
+    canvas.style.height = `${height}px`;
+    const ctx = canvas.getContext("2d");
+    if (ctx) ctx.scale(dpr, dpr);
+
+    const cols = Math.floor((width + gap) / (dotSize + gap));
+    const rows = Math.floor((height + gap) / (dotSize + gap));
+    const cell = dotSize + gap;
+
+    const gridW = cell * cols - gap;
+    const gridH = cell * rows - gap;
+
+    const extraX = width - gridW;
+    const extraY = height - gridH;
+
+    const startX = extraX / 2 + dotSize / 2;
+    const startY = extraY / 2 + dotSize / 2;
+
+    const dots = [];
+    for (let y = 0; y < rows; y++) {
+      for (let x = 0; x < cols; x++) {
+        const cx = startX + x * cell;
+        const cy = startY + y * cell;
+        dots.push({ cx, cy, xOffset: 0, yOffset: 0, _inertiaApplied: false });
       }
     }
-
-    const newPixels = Array(totalPixels).fill(false);
-
-    matrix.drops.forEach((stream) => {
-      stream.headY += stream.speed;
-
-      const headRow = Math.floor(stream.headY);
-      for (let j = 0; j < stream.length; j++) {
-        const row = headRow - j;
-        if (row >= 0 && row < gridSize) {
-          const index = row * gridSize + stream.col;
-          newPixels[index] = true;
-        }
-      }
-
-      if (stream.headY - stream.length > gridSize) {
-        stream.headY = 0;
-        stream.length = Math.floor(Math.random() * 20);
-        stream.speed = 0.5 + Math.random() * 0.5;
-      }
-    });
-
-    setPixels(newPixels);
-  }, [gridSize, totalPixels]);
-
-  const updateRandomPattern = useCallback(() => {
-    const random = randomRef.current;
-
-    if (!random.timers || random.timers.length !== totalPixels) {
-      random.timers = Array(totalPixels).fill(null).map(() => ({
-        onTime: Math.random() * 4000 + 3000,
-        offTime: Math.random() * 4000 + 3000,
-        lastToggle: Date.now(),
-        isOn: false,
-      }));
-    }
-
-    const newPixels = Array(totalPixels).fill(false);
-    const currentTime = Date.now();
-
-    random.timers.forEach((timer, index) => {
-      const timeSinceLastToggle = currentTime - timer.lastToggle;
-      const targetTime = timer.isOn ? timer.onTime : timer.offTime;
-
-      if (timeSinceLastToggle >= targetTime) {
-        timer.isOn = !timer.isOn;
-        timer.lastToggle = currentTime;
-        if (timer.isOn) {
-          timer.onTime = Math.random() * 4000 + 3000;
-        } else {
-          timer.offTime = Math.random() * 4000 + 3000;
-        }
-      }
-
-      newPixels[index] = timer.isOn;
-    });
-
-    setPixels(newPixels);
-  }, [totalPixels]);
-
-  const getUpdateFunction = useCallback(() => {
-    switch (ledPattern) {
-      case 'matrix':
-        return updateMatrixPattern;
-      case 'random':
-        return updateRandomPattern;
-      case 'wave':
-      default:
-        return updateWavePattern;
-    }
-  }, [ledPattern, updateMatrixPattern, updateWavePattern, updateRandomPattern]);
+    dotsRef.current = dots;
+  }, [dotSize, gap]);
 
   useEffect(() => {
-    const initialPixels = Array(totalPixels).fill(false);
-    setPixels(initialPixels);
-    matrixRef.current.drops = [];
-    randomRef.current.timers = [];
+    if (!circlePath) return;
 
-    const updateFunction = getUpdateFunction();
-    updateFunction();
+    let rafId;
+    const proxSq = proximity * proximity;
 
-    const interval = setInterval(() => {
-      const updateFn = getUpdateFunction();
-      updateFn();
-    }, ledPattern === 'random' ? 200 : 100);
+    const draw = () => {
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
+      const { x: px, y: py } = pointerRef.current;
+
+      for (const dot of dotsRef.current) {
+        const ox = dot.cx + dot.xOffset;
+        const oy = dot.cy + dot.yOffset;
+        const dx = dot.cx - px;
+        const dy = dot.cy - py;
+        const dsq = dx * dx + dy * dy;
+
+        let style = "#1a1a1a";
+        if (effectiveCursorInteractions && dsq <= proxSq) {
+          const dist = Math.sqrt(dsq);
+          const t = 1 - dist / proximity;
+          const r = Math.round(baseRgb.r + (activeRgb.r - baseRgb.r) * t);
+          const g = Math.round(baseRgb.g + (activeRgb.g - baseRgb.g) * t);
+          const b = Math.round(baseRgb.b + (activeRgb.b - baseRgb.b) * t);
+          style = `rgb(${r},${g},${b})`;
+        }
+
+        ctx.save();
+        ctx.translate(ox, oy);
+        ctx.fillStyle = style;
+        ctx.fill(circlePath);
+        ctx.restore();
+      }
+
+      rafId = requestAnimationFrame(draw);
+    };
+
+    draw();
+    return () => cancelAnimationFrame(rafId);
+  }, [proximity, activeRgb, baseRgb, circlePath, effectiveCursorInteractions]);
+
+  useEffect(() => {
+    buildGrid();
+    let ro = null;
+    if ("ResizeObserver" in window) {
+      ro = new ResizeObserver(buildGrid);
+      wrapperRef.current && ro.observe(wrapperRef.current);
+    } else {
+      window.addEventListener("resize", buildGrid);
+    }
+    return () => {
+      if (ro) ro.disconnect();
+      else window.removeEventListener("resize", buildGrid);
+    };
+  }, [buildGrid]);
+
+  useEffect(() => {
+    const onMove = (e) => {
+      const now = performance.now();
+      const pr = pointerRef.current;
+      const dt = pr.lastTime ? now - pr.lastTime : 16;
+      const dx = e.clientX - pr.lastX;
+      const dy = e.clientY - pr.lastY;
+      let vx = (dx / dt) * 1000;
+      let vy = (dy / dt) * 1000;
+      let speed = Math.hypot(vx, vy);
+      if (speed > maxSpeed) {
+        const scale = maxSpeed / speed;
+        vx *= scale;
+        vy *= scale;
+        speed = maxSpeed;
+      }
+      pr.lastTime = now;
+      pr.lastX = e.clientX;
+      pr.lastY = e.clientY;
+      pr.vx = vx;
+      pr.vy = vy;
+      pr.speed = speed;
+
+      const rect = canvasRef.current.getBoundingClientRect();
+      pr.x = e.clientX - rect.left;
+      pr.y = e.clientY - rect.top;
+
+      for (const dot of dotsRef.current) {
+        const dist = Math.hypot(dot.cx - pr.x, dot.cy - pr.y);
+        if (effectiveCursorInteractions && speed > speedTrigger && dist < proximity && !dot._inertiaApplied) {
+          dot._inertiaApplied = true;
+          gsap.killTweensOf(dot);
+          const pushX = dot.cx - pr.x + vx * 0.005;
+          const pushY = dot.cy - pr.y + vy * 0.005;
+          gsap.to(dot, {
+            inertia: { xOffset: pushX, yOffset: pushY, resistance },
+            onComplete: () => {
+              gsap.to(dot, {
+                xOffset: 0,
+                yOffset: 0,
+                duration: returnDuration,
+                ease: "elastic.out(1,0.75)",
+              });
+              dot._inertiaApplied = false;
+            },
+          });
+        }
+      }
+    };
+
+    const onClick = (e) => {
+      const rect = canvasRef.current.getBoundingClientRect();
+      const cx = e.clientX - rect.left;
+      const cy = e.clientY - rect.top;
+      for (const dot of dotsRef.current) {
+        const dist = Math.hypot(dot.cx - cx, dot.cy - cy);
+        if (effectiveCursorInteractions && dist < shockRadius && !dot._inertiaApplied) {
+          dot._inertiaApplied = true;
+          gsap.killTweensOf(dot);
+          const falloff = Math.max(0, 1 - dist / shockRadius);
+          const pushX = (dot.cx - cx) * shockStrength * falloff;
+          const pushY = (dot.cy - cy) * shockStrength * falloff;
+          gsap.to(dot, {
+            inertia: { xOffset: pushX, yOffset: pushY, resistance },
+            onComplete: () => {
+              gsap.to(dot, {
+                xOffset: 0,
+                yOffset: 0,
+                duration: returnDuration,
+                ease: "elastic.out(1,0.75)",
+              });
+              dot._inertiaApplied = false;
+            },
+          });
+        }
+      }
+    };
+
+    const throttledMove = throttle(onMove, 50);
+    window.addEventListener("mousemove", throttledMove, { passive: true });
+    window.addEventListener("click", onClick);
 
     return () => {
-      clearInterval(interval);
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener("mousemove", throttledMove);
+      window.removeEventListener("click", onClick);
     };
-  }, [handleScroll, getUpdateFunction, totalPixels, ledPattern]);
-
-  // Cursor effect: solid circle, no fade
-  useEffect(() => {
-    if (ledPattern !== 'cursor') return;
-
-    const grid = document.querySelector('.led-grid');
-    if (!grid) return;
-
-    const handleMouseMove = (e) => {
-      const rect = grid.getBoundingClientRect();
-
-      const totalPaddingX = 8 * 2;
-      const totalPaddingY = 8 * 2;
-
-      const totalGapX = (gridSize - 1) * 8;
-      const totalGapY = (gridSize - 1) * 8;
-
-      const usableWidth = rect.width - totalPaddingX - totalGapX;
-      const usableHeight = rect.height - totalPaddingY - totalGapY;
-
-      const cellWidth = usableWidth / gridSize;
-      const cellHeight = usableHeight / gridSize;
-
-      const x = e.clientX - rect.left - 8;
-      const y = e.clientY - rect.top - 8;
-
-      const col = Math.floor(x / (cellWidth + 8));
-      const row = Math.floor(y / (cellHeight + 8));
-
-      const clampedCol = Math.min(Math.max(col, 0), gridSize - 1);
-      const clampedRow = Math.min(Math.max(row, 0), gridSize - 1);
-
-      if (
-        lastMouseCell.current &&
-        lastMouseCell.current.row === clampedRow &&
-        lastMouseCell.current.col === clampedCol
-      )
-        return;
-
-      lastMouseCell.current = { row: clampedRow, col: clampedCol };
-
-      setCursorCenter({ row: clampedRow, col: clampedCol });
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, [gridSize, ledPattern]);
-
-  const radius = 15; // solid circle radius
-
-  const pixelElements = useMemo(() => {
-    if (ledPattern === 'cursor') {
-      if (cursorCenter.row === -1) {
-        return Array(totalPixels)
-          .fill(0)
-          .map((_, index) => <div key={index} className="led-pixel" />);
-      }
-
-      return Array(totalPixels)
-        .fill(0)
-        .map((_, index) => {
-          const row = Math.floor(index / gridSize);
-          const col = index % gridSize;
-
-          const dist = Math.sqrt(
-            (row - cursorCenter.row) ** 2 + (col - cursorCenter.col) ** 2
-          );
-
-          // Just ON/OFF circle, no opacity fade
-          if (dist <= radius) {
-            return (
-              <div
-                key={index}
-                className="led-pixel on"
-                style={{ backgroundColor: ledColor }}
-              />
-            );
-          } else {
-            return <div key={index} className="led-pixel" />;
-          }
-        });
-    }
-
-    return pixels.map((isOn, index) => (
-      <div
-        key={index}
-        className={`led-pixel${isOn ? ' on' : ''}`}
-        style={isOn ? { backgroundColor: ledColor } : {}}
-      />
-    ));
-  }, [pixels, ledColor, cursorCenter, ledPattern, totalPixels]);
+  }, [
+    maxSpeed,
+    speedTrigger,
+    proximity,
+    resistance,
+    returnDuration,
+    shockRadius,
+    shockStrength,
+    effectiveCursorInteractions,
+  ]);
 
   return (
-    <div
-      className="led-grid"
+    <section
+      className={`dot-grid ${className}`}
       style={{
-        opacity,
+        ...style,
         height: '100%',
         position: 'fixed',
         top: 0,
         left: 0,
         right: 0,
         bottom: 0,
-        display: 'grid',
-        gridTemplateColumns: `repeat(${gridSize}, 1fr)`,
-        gridTemplateRows: `repeat(${gridSize}, 1fr)`,
       }}
     >
-      {pixelElements}
-    </div>
+      <div ref={wrapperRef} className="dot-grid__wrap">
+        <canvas ref={canvasRef} className="dot-grid__canvas" />
+      </div>
+    </section>
   );
 };
 

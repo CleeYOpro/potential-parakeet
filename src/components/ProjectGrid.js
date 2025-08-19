@@ -1,28 +1,10 @@
 import styled from 'styled-components';
-import { useEffect, useState } from 'react';
+import ScrollStack, { ScrollStackItem } from './ScrollStack';
 
-const ProjectsGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2rem;
-  padding: 2rem 2vw;
-  max-width: 900px;
-  margin: 0 auto;
-
-  @media (max-width: 1024px) {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.2rem;
-    max-width: 98vw;
-    padding-left: 3vw;
-    padding-right: 3vw;
-  }
-  @media (max-width: 700px) {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-    max-width: 100vw;
-    padding: 1rem 5vw;
-  }
-  overflow-x: auto;
+const ProjectsContainer = styled.div`
+  width: 100%;
+  height: 100vh;
+  position: relative;
 `;
 
 const ProjectCard = styled.div`
@@ -35,15 +17,18 @@ const ProjectCard = styled.div`
   transition: transform 0.2s;
   border: 1px solid var(--primary-color);
   position: relative;
-  min-width: 260px;
-  max-width: 100%;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  height: auto;
+  
   &:hover {
     transform: translateY(-6px) scale(1.03);
     box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-    
   }
-    @media (max-width: 768px) {
-    padding: 1rem;
+  
+  @media (max-width: 768px) {
+    max-width: 90%;
   }
 `;
 
@@ -136,32 +121,7 @@ const ProjectLink = styled.a`
   }
 `;
 
-const BackToTopButton = styled.button`
-  position: fixed;
-  bottom: 2.5rem;
-  right: 2.5rem;
-  z-index: 1200;
-  background: rgba(31, 30, 30, 0.8);
-  opacity: 1;
-  backdrop-filter: blur(400px) saturate(1.8);
-  -webkit-backdrop-filter: blur(400px) saturate(1.8);
-  border-radius: 2.5rem 2.5rem 2.5rem 2.5rem / 2.2rem 2.2rem 2.2rem 2.2rem;
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18), 0 1.5px 8px 0 rgba(0,0,0,0.10);
-  border: 1.5px solid rgba(255,255,255,0.13);
-  color: var(--primary-color);
-  font-size: 1.5rem;
-  font-weight: bold;
-  padding: 0.9rem 2.2rem;
-  cursor: pointer;
-  transition: background 0.3s, box-shadow 0.3s, opacity 0.3s;
-  display: ${props => (props.visible ? 'block' : 'none')};
-  @media (max-width: 600px) {
-    bottom: 1.2rem;
-    right: 1.2rem;
-    padding: 0.7rem 1.5rem;
-    font-size: 1.1rem;
-  }
-`;
+
 
 /**
  * Array of project objects to be displayed in the ProjectGrid.
@@ -199,7 +159,7 @@ const projects = [
     award: '1st place',
     level: 'Washington',
     image: '/urm.png',
-    tech: [ 'Data Analysis', 'Python', 'Disaster Response','GIS'],
+    tech: ['Data Analysis', 'Python', 'Disaster Response', 'GIS'],
     pdf: 'https://drive.google.com/file/d/1gLBq9b4jJ90F_pYGyh_cpTNpMdKyHJj-/view?usp=sharing', // Add this line
     github: 'https://github.com/CleeYOpro/seattle_fault_project', // Add this line
   },
@@ -237,115 +197,116 @@ const projects = [
 ];
 
 const ProjectGrid = () => {
-  const [showTop, setShowTop] = useState(false);
-  useEffect(() => {
-    const onScroll = () => setShowTop(window.scrollY > 300);
-    window.addEventListener('scroll', onScroll);
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
-  const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
   return (
-    <>
-      <ProjectsGrid>
+    <ProjectsContainer>
+      <ScrollStack
+        itemDistance={200}
+        itemScale={0.05}
+        itemStackDistance={10}
+        stackPosition="5%"
+        scaleEndPosition="15%"
+        baseScale={0.85}
+        rotationAmount={0.3}
+        blurAmount={1}
+      >
         {projects.map((project, idx) => (
-          <ProjectCard key={idx}>
-            {project.award && (
-              <AwardBanner>
-                {project.level}
-                <WtsaLogo src="/wtsa.png" alt="WTSA Logo" />
-                {project.award}
-              </AwardBanner>
-            )}
-            <ProjectImage src={project.image} alt={project.title} />
-            <ProjectContent>
-              <ProjectTitle>{project.title}</ProjectTitle>
-              <ProjectDesc>{project.description}</ProjectDesc>
-              <TechList>
-                {project.tech && project.tech.map((tech, i) => (
-                  <TechItem key={i}>{tech}</TechItem>
-                ))}
-              </TechList>
-              {/* Project links section */}
-              {project.launch || project.readMore ? (
-                <div style={{ display: 'flex', gap: '0.7rem', alignItems: 'center', marginTop: '0.5rem', justifyContent: 'center' }}>
-                  {project.launch && (
-                    <ProjectLink href={project.launch} target="_blank" rel="noopener noreferrer">
-                      ▶ Launch
-                    </ProjectLink>
-                  )}
-                  {project.readMore && (
-                    <ProjectLink href={project.readMore} target="_blank" rel="noopener noreferrer">
-                      📰 Read More
-                    </ProjectLink>
-                  )}
-                </div>
-              ) : null}
-              {project.portfolio || project.poster ? (
-                <div style={{ display: 'flex', gap: '0.7rem', alignItems: 'center', marginTop: '0.5rem', justifyContent: 'center' }}>
-                  {project.portfolio && (
-                    <ProjectLink href={project.portfolio} target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
-                      {/* Adobe PDF SVG icon */}
+          <ScrollStackItem key={idx}>
+            <ProjectCard>
+              {project.award && (
+                <AwardBanner>
+                  {project.level}
+                  <WtsaLogo src="/wtsa.png" alt="WTSA Logo" />
+                  {project.award}
+                </AwardBanner>
+              )}
+              <ProjectImage src={project.image} alt={project.title} />
+              <ProjectContent>
+                <ProjectTitle>{project.title}</ProjectTitle>
+                <ProjectDesc>{project.description}</ProjectDesc>
+                <TechList>
+                  {project.tech && project.tech.map((tech, i) => (
+                    <TechItem key={i}>{tech}</TechItem>
+                  ))}
+                </TechList>
+                {/* Project links section */}
+                {project.launch || project.readMore ? (
+                  <div style={{ display: 'flex', gap: '0.7rem', alignItems: 'center', marginTop: '0.5rem', justifyContent: 'center' }}>
+                    {project.launch && (
+                      <ProjectLink href={project.launch} target="_blank" rel="noopener noreferrer">
+                        ▶ Launch
+                      </ProjectLink>
+                    )}
+                    {project.readMore && (
+                      <ProjectLink href={project.readMore} target="_blank" rel="noopener noreferrer">
+                        📰 Read More
+                      </ProjectLink>
+                    )}
+                  </div>
+                ) : null}
+                {project.portfolio || project.poster ? (
+                  <div style={{ display: 'flex', gap: '0.7rem', alignItems: 'center', marginTop: '0.5rem', justifyContent: 'center' }}>
+                    {project.portfolio && (
+                      <ProjectLink href={project.portfolio} target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+                        {/* Adobe PDF SVG icon */}
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 48 48" style={{ display: 'inline', verticalAlign: 'middle' }}>
+                          <rect width="48" height="48" rx="6" fill="#E2231A" />
+                          <text x="12" y="32" fontSize="18" fontWeight="bold" fill="#fff" fontFamily="Arial, sans-serif">PDF</text>
+                        </svg>
+                        Portfolio
+                      </ProjectLink>
+                    )}
+                    {project.poster && (
+                      <ProjectLink href={project.poster} target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+                        {/* Adobe PDF SVG icon */}
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 48 48" style={{ display: 'inline', verticalAlign: 'middle' }}>
+                          <rect width="48" height="48" rx="6" fill="#E2231A" />
+                          <text x="12" y="32" fontSize="18" fontWeight="bold" fill="#fff" fontFamily="Arial, sans-serif">PDF</text>
+                        </svg>
+                        Poster
+                      </ProjectLink>
+                    )}
+                  </div>
+                ) : project.pdf && project.github ? (
+                  <div style={{ display: 'flex', gap: '0.7rem', alignItems: 'center', marginTop: '0.5rem', justifyContent: 'center' }}>
+                    <ProjectLink href={project.pdf} target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
                       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 48 48" style={{ display: 'inline', verticalAlign: 'middle' }}>
                         <rect width="48" height="48" rx="6" fill="#E2231A" />
                         <text x="12" y="32" fontSize="18" fontWeight="bold" fill="#fff" fontFamily="Arial, sans-serif">PDF</text>
                       </svg>
-                      Portfolio
+                      Report
                     </ProjectLink>
-                  )}
-                  {project.poster && (
-                    <ProjectLink href={project.poster} target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
-                      {/* Adobe PDF SVG icon */}
-                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 48 48" style={{ display: 'inline', verticalAlign: 'middle' }}>
-                        <rect width="48" height="48" rx="6" fill="#E2231A" />
-                        <text x="12" y="32" fontSize="18" fontWeight="bold" fill="#fff" fontFamily="Arial, sans-serif">PDF</text>
+                    <ProjectLink href={project.github} target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+                      {/* GitHub SVG icon */}
+                      <svg height="20" width="20" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg" style={{ display: 'inline', verticalAlign: 'middle' }}>
+                        <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.19 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z" />
                       </svg>
-                      Poster
+                      GitHub
                     </ProjectLink>
-                  )}
-                </div>
-              ) : project.pdf && project.github ? (
-                <div style={{ display: 'flex', gap: '0.7rem', alignItems: 'center', marginTop: '0.5rem', justifyContent: 'center' }}>
-                  <ProjectLink href={project.pdf} target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 48 48" style={{ display: 'inline', verticalAlign: 'middle' }}>
-                      <rect width="48" height="48" rx="6" fill="#E2231A" />
-                      <text x="12" y="32" fontSize="18" fontWeight="bold" fill="#fff" fontFamily="Arial, sans-serif">PDF</text>
-                    </svg>
-                    Report
+                  </div>
+                ) : project.link && project.github ? (
+                  <div style={{ display: 'flex', gap: '0.7rem', alignItems: 'center', marginTop: '0.5rem', justifyContent: 'center' }}>
+                    <ProjectLink href={project.link} target="_blank" rel="noopener noreferrer">
+                      Project Link
+                    </ProjectLink>
+                    <ProjectLink href={project.github} target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+                      {/* GitHub SVG icon */}
+                      <svg height="20" width="20" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg" style={{ display: 'inline', verticalAlign: 'middle' }}>
+                        <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.19 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z" />
+                      </svg>
+                      GitHub
+                    </ProjectLink>
+                  </div>
+                ) : project.link ? (
+                  <ProjectLink href={project.link} target="_blank" rel="noopener noreferrer" style={{ display: 'flex', justifyContent: 'center' }}>
+                    View Project
                   </ProjectLink>
-                  <ProjectLink href={project.github} target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
-                    {/* GitHub SVG icon */}
-                    <svg height="20" width="20" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg" style={{ display: 'inline', verticalAlign: 'middle' }}>
-                      <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.19 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z" />
-                    </svg>
-                    GitHub
-                  </ProjectLink>
-                </div>
-              ) : project.link && project.github ? (
-                <div style={{ display: 'flex', gap: '0.7rem', alignItems: 'center', marginTop: '0.5rem', justifyContent: 'center' }}>
-                  <ProjectLink href={project.link} target="_blank" rel="noopener noreferrer">
-                    Project Link
-                  </ProjectLink>
-                  <ProjectLink href={project.github} target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
-                    {/* GitHub SVG icon */}
-                    <svg height="20" width="20" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg" style={{ display: 'inline', verticalAlign: 'middle' }}>
-                      <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.19 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z" />
-                    </svg>
-                    GitHub
-                  </ProjectLink>
-                </div>
-              ) : project.link ? (
-                <ProjectLink href={project.link} target="_blank" rel="noopener noreferrer" style={{ display: 'flex', justifyContent: 'center' }}>
-                  View Project
-                </ProjectLink>
-              ) : null}
-            </ProjectContent>
-          </ProjectCard>
+                ) : null}
+              </ProjectContent>
+            </ProjectCard>
+          </ScrollStackItem>
         ))}
-      </ProjectsGrid>
-      <BackToTopButton visible={showTop} onClick={scrollToTop} aria-label="Back to Top">
-        ↑ Top
-      </BackToTopButton>
-    </>
+      </ScrollStack>
+    </ProjectsContainer>
   );
 };
 
