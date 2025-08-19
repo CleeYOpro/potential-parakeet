@@ -109,7 +109,7 @@ const CarouselContainer = styled.div`
 
 const CarouselTrack = styled.div`
   display: flex;
-  animation: ${infiniteScroll} 30s linear infinite;
+  animation: ${infiniteScroll} 60s linear infinite;
   width: fit-content;
 `;
 

@@ -60,35 +60,23 @@ const Description = styled.p`
 
 const HighlightedText = styled.span`
   color: var(--primary-color);
-  transition: all 0.3s ease;
-
-  &:hover {
-    background: linear-gradient(
-      120deg,
-      var(--primary-color) 0%,
-      var(--primary-color) 45%,
-      #fff 50%,
-      var(--primary-color) 55%,
-      var(--primary-color) 100%
-    );
-    background-size: 200% auto;
-    background-clip: text;
-    -webkit-background-clip: text;
-    color: transparent;
-    animation: ${shine} 1s linear infinite;
-  }
+  background: linear-gradient(
+    120deg,
+    var(--primary-color) 0%,
+    var(--primary-color) 45%,
+    #fff 50%,
+    var(--primary-color) 55%,
+    var(--primary-color) 100%
+  );
+  background-size: 200% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  animation: ${shine} 3s linear infinite; // run continuously
 `;
 
-const TeslaLink = styled.a`
-  color: var(--primary-color);
-  text-decoration: none;
-  transition: color 0.3s ease;
-  font-weight: bold;
 
-  &:hover {
-    color: #fff;
-  }
-`;
+
 
 const WorkLink = styled.a`
   color: var(--primary-color);
@@ -117,15 +105,9 @@ const Hero = () => {
       <HeroContent>
         <Title>I'M CLEO!</Title>
         <Description>
-          <TeslaLink
-            href="https://www.usnews.com/education/best-high-schools/washington/districts/lake-washington-school-district/tesla-stem-high-school-146690"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Student Full Stack Developer @ Tesla STEM.{" "}
-          </TeslaLink>
-          Effective <WorkLink href="#projects">work</WorkLink> in AI, GIS, web, business, and engineering
-          . <HighlightedText>Building Building Building</HighlightedText>
+          High School Junior & Full Stack Dev.{" "}
+          Practical <WorkLink href="#projects">projects</WorkLink> in AI, GIS, web, business, and engineering. 
+        <HighlightedText>{" "}learning. building. impacting.</HighlightedText>
         </Description>
         <IconsContainer>
           <SocialIcons />
