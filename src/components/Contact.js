@@ -334,7 +334,7 @@ const Contact = () => {
               </TableHeader>
               <TableData>
                 <SocialLink href="https://instagram.com/cle0b" target="_blank" rel="noopener noreferrer">
-                  cleobalaranjith
+                  cle0b
                 </SocialLink>
               </TableData>
             </TableRow>
@@ -354,7 +354,7 @@ const Contact = () => {
               </TableHeader>
               <TableData>
                 <SocialLink href="https://linkedin.com/in/cleofus" target="_blank" rel="noopener noreferrer">
-                  cleofus123
+                  cleofus
                 </SocialLink>
               </TableData>
             </TableRow>
@@ -364,7 +364,7 @@ const Contact = () => {
               </TableHeader>
               <TableData>
                 <SocialLink href="https://discordapp.com/users/1287117811482628286" target="_blank" rel="noopener noreferrer">
-                  mecahedron
+                  My Discord
                 </SocialLink>
               </TableData>
             </TableRow>

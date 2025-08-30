@@ -105,9 +105,9 @@ const Hero = () => {
       <HeroContent>
         <Title>I'M CLEO!</Title>
         <Description>
-          High School Junior & Full Stack Dev.{" "}
-          Practical <WorkLink href="#projects">projects</WorkLink> in AI, GIS, web, business, and engineering. 
-        <HighlightedText>{" "}learning. building. impacting.</HighlightedText>
+          just a high school junior.{" "}
+          building practical <WorkLink href="#projects">projects</WorkLink> and sqrewing around with tech😎 
+        <HighlightedText>{" "}check my socials👇</HighlightedText>
         </Description>
         <IconsContainer>
           <SocialIcons />

@@ -1,395 +1,255 @@
-import { useState, useContext } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
+import { FiSettings } from 'react-icons/fi';
 import SettingsModal from './SettingsModal';
-import { ThemeContext } from '../contexts/ThemeContext';
+import { gsap } from 'gsap';
 
-
-const Nav = styled.nav`
-  display: flex;
-  justify-content: center;
-  align-items: center;
+const NavbarContainer = styled.nav`
   position: fixed;
+  top: 2rem;
   left: 50%;
   transform: translateX(-50%);
-  top: 1rem;
-  z-index: 1000;
-  background: rgba(50, 49, 49, 0.55);
-  opacity: 0.92;
-  backdrop-filter: blur(18px) saturate(1.5);
-  border-radius: 2.5rem 2.5rem 2.5rem 2.5rem / 2.2rem 2.2rem 2.2rem 2.2rem;
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18), 0 1.5px 8px 0 rgba(0,0,0,0.10);
-  border: 1.5px solid rgba(255,255,255,0.13);
-  padding: 1.1rem 2.5rem;
-  width: 100%;
-  max-width: 900px;
-  transition: background 0.3s, box-shadow 0.3s;
-  font-family: var(--font-family);
-
-  @media (max-width: 768px) {
-    padding: 0.8rem 1.2rem;
-    width: 90%;
-    max-width: 400px;
-    border-radius: 1.5rem;
-  }
-`;
-
-const NavContainer = styled.div`
   display: flex;
   align-items: center;
-  width: 100%;
-
-  @media (max-width: 768px) {
-    padding: 0 0.5rem;
-  }
-`;
-
-const NavGroup = styled.div`
-  display: flex;
-  gap: 2rem;
-  flex: 1;
   justify-content: center;
-  transition: gap 0.3s;
+  gap: 1rem;
+  z-index: 1000;
+  padding: 0 1rem;
+
   @media (max-width: 768px) {
-    display: none;
-  }
-  &.logo-hover {
-    gap: 1.1rem;
+    top: 1rem;
+    gap: 0.75rem;
   }
 `;
 
-const MobileNavGroup = styled.div`
-  display: none;
-  flex: 1;
-  justify-content: center;
-  @media (max-width: 768px) {
-    display: flex;
-    justify-content: center;
-  }
-`;
-
-const Logo = styled.a`
-  text-align: left;
-  font-size: 1.6rem;
-  font-weight: bold;
-  font-family: var(--font-family-mono), 'Rubik Mono One', monospace;
+const NavBubble = styled.button`
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(18px) saturate(1.5);
+  border: 1.5px solid rgba(255, 255, 255, 0.3);
   color: white;
-  margin-right: auto;
-  text-decoration: none;
-  cursor: pointer;
-  transition: color 0.3s ease, width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-  overflow: visible;
-  display: inline-block;
-  min-width: 2.5em;
-  min-height: 1.6em;
-  width: 2.5em;
-  box-sizing: content-box;
-  white-space: nowrap;
-
-  .logo-inner {
-    display: inline-block;
-    height: 1.6em;
-    width: 100%;
-    white-space: nowrap;
-    position: relative;
-  }
-  .c-base {
-    display: inline-block;
-    color: var(--primary-color);
-    transition: color 0.3s;
-    z-index: 2;
-    position: relative;
-  }
-  .leo {
-    display: inline-block;
-    overflow: hidden;
-    max-width: 0;
-    opacity: 0;
-    vertical-align: top;
-    transition: max-width 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s;
-    white-space: nowrap;
-    color: white;
-  }
-  .leo span {
-    display: inline-block;
-    padding-left: 0.1em;
-  }
-  .b-base {
-    display: inline-block;
-    color: var(--primary-color);
-    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-    z-index: 2;
-    margin-left: 0.1em;
-  }
-  .alaranjith {
-    display: inline-block;
-    overflow: hidden;
-    max-width: 0;
-    opacity: 0;
-    vertical-align: top;
-    transition: max-width 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s;
-    white-space: nowrap;
-    color: white;
-  } 
-  .alaranjith span {
-    display: inline-block;
-    padding-left: 0.1em;
-  }
-  @media (min-width: 769px) {
-    &:hover {
-      width: 7.5em;
-      min-width: 7.5em;
-    }
-    &:hover .leo {
-      max-width: 2.2em;
-      opacity: 1;
-    }
-    &:hover .b-base {
-      transform: translateX(0.09em);
-    }
-    &:hover .alaranjith {
-      max-width: 6.9em;
-      opacity: 1;
-    }
-  }
-`;
-
-const NavLink = styled.a`
-  color: #fff;
-  text-decoration: none;
-  font-size: 1rem;
-  transition: color 0.3s ease;
-  position: relative;
-  outline: none;
-  -webkit-tap-highlight-color: transparent;
-  font-family: var(--font-family);
-
-  @media (max-width: 768px) {
-    font-size: 1.2rem;
-  }
-
-  &:hover {
-    color: var(--primary-color);
-    text-decoration: underline;
-  }
-
-  &:hover::after {
-    width: 100%;
-  }
-`;
-
-const IconButton = styled.button`
-  display: flex;
-  background: none;
-  border: none;
-  color: #fff;
   font-size: 1.5rem;
   cursor: pointer;
-  padding: 0.5rem;
-  min-width: 44px;
-  height: 44px;
+  display: flex;
   align-items: center;
   justify-content: center;
-  transition: color 0.3s ease;
-  
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18),
+    0 1.5px 8px 0 rgba(0, 0, 0, 0.1);
+
   &:hover {
-    color: var(--primary-color);
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.6);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+    transform: scale(1.05);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  @media (max-width: 768px) {
+    width: 48px;
+    height: 48px;
+    font-size: 1.2rem;
   }
 `;
 
+const LogoLetters = styled.span`
+  font-family: var(--font-family-mono), 'Rubik Mono One', monospace;
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 0.1rem;
 
-
-const SettingsButton = styled(IconButton)`
-  margin-left: 1.7rem;
-  transition: margin 0.3s;
-  &.logo-hover {
-    margin-left: 0.7rem;
+  @media (max-width: 768px) {
+    font-size: 1rem;
   }
 `;
 
-
-
-const DropdownContainer = styled.div`
-  position: relative;
-  display: inline-block;
+const Overlay = styled.div`
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+  backdrop-filter: blur(12px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: auto;
+  z-index: 900;
+  padding: 1rem;
 `;
 
-const DropdownButton = styled.button`
-  background: none;
-  border: none;
-  color: #fff;
-  font-size: 1rem;
-  cursor: pointer;
-  padding: 0.5rem 1.2rem;
-  border-radius: 6px;
-  transition: background 0.2s;
-  font-family: var(--font-family);
-  &:focus {
-    
-    color: var(--primary-color);
-    outline: none;
-  }
+const PillsContainer = styled.ul`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 `;
 
-const DropdownMenu = styled.div`
-  display: ${props => (props.open ? 'block' : 'none')};
-  position: absolute;
-  left: 50%;
-  transform: translateX(-49%);
-  top: 180%;
-  min-width: 90vw;
-  max-width: 900px;
-  z-index: 999;
-  background: rgba(31, 30, 30, 0.8);
-  opacity: 1;
-  backdrop-filter: blur(400px) saturate(1.8);
-  -webkit-backdrop-filter: blur(400px) saturate(1.8);
-  border-radius: 2.5rem 2.5rem 2.5rem 2.5rem / 2.2rem 2.2rem 2.2rem 2.2rem;
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18), 0 1.5px 8px 0 rgba(0,0,0,0.10);
-  border: 1.5px solid rgba(255,255,255,0.13);
-  padding: 1.2rem 0.5rem;
-  width: 100%;
-  max-width: 900px;
-  transition: background 0.3s, box-shadow 0.3s;
-  font-family: var(--font-family);
-  text-align: center;
-  @media (min-width: 900px) {
-    min-width: 700px;
-    max-width: 700px;
-  }
-`;
-
-
-const DropdownItem = styled.a`
-  display: block;
-  color: #fff;
-  padding: 0.7rem 1.2rem;
+const Pill = styled.a`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 200px;
+  min-height: 100px;
+  padding: 1rem 2rem;
+  font-size: clamp(1.8rem, 3vw, 3rem);
+  border-radius: 9999px;
+  background: rgba(255,255,255,0.1);
+  color: white;
   text-decoration: none;
-  font-size: 1rem;
-  z-index: 1000;
-  
-  transition: background 0.2s, color 0.2s;
-  font-family: var(--font-family);
+  font-weight: 600;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+  transform: rotate(${props => props.rotation || 0}deg);
+  transition: transform 0.3s ease, background 0.3s ease, color 0.3s ease;
+
   &:hover {
-    background: var(--primary-color);
-    color: #fff;
+    transform: rotate(${props => props.rotation || 0}deg) scale(1.05);
+    background: rgba(255,255,255,0.2);
+  }
+
+  &:active {
+    transform: rotate(${props => props.rotation || 0}deg) scale(0.95);
+  }
+
+  @media(max-width: 768px){
+    min-width: 120px;
+    min-height: 80px;
+    font-size: clamp(1.4rem, 4vw, 2rem);
+    padding: 0.8rem 1.2rem;
   }
 `;
 
+const HamburgerLines = styled.div`
+  width: 24px;
+  height: 2px;
+  background: white;
+  border-radius: 2px;
+  position: relative;
+  transition: all 0.4s ease;
+
+  &::before,
+  &::after {
+    content: '';
+    width: 24px;
+    height: 2px;
+    background: white;
+    border-radius: 2px;
+    position: absolute;
+    left: 0;
+    transition: all 0.4s ease;
+  }
+
+  &::before { top: -8px; }
+  &::after { top: 8px; }
+
+  &.open {
+    background: transparent;
+  }
+
+  &.open::before {
+    top: 0;
+    transform: rotate(45deg);
+  }
+
+  &.open::after {
+    top: 0;
+    transform: rotate(-45deg);
+  }
+`;
 
 const Navbar = () => {
-
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [dropdownHover, setDropdownHover] = useState(false);
-  const [logoHover, setLogoHover] = useState(false);
-  const { ledColor } = useContext(ThemeContext);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const pillsRef = useRef([]);
 
-  const handleNavClick = (e) => {
-    e.preventDefault();
-    const href = e.currentTarget.getAttribute('href');
-    if (href === '/' || href === 'https://cleof.us/' || href === window.location.origin + '/') {
-      window.location.href = '/';
-      return;
+  const menuItems = [
+    { label: "Home", href: "#home", rotation: 8 },
+    { label: "About", href: "#about", rotation: -8 },
+    { label: "Projects", href: "#projects", rotation: 8 },
+    { label: "Bookshelf", href: "#reading-list", rotation: 8 },
+    { label: "Blog", href: "#blog", rotation: 8 },
+    { label: "Contact", href: "#contact", rotation: -8 },
+  ];
+
+  const toggleMenu = () => setIsMenuOpen(prev => !prev);
+
+  const handleLogoClick = (e) => {
+    e.stopPropagation();
+    const homeSection = document.querySelector("#home");
+    if (homeSection) {
+      homeSection.scrollIntoView({ behavior: "smooth" });
     }
-    if (href === '#about') {
-      window.location.hash = 'about';
-    } else if (href === '#contact') {
-      window.location.hash = 'contact';
-    } else if (href === '#projects') {
-      window.location.hash = 'projects';
-    } else if (href === '#reading-list') {
-      window.location.hash = 'reading-list';
-    } else if (href === '#blog') {
-      window.location.hash = 'blog';
+    setIsMenuOpen(false);
+  };
+
+  const handleSettingsClick = () => setIsSettingsOpen(true);
+
+  const handlePillClick = (href) => {
+    const target = document.querySelector(href);
+    if(target){
+      target.scrollIntoView({ behavior: 'smooth' });
     }
-    //else {
-    //setIsModalOpen(true);
-    //}
-    setDropdownOpen(false);
+    setIsMenuOpen(false);
   };
 
-  const handleSettingsClick = () => {
-    setIsSettingsOpen(true);
-  };
-
-  // Only close dropdown when a link is clicked, not when button is clicked
-  const handleDropdownItemClick = (e) => {
-    handleNavClick(e);
-    setDropdownOpen(false);
-  };
-
-  // Keep dropdown open if mouse is over menu or button
-  const handleDropdownMouseEnter = () => {
-    setDropdownHover(true);
-    setDropdownOpen(true);
-  };
-  const handleDropdownMouseLeave = () => {
-    setDropdownHover(false);
-    setTimeout(() => {
-      if (!dropdownHover) setDropdownOpen(false);
-    }, 120);
-  };
+  useEffect(() => {
+    if (isMenuOpen) {
+      pillsRef.current.forEach((pill, i) => {
+        const angleX = gsap.utils.random(-100, 100);
+        const angleY = gsap.utils.random(-100, 100);
+        const angleZ = gsap.utils.random(-30, 30);
+        gsap.fromTo(pill, 
+          { x: angleX, y: angleY, rotation: angleZ, scale: 0, autoAlpha: 0 },
+          { x:0, y:0, rotation: pill.dataset.rotation, scale:1, autoAlpha:1, duration:0.7, ease:"back.out(1.5)", delay: i*0.1 }
+        );
+      });
+    }
+  }, [isMenuOpen]);
 
   return (
     <>
-      <Nav>
-        <NavContainer>
-          <Logo
-            href="/"
-            hoverColor={ledColor}
-            onClick={handleNavClick}
-            onMouseEnter={() => setLogoHover(true)}
-            onMouseLeave={() => setLogoHover(false)}
-          >
-            <span className="logo-inner">
-              <span className="c-base">C</span>
-              <span className="leo"><span>LEO</span></span>
-              <span className="b-base">B</span>
-              <span className="alaranjith"><span>ALARANJITH</span></span>
-            </span>
-          </Logo>
-          {/* Desktop Nav */}
-          <NavGroup className={logoHover ? 'logo-hover' : ''}>
-            <NavLink href="#about" onClick={handleNavClick}>About</NavLink>
-            <NavLink href="#projects" onClick={handleNavClick}>Projects</NavLink>
-            <NavLink href="#reading-list" onClick={handleNavClick}>Bookshelf</NavLink>
-            <NavLink href="#blog" onClick={handleNavClick}>Blog</NavLink>
-            <NavLink href="#contact" onClick={handleNavClick}>Contact</NavLink>
-          </NavGroup>
-          {/* Mobile Nav (Dropdown) */}
-          <MobileNavGroup>
-            <DropdownContainer
-              onMouseEnter={handleDropdownMouseEnter}
-              onMouseLeave={handleDropdownMouseLeave}
-            >
-              <DropdownButton
-                onClick={() => setDropdownOpen((open) => !open)}
-                aria-haspopup="true"
-                aria-expanded={dropdownOpen}
-                tabIndex={0}
-              >
-                Pages ▼
-              </DropdownButton>
-              <DropdownMenu open={dropdownOpen}>
-                <DropdownItem href="#about" onClick={handleDropdownItemClick}>About</DropdownItem>
-                <DropdownItem href="#projects" onClick={handleDropdownItemClick}>Projects</DropdownItem>
-                <DropdownItem href="#reading-list" onClick={handleDropdownItemClick}>Reading List</DropdownItem>
-                <DropdownItem href="#blog" onClick={handleDropdownItemClick}>Blog</DropdownItem>
-                <DropdownItem href="#contact" onClick={handleDropdownItemClick}>Contact</DropdownItem>
-              </DropdownMenu>
-            </DropdownContainer>
-          </MobileNavGroup>
-          <SettingsButton
-            onClick={handleSettingsClick}
-            className={logoHover ? 'logo-hover' : ''}
-          >
-            ⚙️
-          </SettingsButton>
-        </NavContainer>
-      </Nav>
-      {/* Modals */}
+      <NavbarContainer>
+        <NavBubble aria-label="Home" onClick={handleLogoClick}>
+          <LogoLetters>CB</LogoLetters>
+        </NavBubble>
+
+        <NavBubble onClick={handleSettingsClick} aria-label="Settings">
+          <FiSettings size={20} />
+        </NavBubble>
+
+        <NavBubble onClick={toggleMenu} aria-label="Menu">
+          <HamburgerLines className={isMenuOpen ? 'open' : ''}/>
+        </NavBubble>
+      </NavbarContainer>
+
+      {isMenuOpen && (
+        <Overlay>
+          <PillsContainer>
+            {menuItems.map((item, idx) => (
+              <li key={idx}>
+                <Pill
+                  href={item.href}
+                  data-rotation={item.rotation}
+                  rotation={item.rotation}
+                  ref={el => pillsRef.current[idx] = el}
+                  onClick={() => handlePillClick(item.href)}
+                >
+                  {item.label}
+                </Pill>
+              </li>
+            ))}
+          </PillsContainer>
+        </Overlay>
+      )}
 
       <SettingsModal isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
     </>
