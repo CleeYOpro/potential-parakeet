@@ -129,40 +129,37 @@ const Pill = styled.a`
 `;
 
 const HamburgerLines = styled.div`
-  width: 24px;
-  height: 2px;
-  background: white;
-  border-radius: 2px;
+  width: 20px;
+  height: 20px; /* container height */
   position: relative;
-  transition: all 0.4s ease;
+  cursor: pointer;
 
-  &::before,
-  &::after {
-    content: '';
-    width: 24px;
+  div {
+    position: absolute;
+    left: 0;
+    width: 20px;
     height: 2px;
     background: white;
     border-radius: 2px;
-    position: absolute;
-    left: 0;
     transition: all 0.4s ease;
   }
 
-  &::before { top: -8px; }
-  &::after { top: 8px; }
+  div:nth-child(1) { top: 0; }
+  div:nth-child(2) { top: 50%; transform: translateY(-50%); }
+  div:nth-child(3) { bottom: 0; }
 
-  &.open {
-    background: transparent;
+  &.open div:nth-child(1) {
+    top: 50%;
+    transform: translateY(-50%) rotate(45deg);
   }
 
-  &.open::before {
-    top: 0;
-    transform: rotate(45deg);
+  &.open div:nth-child(2) {
+    opacity: 0; /* middle line disappears */
   }
 
-  &.open::after {
-    top: 0;
-    transform: rotate(-45deg);
+  &.open div:nth-child(3) {
+    top: 50%;
+    transform: translateY(-50%) rotate(-45deg);
   }
 `;
 
@@ -185,9 +182,7 @@ const Navbar = () => {
   const handleLogoClick = (e) => {
     e.stopPropagation();
     const homeSection = document.querySelector("#home");
-    if (homeSection) {
-      homeSection.scrollIntoView({ behavior: "smooth" });
-    }
+    if (homeSection) homeSection.scrollIntoView({ behavior: "smooth" });
     setIsMenuOpen(false);
   };
 
@@ -195,9 +190,7 @@ const Navbar = () => {
 
   const handlePillClick = (href) => {
     const target = document.querySelector(href);
-    if(target){
-      target.scrollIntoView({ behavior: 'smooth' });
-    }
+    if (target) target.scrollIntoView({ behavior: 'smooth' });
     setIsMenuOpen(false);
   };
 
@@ -209,7 +202,7 @@ const Navbar = () => {
         const angleZ = gsap.utils.random(-30, 30);
         gsap.fromTo(pill, 
           { x: angleX, y: angleY, rotation: angleZ, scale: 0, autoAlpha: 0 },
-          { x:0, y:0, rotation: pill.dataset.rotation, scale:1, autoAlpha:1, duration:0.7, ease:"back.out(1.5)", delay: i*0.1 }
+          { x: 0, y: 0, rotation: pill.dataset.rotation, scale: 1, autoAlpha: 1, duration: 0.7, ease: "back.out(1.5)", delay: i*0.1 }
         );
       });
     }
@@ -227,7 +220,11 @@ const Navbar = () => {
         </NavBubble>
 
         <NavBubble onClick={toggleMenu} aria-label="Menu">
-          <HamburgerLines className={isMenuOpen ? 'open' : ''}/>
+          <HamburgerLines className={isMenuOpen ? 'open' : ''}>
+            <div />
+            <div />
+            <div />
+          </HamburgerLines>
         </NavBubble>
       </NavbarContainer>
 
@@ -239,7 +236,6 @@ const Navbar = () => {
                 <Pill
                   href={item.href}
                   data-rotation={item.rotation}
-                  rotation={item.rotation}
                   ref={el => pillsRef.current[idx] = el}
                   onClick={() => handlePillClick(item.href)}
                 >
