@@ -205,8 +205,8 @@ const projects = [
     description: 'Our rocketry team built a working model rocket to qualify for TARC nationals after overcoming major launch setbacks, refining our design, and achieving near-perfect flight scores.',
     image: '/WhatsApp Image 2024-04-07 at 11.00.16 AM.jpeg',
     tech: ['Data Analysis', 'Rocket Engineering'],
-    launch: 'https://youtube.com/shorts/ijfCUH0ua78?si=FOFAJj5UrJFGQmuk', // TODO: Replace with actual launch link
-    readMore: 'https://medium.com/@cleobala/launching-dreams-my-rocketry-journey-cacee0deb780', // TODO: Replace with actual read more link
+    launch: 'https://youtube.com/shorts/ijfCUH0ua78?si=FOFAJj5UrJFGQmuk',
+    readMore: 'https://medium.com/@cleobala/launching-dreams-my-rocketry-journey-cacee0deb780',
   },
 ];
 

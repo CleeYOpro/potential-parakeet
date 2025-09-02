@@ -58,13 +58,6 @@ const BooksCount = styled.div`
   }
 `;
 const booksData = [
-  {timeRead: "Ongoing",
-    title: "The Bible",
-    author: "Various",
-    pages: 1300,
-    description: "https://www.bibleref.com/John/1/John-chapter-1.html",
-    image: "https://bbhchurchconnection.wordpress.com/wp-content/uploads/2010/11/king-james-cover.jpg",
-    status: "reading"},
   {
     timeRead: "March 2023",
     title: "Every Falling Star",
@@ -116,7 +109,7 @@ const booksData = [
     title: "Shoe Dog",
     author: "Phil Knight",
     pages: 400,
-    description: "https://en.wikipedia.org/wiki/Shoe_Dog",
+    description: "https://solopreneurgrind.com/shoe-dog-book-review-a-memoir-from-the-creator-of-nike-phil-knight/",
     image: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Shoe_dog_book_cover.jpg/800px-Shoe_dog_book_cover.jpg",
     status: "completed"
   },
@@ -134,7 +127,7 @@ const booksData = [
     title: "Leonardo da Vinci",
     author: "Walter Isaacson",
     pages: 624,
-    description: "https://en.wikipedia.org/wiki/Leonardo_da_Vinci_(Isaacson_book)",
+    description: "https://www.theguardian.com/books/2017/dec/16/leonardo-da-vinci-the-biography-walter-isaacson-review",
     image: "https://m.media-amazon.com/images/I/91Ey0+6N-LL._UF1000,1000_QL80_.jpg",
     status: "completed"
   },
@@ -143,7 +136,7 @@ const booksData = [
     title: "The Kite Runner",
     author: "Khaled Hosseini",
     pages: 371,
-    description: "https://en.wikipedia.org/wiki/The_Kite_Runner",
+    description: "https://www.theguardian.com/childrens-books-site/2014/jul/30/review-khaled-hosseini-the-kite-runner",
     image: "https://upload.wikimedia.org/wikipedia/en/6/62/Kite_runner.jpg",
     status: "completed"
   },
@@ -152,7 +145,7 @@ const booksData = [
     title: "The Coming Wave",
     author: "Mustafa Suleyman",
     pages: 352,
-    description: "https://books.google.com/books/about/The_Coming_Wave.html?id=a-26EAAAQBAJ",
+    description: "https://the-coming-wave.com/",
     image: "https://m.media-amazon.com/images/I/81zQiMu4A5L._UF1000,1000_QL80_.jpg",
     status: "reading"
   },

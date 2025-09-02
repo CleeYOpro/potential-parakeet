@@ -321,6 +321,14 @@ const Contact = () => {
                 </EmailLink>
               </TableData>
             </TableRow>
+            <TableRow>
+              <TableHeader>Collegiate E-mail</TableHeader>
+              <TableData>
+                <EmailLink href="cleofus.balaranjith@bellevuecollege.edu">
+                  cleofus.balaranjith@bellevuecollege.edu
+                </EmailLink>
+              </TableData>
+            </TableRow>
           </tbody>
         </Table>
       </TableContainer>
