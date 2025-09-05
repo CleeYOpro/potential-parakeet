@@ -1,5 +1,7 @@
 import styled, { keyframes } from 'styled-components';
 import SocialIcons from './SocialIcons';
+import { useContext } from 'react';
+import { ThemeContext } from '../contexts/ThemeContext';
 
 const shine = keyframes`
   0% {
@@ -100,14 +102,25 @@ const IconsContainer = styled.div`
 `;
 
 const Hero = () => {
+  const { setLedColor, setLedPattern } = useContext(ThemeContext);
+
+  const enableMatrix = (e) => {
+    e.preventDefault();
+    setLedColor('#00FF41'); // Matrix Green
+    setLedPattern('matrix'); // enable matrix animation in LedGrid
+  };
+
   return (
     <HeroContainer>
       <HeroContent>
-        <Title>I'M CLEO!</Title>
+        <Title>hi im cleo👋</Title>
         <Description>
-          just a high school junior.{" "}
-          building practical <WorkLink href="#projects">projects</WorkLink> and sqrewing around with tech😎 
-        <HighlightedText>{" "}check my socials👇</HighlightedText>
+          high school junior.{" "}
+          building practical <WorkLink href="#projects">projects</WorkLink> and messing around with tech😎 
+          <HighlightedText>{" "}check my socials👇</HighlightedText>{" "}
+          <WorkLink href="#" onClick={enableMatrix} style={{ fontSize: '0.95rem', marginLeft: '0.25rem' }}>
+            try the matrix background
+          </WorkLink>
         </Description>
         <IconsContainer>
           <SocialIcons />

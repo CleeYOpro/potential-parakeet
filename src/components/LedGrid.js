@@ -42,7 +42,7 @@ const LedGrid = ({
   className = "",
   style,
 }) => {
-  const { ledColor, cursorInteractions } = useContext(ThemeContext);
+  const { ledColor, ledPattern } = useContext(ThemeContext);
 
   // Detect if device is mobile or tablet
   const isMobileOrTablet = useMemo(() => {
@@ -60,8 +60,9 @@ const LedGrid = ({
     return hasTouchScreen && (isSmallScreen || isMobileUA);
   }, []);
 
-  // Override cursor interactions for mobile/tablet
-  const effectiveCursorInteractions = cursorInteractions && !isMobileOrTablet;
+  const isMatrix = ledPattern === 'matrix';
+  // Cursor mode is active only when pattern is 'cursor' and device is not mobile/tablet
+  const effectiveCursorInteractions = (ledPattern === 'cursor') && !isMobileOrTablet;
   const wrapperRef = useRef(null);
   const canvasRef = useRef(null);
   const dotsRef = useRef([]);
@@ -75,6 +76,9 @@ const LedGrid = ({
     lastX: 0,
     lastY: 0,
   });
+  const gridInfoRef = useRef({ cols: 0, rows: 0, cell: 0, startX: 0, startY: 0 });
+  const streamsRef = useRef([]); // matrix streams per column
+  const lastFrameTimeRef = useRef(0);
 
   const baseRgb = useMemo(() => hexToRgb("#1a1a1a"), []);
   const activeRgb = useMemo(() => hexToRgb(ledColor || "#5227FF"), [ledColor]);
@@ -124,7 +128,21 @@ const LedGrid = ({
       }
     }
     dotsRef.current = dots;
+    gridInfoRef.current = { cols, rows, cell, startX, startY };
   }, [dotSize, gap]);
+
+  // Initialize matrix streams whenever grid changes or matrix mode toggles
+  useEffect(() => {
+    if (!isMatrix) return;
+    const { cols, rows } = gridInfoRef.current;
+    if (!cols || !rows) return;
+    streamsRef.current = new Array(cols).fill(0).map(() => ({
+      head: Math.random() * rows, // fractional row index
+      speed: 5 + Math.random() * 10, // rows per second
+      length: 6 + Math.floor(Math.random() * 10),
+    }));
+    lastFrameTimeRef.current = performance.now();
+  }, [isMatrix, dotSize, gap]);
 
   useEffect(() => {
     if (!circlePath) return;
@@ -132,15 +150,66 @@ const LedGrid = ({
     let rafId;
     const proxSq = proximity * proximity;
 
-    const draw = () => {
+    const draw = (time) => {
       const canvas = canvasRef.current;
       if (!canvas) return;
       const ctx = canvas.getContext("2d");
       if (!ctx) return;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      const { x: px, y: py } = pointerRef.current;
+      if (isMatrix) {
+        // Matrix rain over the dot grid
+        const { cols, rows, cell, startX, startY } = gridInfoRef.current;
+        if (cols && rows) {
+          const prev = lastFrameTimeRef.current || time;
+          const dt = Math.min(0.05, (time - prev) / 1000); // cap dt to avoid jumps
+          lastFrameTimeRef.current = time;
 
+          // advance streams
+          for (let c = 0; c < streamsRef.current.length; c++) {
+            const s = streamsRef.current[c];
+            s.head += s.speed * dt;
+            if (s.head - s.length > rows + 2) {
+              // reset stream above the top
+              s.head = -Math.random() * rows * 0.3;
+              s.speed = 5 + Math.random() * 10;
+              s.length = 6 + Math.floor(Math.random() * 10);
+            }
+          }
+
+          // draw dots column by column
+          for (let y = 0; y < rows; y++) {
+            for (let x = 0; x < cols; x++) {
+              const cx = startX + x * cell;
+              const cy = startY + y * cell;
+              // compute brightness based on distance to stream head for this column
+              const s = streamsRef.current[x];
+              let style = "#1a1a1a";
+              if (s) {
+                const dToHead = s.head - y; // head above is smaller value
+                if (dToHead >= 0 && dToHead <= s.length) {
+                  // brightness taper: head is brightest
+                  const t = 1 - dToHead / (s.length + 0.0001);
+                  const r = Math.round(baseRgb.r + (activeRgb.r - baseRgb.r) * t);
+                  const g = Math.round(baseRgb.g + (activeRgb.g - baseRgb.g) * t);
+                  const b = Math.round(baseRgb.b + (activeRgb.b - baseRgb.b) * t);
+                  style = `rgb(${r},${g},${b})`;
+                }
+              }
+              ctx.save();
+              ctx.translate(cx, cy);
+              ctx.fillStyle = style;
+              ctx.fill(circlePath);
+              ctx.restore();
+            }
+          }
+        }
+        rafId = requestAnimationFrame(draw);
+        return;
+      }
+
+      // Cursor interaction mode
+      const { x: px, y: py } = pointerRef.current;
       for (const dot of dotsRef.current) {
         const ox = dot.cx + dot.xOffset;
         const oy = dot.cy + dot.yOffset;
@@ -168,9 +237,9 @@ const LedGrid = ({
       rafId = requestAnimationFrame(draw);
     };
 
-    draw();
+    rafId = requestAnimationFrame(draw);
     return () => cancelAnimationFrame(rafId);
-  }, [proximity, activeRgb, baseRgb, circlePath, effectiveCursorInteractions]);
+  }, [proximity, activeRgb, baseRgb, circlePath, effectiveCursorInteractions, isMatrix]);
 
   useEffect(() => {
     buildGrid();

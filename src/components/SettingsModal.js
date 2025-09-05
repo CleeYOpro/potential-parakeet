@@ -71,41 +71,11 @@ const ColorOption = styled.button`
   }
 `;
 
-const ToggleContainer = styled.div`
+const OptionRow = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 1rem;
+  gap: 0.5rem;
+  flex-wrap: wrap;
 `;
-
-const ToggleSwitch = styled.div`
-  position: relative;
-  width: 50px;
-  height: 24px;
-  background-color: ${props => props.isOn ? 'var(--primary-color)' : 'rgba(255, 255, 255, 0.3)'};
-  border-radius: 12px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-`;
-
-const ToggleSlider = styled.div`
-  position: absolute;
-  top: 2px;
-  left: ${props => props.isOn ? '26px' : '2px'};
-  width: 20px;
-  height: 20px;
-  background-color: white;
-  border-radius: 50%;
-  transition: left 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-`;
-
-const ToggleLabel = styled.span`
-  color: #fff;
-  font-size: 1rem;
-`;
-
-
 
 const ButtonGroup = styled.div`
   display: flex;
@@ -140,21 +110,18 @@ const Button = styled.button`
   }
 `;
 
-
-
-
 const SettingsModal = ({ isOpen, onClose }) => {
-  // Get theme context
+  // Theme context
   const {
     ledColor,
     setLedColor,
-    cursorInteractions,
-    setCursorInteractions
+    ledPattern,
+    setLedPattern,
   } = useContext(ThemeContext);
 
-  // Local state for settings (will be applied on save)
+  // Local state for settings (applied on save)
   const [localLedColor, setLocalLedColor] = useState(ledColor);
-  const [localCursorInteractions, setLocalCursorInteractions] = useState(cursorInteractions);
+  const [localLedPattern, setLocalLedPattern] = useState(ledPattern || 'cursor');
 
   // Color options
   const colorOptions = [
@@ -163,15 +130,12 @@ const SettingsModal = ({ isOpen, onClose }) => {
     { name: 'LinkedIn Blue', value: '#006CBF' },
     { name: 'Matrix Green', value: '#00FF41' },
     { name: 'Starbucks Green', value: '#007042' },
-
   ];
-
-
 
   // Handle save
   const handleSave = () => {
     setLedColor(localLedColor);
-    setCursorInteractions(localCursorInteractions);
+    setLedPattern(localLedPattern);
     onClose();
   };
 
@@ -179,7 +143,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
   const handleCancel = () => {
     // Reset local state to current settings
     setLocalLedColor(ledColor);
-    setLocalCursorInteractions(cursorInteractions);
+    setLocalLedPattern(ledPattern || 'cursor');
     onClose();
   };
 
@@ -206,21 +170,22 @@ const SettingsModal = ({ isOpen, onClose }) => {
         </SettingsGroup>
 
         <SettingsGroup>
-          <SettingLabel>Cursor Interactions</SettingLabel>
-          <ToggleContainer>
-            <ToggleLabel>Enable cursor effects</ToggleLabel>
-            <ToggleSwitch 
-              isOn={localCursorInteractions}
-              onClick={() => setLocalCursorInteractions(!localCursorInteractions)}
+          <SettingLabel>LED Animation</SettingLabel>
+          <OptionRow>
+            <Button
+              primary={localLedPattern === 'cursor'}
+              onClick={() => setLocalLedPattern('cursor')}
             >
-              <ToggleSlider isOn={localCursorInteractions} />
-            </ToggleSwitch>
-          </ToggleContainer>
+              Cursor (desktop only)
+            </Button>
+            <Button
+              primary={localLedPattern === 'matrix'}
+              onClick={() => setLocalLedPattern('matrix')}
+            >
+              Matrix
+            </Button>
+          </OptionRow>
         </SettingsGroup>
-
-
-
-
 
         <ButtonGroup>
           <Button onClick={handleCancel}>
