@@ -141,13 +141,13 @@ const booksData = [
     status: "completed"
   },
   {
-    timeRead: "Reading now",
+    timeRead: "September 2025",
     title: "The Coming Wave",
     author: "Mustafa Suleyman",
     pages: 352,
     description: "https://the-coming-wave.com/",
     image: "https://m.media-amazon.com/images/I/81zQiMu4A5L._UF1000,1000_QL80_.jpg",
-    status: "reading"
+    status: "completed"
   },
 ];
 
