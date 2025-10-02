@@ -89,6 +89,21 @@ const AppWrapper = ({ currentPage }) => {
     return () => observer.disconnect();
   }, []);
 
+  // Send a page_view event to Google Analytics whenever the hash route changes
+  useEffect(() => {
+    const pagePath = `${window.location.pathname}${window.location.hash}`;
+    const pageTitle = document.title || 'App Page';
+
+    if (typeof window.gtag === 'function') {
+      window.gtag('event', 'page_view', {
+        page_title: pageTitle,
+        page_path: pagePath
+      });
+    } else {
+      console.warn('Google Analytics: gtag is not yet available to record the page view.');
+    }
+  }, [currentPage]);
+
   // Inside the AppWrapper component's return statement:
   return (
     <AppContainer currentPage={currentPage} theme={isDarkMode ? 'dark' : 'light'}>
