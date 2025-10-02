@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
-import { FiSettings } from 'react-icons/fi';
 import SettingsModal from './SettingsModal';
 import { gsap } from 'gsap';
 
@@ -57,17 +56,25 @@ const NavBubble = styled.button`
   }
 `;
 
-const LogoLetters = styled.span`
-  font-family: var(--font-family-mono), 'Rubik Mono One', monospace;
-  font-weight: bold;
-  font-size: 1.2rem;
-  color: white;
-  display: flex;
-  align-items: center;
-  gap: 0.1rem;
+const LogoImage = styled.img`
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
 
   @media (max-width: 768px) {
-    font-size: 1rem;
+    width: 40px;
+    height: 40px;
+  }
+`;
+
+const SettingsImage = styled.img`
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+
+  @media (max-width: 768px) {
+    width: 40px;
+    height: 40px;
   }
 `;
 
@@ -130,7 +137,7 @@ const Pill = styled.a`
 
 const HamburgerLines = styled.div`
   width: 20px;
-  height: 20px; /* container height */
+  height: 20px;
   position: relative;
   cursor: pointer;
 
@@ -154,7 +161,7 @@ const HamburgerLines = styled.div`
   }
 
   &.open div:nth-child(2) {
-    opacity: 0; /* middle line disappears */
+    opacity: 0;
   }
 
   &.open div:nth-child(3) {
@@ -177,7 +184,6 @@ const Navbar = () => {
   ];
 
   const toggleMenu = () => setIsMenuOpen(prev => !prev);
-
 
   const handleLogoClick = (e) => {
     e.stopPropagation();
@@ -211,11 +217,11 @@ const Navbar = () => {
     <>
       <NavbarContainer>
         <NavBubble aria-label="Home" onClick={handleLogoClick}>
-          <LogoLetters>CB</LogoLetters>
+          <LogoImage src="/CB (1).png" alt="Logo" />
         </NavBubble>
 
         <NavBubble onClick={handleSettingsClick} aria-label="Settings">
-          <FiSettings size={20} />
+          <SettingsImage src="/lugu.png" alt="Settings" />
         </NavBubble>
 
         <NavBubble onClick={toggleMenu} aria-label="Menu">
