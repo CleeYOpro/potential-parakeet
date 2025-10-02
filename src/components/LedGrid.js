@@ -141,7 +141,6 @@ const LedGrid = ({
         const centerY = canvas.height / (2 * (window.devicePixelRatio || 1));
         const t = time * 0.002;
         const waveLength = 100;
-        const fade = 0.15;
         for (let y = 0; y < rows; y++) {
           for (let x = 0; x < cols; x++) {
             const cx = startX + x * cell;
