@@ -169,20 +169,19 @@ const Navbar = () => {
   const pillsRef = useRef([]);
 
   const menuItems = [
-    { label: "Home", href: "#home", rotation: 8 },
-    { label: "About", href: "#about", rotation: -8 },
-    { label: "Projects", href: "#projects", rotation: 8 },
+    { label: "About", href: "#about", rotation: 8 },
+    { label: "Projects", href: "#projects", rotation: -8 },
     { label: "Bookshelf", href: "#reading-list", rotation: 8 },
-    { label: "Blog", href: "#blog", rotation: 8 },
-    { label: "Contact", href: "#contact", rotation: -8 },
+    { label: "Blog", href: "#blog", rotation: -8 },
+    { label: "Contact", href: "#contact", rotation: 8 },
   ];
 
   const toggleMenu = () => setIsMenuOpen(prev => !prev);
 
+
   const handleLogoClick = (e) => {
     e.stopPropagation();
-    const homeSection = document.querySelector("#home");
-    if (homeSection) homeSection.scrollIntoView({ behavior: "smooth" });
+    window.location.href = "/#home";
     setIsMenuOpen(false);
   };
 

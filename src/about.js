@@ -21,10 +21,8 @@ const ContentContainer = styled.div`
 const About = () => {
   return (
     <AboutPageContainer>
-      
       <ContentContainer>
         <AboutMe />
-        
       </ContentContainer>
       <TechStack />
     </AboutPageContainer>

@@ -1,3 +1,5 @@
+
+'use client';
 import { useState, useContext } from 'react';
 import styled from 'styled-components';
 import { ThemeContext } from '../contexts/ThemeContext';
@@ -21,7 +23,7 @@ const ModalContent = styled.div`
   opacity: 1;
   backdrop-filter: blur(400px) saturate(1.8);
   -webkit-backdrop-filter: blur(400px) saturate(1.8);
-  border-radius: 2.5rem 2.5rem 2.5rem 2.5rem / 2.2rem 2.2rem 2.2rem 2.2rem;
+  border-radius: 2.5rem;
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18), 0 1.5px 8px 0 rgba(0,0,0,0.10);
   border: 1.5px solid rgba(255,255,255,0.13);
   padding: 2rem;
@@ -95,7 +97,7 @@ const Button = styled.button`
     ? 'none'
     : '1.5px solid var(--primary-color)'};
   padding: 0.5rem 1.5rem;
-  border-radius: 2.5rem 2.5rem 2.5rem 2.5rem / 2.2rem 2.2rem 2.2rem 2.2rem;
+  border-radius: 2.5rem;
   box-shadow: 0 4px 16px 0 rgba(31, 38, 135, 0.10);
   font-family: var(--font-family);
   font-size: 1rem;
@@ -111,7 +113,6 @@ const Button = styled.button`
 `;
 
 const SettingsModal = ({ isOpen, onClose }) => {
-  // Theme context
   const {
     ledColor,
     setLedColor,
@@ -119,11 +120,9 @@ const SettingsModal = ({ isOpen, onClose }) => {
     setLedPattern,
   } = useContext(ThemeContext);
 
-  // Local state for settings (applied on save)
   const [localLedColor, setLocalLedColor] = useState(ledColor);
-  const [localLedPattern, setLocalLedPattern] = useState(ledPattern || 'cursor');
+  const [localLedPattern, setLocalLedPattern] = useState(ledPattern || 'wave');
 
-  // Color options
   const colorOptions = [
     { name: 'Claude Orange', value: '#DA7453' },
     { name: 'Kiro AI Purple', value: '#8D45FF' },
@@ -132,18 +131,15 @@ const SettingsModal = ({ isOpen, onClose }) => {
     { name: 'Starbucks Green', value: '#007042' },
   ];
 
-  // Handle save
   const handleSave = () => {
     setLedColor(localLedColor);
     setLedPattern(localLedPattern);
     onClose();
   };
 
-  // Handle cancel
   const handleCancel = () => {
-    // Reset local state to current settings
     setLocalLedColor(ledColor);
-    setLocalLedPattern(ledPattern || 'cursor');
+    setLocalLedPattern(ledPattern || 'wave');
     onClose();
   };
 
@@ -183,6 +179,18 @@ const SettingsModal = ({ isOpen, onClose }) => {
               onClick={() => setLocalLedPattern('matrix')}
             >
               Matrix
+            </Button>
+            <Button
+              primary={localLedPattern === 'wave'}
+              onClick={() => setLocalLedPattern('wave')}
+            >
+              Wave
+            </Button>
+            <Button
+              primary={localLedPattern === 'none'}
+              onClick={() => setLocalLedPattern('none')}
+            >
+              No Animation
             </Button>
           </OptionRow>
         </SettingsGroup>
