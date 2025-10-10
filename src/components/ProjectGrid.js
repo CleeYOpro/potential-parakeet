@@ -153,7 +153,7 @@ const projects = [
     title: 'Price it Right Market Simulator',
     description: 'This project shows how price affects demand, profit, and revenue using interactive charts and sliders. It includes market events and teaches key business ideas like supply & demand, pricing strategy, and profit optimization in a fun, visual way.',
     image: '/priceitright.png',
-    tech: ['Pricing', 'Economics', 'TypeScript', 'Business'],
+    tech: ['Pricing', 'Microeconomics', 'TypeScript', 'Business'],
     link: 'https://priceprofit.cleof.us/',
     github: 'https://https://github.com/CleeYOpro/demandprice_pro', // <-- Add this line
   },
@@ -190,7 +190,7 @@ const projects = [
     description: 'A responsive site for CMC Palliative Care showcasing services, team, and contact—built for clarity, accessibility, and thoughtful design.',
     image: '/palli.png',
     tech: ['Web', 'Medical', 'HTML5', 'CSS3'],
-    link: 'https://palliativecmc.pages.dev/',
+    link: 'https://palliativecmc.vercel.app/',
     github: 'https://github.com/CleeYOpro/CMC-project',
   },
   {
