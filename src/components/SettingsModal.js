@@ -124,11 +124,9 @@ const SettingsModal = ({ isOpen, onClose }) => {
   const [localLedPattern, setLocalLedPattern] = useState(ledPattern || 'wave');
 
   const colorOptions = [
-    { name: 'Claude Orange', value: '#DA7453' },
     { name: 'Kiro AI Purple', value: '#8D45FF' },
-    { name: 'LinkedIn Blue', value: '#006CBF' },
     { name: 'Matrix Green', value: '#00FF41' },
-    { name: 'Starbucks Green', value: '#007042' },
+    { name: 'Ocean Blue', value: '#00CFFF' },
   ];
 
   const handleSave = () => {
