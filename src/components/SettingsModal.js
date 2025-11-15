@@ -126,7 +126,6 @@ const SettingsModal = ({ isOpen, onClose }) => {
   const colorOptions = [
     { name: 'Kiro AI Purple', value: '#8D45FF' },
     { name: 'Matrix Green', value: '#00FF41' },
-    { name: 'Ocean Blue', value: '#00CFFF' },
   ];
 
   const handleSave = () => {

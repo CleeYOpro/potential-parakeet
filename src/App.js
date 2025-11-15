@@ -8,8 +8,6 @@ import About from './about';
 import Contact from './contact';
 import { ThemeProvider } from './contexts/ThemeContext';
 import Projects from './projects';
-import Blog from './components/Blog';
-import ReadingList from './components/ReadingList';
 
 
 const AppContainer = styled.div`
@@ -125,12 +123,6 @@ const AppWrapper = ({ currentPage }) => {
       )}
       {currentPage === 'contact' && (
         <Contact />
-      )}
-      {currentPage === 'blog' && (
-        <Blog />
-      )}
-      {currentPage === 'reading-list' && (
-        <ReadingList />
       )}
     </AppContainer>
   );

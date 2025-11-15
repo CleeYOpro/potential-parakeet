@@ -3,9 +3,10 @@
 
 
 :root {
-    --primary-color: #DA7453;
-    --primary-color-dark: #DA7453;
-    --primary-color-light: #DA7453;
+    --primary-color-rgb: 218, 116, 83;
+    --primary-color: rgb(var(--primary-color-rgb));
+    --primary-color-dark: rgb(178, 95, 68);
+    --primary-color-light: rgb(235, 159, 140);
     --text-color-dark: #ffffff;
     --text-color-light: #333333;
     --bg-color-dark: #000000;

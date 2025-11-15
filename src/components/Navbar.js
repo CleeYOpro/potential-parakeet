@@ -178,8 +178,6 @@ const Navbar = () => {
   const menuItems = [
     { label: "About", href: "#about", rotation: 8 },
     { label: "Projects", href: "#projects", rotation: -8 },
-    { label: "Bookshelf", href: "#reading-list", rotation: 8 },
-    { label: "Blog", href: "#blog", rotation: -8 },
     { label: "Contact", href: "#contact", rotation: 8 },
   ];
 
