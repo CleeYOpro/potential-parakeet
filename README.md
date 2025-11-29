@@ -221,7 +221,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 <div align="center">
 
-### 💜 Made with passion by a high school junior building practical projects and messing around with tech 😎
+### qodjoqwjdojdwq
 
 [![GitHub stars](https://img.shields.io/github/stars/CleeYOpro/potential-parakeet?style=social)](https://github.com/CleeYOpro/potential-parakeet)
 [![GitHub forks](https://img.shields.io/github/forks/CleeYOpro/potential-parakeet?style=social)](https://github.com/CleeYOpro/potential-parakeet)
