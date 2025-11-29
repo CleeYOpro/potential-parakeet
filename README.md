@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🚀 potential-parakeet
+# 🚀 cleof.us balaranjith 
 
 ### Personal Portfolio Website
 
@@ -8,7 +8,7 @@
 [![React](https://img.shields.io/badge/React-18.2.0-00CFFF?style=for-the-badge&logo=react)](https://reactjs.org/)
 [![Styled Components](https://img.shields.io/badge/Styled_Components-6.1.0-00FF41?style=for-the-badge&logo=styled-components)](https://styled-components.com/)
 
-<img src="https://img.shields.io/badge/Made_with-🥛_and_🍪s-8D45FF?style=flat-square" alt="Made with love and coffee">
+<img src="https://img.shields.io/badge/Made_with-🥛_and_🍪s-8D45FF?style=flat-square" alt="Made with cookies and milk">
 
 ---
 
