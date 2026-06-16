@@ -34,17 +34,9 @@ function App() {
   const [currentPage, setCurrentPage] = useState('home');
 
   useEffect(() => {
-    const handleHashChange = () => {
-      const hash = window.location.hash.replace('#', '');
-      setCurrentPage(hash || 'home');
-    };
-
-    window.addEventListener('hashchange', handleHashChange);
-    handleHashChange(); // Initialize with current hash
-
-    return () => {
-      window.removeEventListener('hashchange', handleHashChange);
-    };
+    // Always stay on home page, ignore hash changes
+    window.location.hash = '';
+    setCurrentPage('home');
   }, []);
 
   // Remove the flashing grid pattern
@@ -114,15 +106,6 @@ const AppWrapper = ({ currentPage }) => {
             <Hero />
           </ContentContainer>
         </TopSection>
-      )}
-      {currentPage === 'about' && (
-        <About />
-      )}
-      {currentPage === 'projects' && (
-        <Projects />
-      )}
-      {currentPage === 'contact' && (
-        <Contact />
       )}
     </AppContainer>
   );
